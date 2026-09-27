@@ -2,148 +2,148 @@
   "低位": {
     "上升趋势": {
       "倍量不穿": {
-        "win_rate": 42.5,
-        "avg_ret": 0.81
+        "win_rate": 43.2,
+        "avg_ret": 0.9
       },
       "倍量不穿_真金": {
-        "win_rate": 42.5,
-        "avg_ret": 0.81
+        "win_rate": 43.2,
+        "avg_ret": 0.9
       },
       "黄金柱": {
-        "win_rate": 47.0,
-        "avg_ret": 1.54
+        "win_rate": 47.5,
+        "avg_ret": 1.76
       },
       "黄金柱_真金": {
-        "win_rate": 47.0,
-        "avg_ret": 1.54
+        "win_rate": 47.5,
+        "avg_ret": 1.76
       },
       "平量柱": {
-        "win_rate": 47.6,
+        "win_rate": 47.8,
         "avg_ret": 1.64
       },
       "平量柱_真金": {
-        "win_rate": 47.6,
+        "win_rate": 47.8,
         "avg_ret": 1.64
       },
       "梯量柱": {
-        "win_rate": 46.1,
-        "avg_ret": 1.81
+        "win_rate": 47.1,
+        "avg_ret": 1.97
       },
       "梯量柱_真金": {
-        "win_rate": 46.1,
-        "avg_ret": 1.81
+        "win_rate": 47.1,
+        "avg_ret": 1.97
       },
       "阳胜进": {
-        "win_rate": 47.4,
-        "avg_ret": 1.77
+        "win_rate": 47.9,
+        "avg_ret": 1.87
       },
       "阳胜进_真金": {
-        "win_rate": 47.4,
-        "avg_ret": 1.77
+        "win_rate": 47.9,
+        "avg_ret": 1.87
       },
       "十字星": {
-        "win_rate": 45.8,
-        "avg_ret": 1.13
+        "win_rate": 46.6,
+        "avg_ret": 1.27
       },
       "十字星_真金": {
-        "win_rate": 45.8,
-        "avg_ret": 1.13
+        "win_rate": 46.6,
+        "avg_ret": 1.27
       },
       "低量柱（地量）": {
-        "win_rate": 50.8,
-        "avg_ret": 1.74
+        "win_rate": 51.4,
+        "avg_ret": 1.95
       },
       "低量柱（地量）_真金": {
-        "win_rate": 50.8,
-        "avg_ret": 1.74
+        "win_rate": 51.4,
+        "avg_ret": 1.95
       },
       "阳包阴": {
-        "win_rate": 45.4,
-        "avg_ret": 1.64
+        "win_rate": 46.0,
+        "avg_ret": 1.73
       },
       "阳包阴_真金": {
-        "win_rate": 45.4,
-        "avg_ret": 1.64
+        "win_rate": 46.0,
+        "avg_ret": 1.73
       },
       "地量群": {
-        "win_rate": 47.6,
-        "avg_ret": 1.49
+        "win_rate": 48.2,
+        "avg_ret": 1.64
       },
       "地量群_真金": {
-        "win_rate": 47.6,
-        "avg_ret": 1.49
+        "win_rate": 48.2,
+        "avg_ret": 1.64
       },
       "倍量伸缩": {
-        "win_rate": 47.1,
-        "avg_ret": 1.42
+        "win_rate": 47.9,
+        "avg_ret": 1.69
       },
       "倍量伸缩_真金": {
-        "win_rate": 47.1,
-        "avg_ret": 1.42
+        "win_rate": 47.9,
+        "avg_ret": 1.69
       },
       "缩量柱": {
-        "win_rate": 43.6,
-        "avg_ret": 1.09
+        "win_rate": 44.2,
+        "avg_ret": 1.08
       },
       "缩量柱_真金": {
-        "win_rate": 43.6,
-        "avg_ret": 1.09
+        "win_rate": 44.2,
+        "avg_ret": 1.08
       },
       "倍量柱": {
-        "win_rate": 42.9,
-        "avg_ret": 0.94
+        "win_rate": 44.4,
+        "avg_ret": 1.24
       },
       "倍量柱_真金": {
-        "win_rate": 42.9,
-        "avg_ret": 0.94
+        "win_rate": 44.4,
+        "avg_ret": 1.24
       },
       "回踩谷底线不破": {
-        "win_rate": 51.4,
-        "avg_ret": 1.75
+        "win_rate": 51.6,
+        "avg_ret": 1.8
       },
       "回踩谷底线不破_真金": {
-        "win_rate": 51.4,
-        "avg_ret": 1.75
+        "win_rate": 51.6,
+        "avg_ret": 1.8
       },
       "回踩精准线": {
-        "win_rate": 49.6,
-        "avg_ret": 2.55
+        "win_rate": 49.5,
+        "avg_ret": 2.44
       },
       "回踩精准线_真金": {
-        "win_rate": 49.6,
-        "avg_ret": 2.55
+        "win_rate": 49.5,
+        "avg_ret": 2.44
       },
       "将军柱": {
-        "win_rate": 44.0,
-        "avg_ret": 1.67
+        "win_rate": 44.7,
+        "avg_ret": 1.71
       },
       "将军柱_真金": {
-        "win_rate": 44.0,
-        "avg_ret": 1.67
+        "win_rate": 44.7,
+        "avg_ret": 1.71
       },
       "高量柱": {
-        "win_rate": 45.6,
-        "avg_ret": 1.75
+        "win_rate": 47.0,
+        "avg_ret": 2.06
       },
       "高量柱_真金": {
-        "win_rate": 45.6,
-        "avg_ret": 1.75
+        "win_rate": 47.0,
+        "avg_ret": 2.06
       },
       "涨停板": {
-        "win_rate": 30.0,
-        "avg_ret": -2.25
+        "win_rate": 33.3,
+        "avg_ret": 2.97
       },
       "涨停板_真金": {
-        "win_rate": 30.0,
-        "avg_ret": -2.25
+        "win_rate": 33.3,
+        "avg_ret": 2.97
       },
       "过左峰": {
-        "win_rate": 47.9,
-        "avg_ret": 1.01
+        "win_rate": 49.5,
+        "avg_ret": 1.15
       },
       "过左峰_真金": {
-        "win_rate": 47.9,
-        "avg_ret": 1.01
+        "win_rate": 49.5,
+        "avg_ret": 1.15
       },
       "长阴": {
         "win_rate": 44.4,
@@ -154,286 +154,278 @@
         "avg_ret": -0.44
       },
       "突破大阴实顶": {
-        "win_rate": 52.8,
-        "avg_ret": 2.1
+        "win_rate": 53.1,
+        "avg_ret": 2.17
       },
       "突破大阴实顶_真金": {
-        "win_rate": 52.8,
-        "avg_ret": 2.1
+        "win_rate": 53.1,
+        "avg_ret": 2.17
       },
       "小倍阳（矮将军）": {
-        "win_rate": 45.7,
-        "avg_ret": 1.47
+        "win_rate": 45.6,
+        "avg_ret": 1.52
       },
       "小倍阳（矮将军）_真金": {
-        "win_rate": 45.7,
-        "avg_ret": 1.47
+        "win_rate": 45.6,
+        "avg_ret": 1.52
       },
       "顶背离": {
-        "win_rate": 54.1,
-        "avg_ret": 3.37
+        "win_rate": 54.0,
+        "avg_ret": 3.18
       },
       "顶背离_真金": {
-        "win_rate": 54.1,
-        "avg_ret": 3.37
+        "win_rate": 54.0,
+        "avg_ret": 3.18
       },
       "长阳": {
-        "win_rate": 49.5,
-        "avg_ret": 1.96
+        "win_rate": 52.6,
+        "avg_ret": 2.71
       },
       "长阳_真金": {
-        "win_rate": 49.5,
-        "avg_ret": 1.96
+        "win_rate": 52.6,
+        "avg_ret": 2.71
       },
       "建仓中": {
-        "win_rate": 46.1,
-        "avg_ret": 2.17
+        "win_rate": 47.7,
+        "avg_ret": 2.5
       },
       "建仓中_真金": {
-        "win_rate": 46.1,
-        "avg_ret": 2.17
+        "win_rate": 47.7,
+        "avg_ret": 2.5
       },
       "价升量缩": {
-        "win_rate": 46.6,
-        "avg_ret": 0.67
+        "win_rate": 45.8,
+        "avg_ret": 0.32
       },
       "价升量缩_真金": {
-        "win_rate": 46.6,
-        "avg_ret": 0.67
+        "win_rate": 45.8,
+        "avg_ret": 0.32
       },
       "元帅柱": {
-        "win_rate": 54.1,
-        "avg_ret": 2.76
+        "win_rate": 54.3,
+        "avg_ret": 2.74
       },
       "元帅柱_真金": {
-        "win_rate": 54.1,
-        "avg_ret": 2.76
+        "win_rate": 54.3,
+        "avg_ret": 2.74
       },
       "极阴次阳": {
-        "win_rate": 45.0,
-        "avg_ret": -0.63
+        "win_rate": 47.4,
+        "avg_ret": -0.48
       },
       "极阴次阳_真金": {
-        "win_rate": 45.0,
-        "avg_ret": -0.63
+        "win_rate": 47.4,
+        "avg_ret": -0.48
       }
     },
     "下降趋势": {
       "倍量不穿": {
-        "win_rate": 44.3,
-        "avg_ret": 0.73
+        "win_rate": 44.7,
+        "avg_ret": 0.85
       },
       "倍量不穿_真金": {
-        "win_rate": 44.3,
-        "avg_ret": 0.73
+        "win_rate": 44.7,
+        "avg_ret": 0.85
       },
       "黄金柱": {
-        "win_rate": 48.4,
-        "avg_ret": 1.91
+        "win_rate": 48.6,
+        "avg_ret": 2.03
       },
       "黄金柱_真金": {
-        "win_rate": 48.4,
-        "avg_ret": 1.91
+        "win_rate": 48.6,
+        "avg_ret": 2.03
       },
       "底背离": {
-        "win_rate": 56.4,
-        "avg_ret": 4.08
+        "win_rate": 56.6,
+        "avg_ret": 4.12
       },
       "底背离_真金": {
-        "win_rate": 56.4,
-        "avg_ret": 4.08
+        "win_rate": 56.6,
+        "avg_ret": 4.12
       },
       "平量柱": {
-        "win_rate": 48.9,
-        "avg_ret": 1.45
+        "win_rate": 49.0,
+        "avg_ret": 1.48
       },
       "平量柱_真金": {
-        "win_rate": 48.9,
-        "avg_ret": 1.45
+        "win_rate": 49.0,
+        "avg_ret": 1.48
       },
       "梯量柱": {
-        "win_rate": 49.7,
-        "avg_ret": 1.68
+        "win_rate": 50.0,
+        "avg_ret": 1.72
       },
       "梯量柱_真金": {
-        "win_rate": 49.7,
-        "avg_ret": 1.68
+        "win_rate": 50.0,
+        "avg_ret": 1.72
       },
       "阳胜进": {
-        "win_rate": 50.5,
-        "avg_ret": 2.25
+        "win_rate": 50.9,
+        "avg_ret": 2.33
       },
       "阳胜进_真金": {
-        "win_rate": 50.5,
-        "avg_ret": 2.25
+        "win_rate": 50.9,
+        "avg_ret": 2.33
       },
       "十字星": {
-        "win_rate": 50.5,
-        "avg_ret": 1.7
+        "win_rate": 51.0,
+        "avg_ret": 1.75
       },
       "十字星_真金": {
-        "win_rate": 50.5,
-        "avg_ret": 1.7
+        "win_rate": 51.0,
+        "avg_ret": 1.75
       },
       "低量柱（地量）": {
-        "win_rate": 45.8,
-        "avg_ret": 0.96
+        "win_rate": 46.0,
+        "avg_ret": 1.01
       },
       "低量柱（地量）_真金": {
-        "win_rate": 45.8,
-        "avg_ret": 0.96
+        "win_rate": 46.0,
+        "avg_ret": 1.01
       },
       "阳包阴": {
-        "win_rate": 50.5,
-        "avg_ret": 2.82
+        "win_rate": 51.2,
+        "avg_ret": 2.95
       },
       "阳包阴_真金": {
-        "win_rate": 50.5,
-        "avg_ret": 2.82
+        "win_rate": 51.2,
+        "avg_ret": 2.95
       },
       "地量群": {
-        "win_rate": 49.5,
-        "avg_ret": 2.01
+        "win_rate": 49.7,
+        "avg_ret": 2.07
       },
       "地量群_真金": {
-        "win_rate": 49.5,
-        "avg_ret": 2.01
+        "win_rate": 49.7,
+        "avg_ret": 2.07
       },
       "倍量伸缩": {
-        "win_rate": 49.5,
-        "avg_ret": 1.76
+        "win_rate": 49.8,
+        "avg_ret": 1.81
       },
       "倍量伸缩_真金": {
-        "win_rate": 49.5,
-        "avg_ret": 1.76
+        "win_rate": 49.8,
+        "avg_ret": 1.81
       },
       "缩量柱": {
-        "win_rate": 49.1,
-        "avg_ret": 1.85
+        "win_rate": 49.4,
+        "avg_ret": 1.89
       },
       "缩量柱_真金": {
-        "win_rate": 49.1,
-        "avg_ret": 1.85
+        "win_rate": 49.4,
+        "avg_ret": 1.89
       },
       "倍量柱": {
-        "win_rate": 51.1,
-        "avg_ret": 2.64
+        "win_rate": 51.3,
+        "avg_ret": 2.73
       },
       "倍量柱_真金": {
-        "win_rate": 51.1,
-        "avg_ret": 2.64
+        "win_rate": 51.3,
+        "avg_ret": 2.73
       },
       "回踩谷底线不破": {
-        "win_rate": 48.3,
-        "avg_ret": 1.64
+        "win_rate": 48.9,
+        "avg_ret": 1.76
       },
       "回踩谷底线不破_真金": {
-        "win_rate": 48.3,
-        "avg_ret": 1.64
+        "win_rate": 48.9,
+        "avg_ret": 1.76
       },
       "回踩精准线": {
-        "win_rate": 48.1,
-        "avg_ret": 1.71
+        "win_rate": 48.3,
+        "avg_ret": 1.72
       },
       "回踩精准线_真金": {
-        "win_rate": 48.1,
-        "avg_ret": 1.71
+        "win_rate": 48.3,
+        "avg_ret": 1.72
       },
       "将军柱": {
-        "win_rate": 49.2,
-        "avg_ret": 1.99
+        "win_rate": 49.5,
+        "avg_ret": 2.15
       },
       "将军柱_真金": {
-        "win_rate": 49.2,
-        "avg_ret": 1.99
+        "win_rate": 49.5,
+        "avg_ret": 2.15
       },
       "高量柱": {
-        "win_rate": 51.0,
-        "avg_ret": 2.45
+        "win_rate": 50.5,
+        "avg_ret": 2.4
       },
       "高量柱_真金": {
-        "win_rate": 51.0,
-        "avg_ret": 2.45
-      },
-      "涨停板": {
-        "win_rate": 20.0,
-        "avg_ret": -8.95
-      },
-      "涨停板_真金": {
-        "win_rate": 20.0,
-        "avg_ret": -8.95
+        "win_rate": 50.5,
+        "avg_ret": 2.4
       },
       "过左峰": {
-        "win_rate": 69.8,
-        "avg_ret": 5.05
+        "win_rate": 69.6,
+        "avg_ret": 5.0
       },
       "过左峰_真金": {
-        "win_rate": 69.8,
-        "avg_ret": 5.05
+        "win_rate": 69.6,
+        "avg_ret": 5.0
       },
       "长阴": {
-        "win_rate": 52.7,
-        "avg_ret": 2.76
+        "win_rate": 51.9,
+        "avg_ret": 2.51
       },
       "长阴_真金": {
-        "win_rate": 52.7,
-        "avg_ret": 2.76
+        "win_rate": 51.9,
+        "avg_ret": 2.51
       },
       "突破大阴实顶": {
-        "win_rate": 66.8,
-        "avg_ret": 4.29
+        "win_rate": 67.0,
+        "avg_ret": 4.3
       },
       "突破大阴实顶_真金": {
-        "win_rate": 66.8,
-        "avg_ret": 4.29
+        "win_rate": 67.0,
+        "avg_ret": 4.3
       },
       "小倍阳（矮将军）": {
-        "win_rate": 51.0,
-        "avg_ret": 1.67
+        "win_rate": 50.7,
+        "avg_ret": 1.63
       },
       "小倍阳（矮将军）_真金": {
-        "win_rate": 51.0,
-        "avg_ret": 1.67
+        "win_rate": 50.7,
+        "avg_ret": 1.63
       },
       "顶背离": {
-        "win_rate": 59.3,
-        "avg_ret": 3.14
+        "win_rate": 59.6,
+        "avg_ret": 3.32
       },
       "顶背离_真金": {
-        "win_rate": 59.3,
-        "avg_ret": 3.14
+        "win_rate": 59.6,
+        "avg_ret": 3.32
       },
       "长阳": {
-        "win_rate": 47.3,
-        "avg_ret": 1.44
+        "win_rate": 47.7,
+        "avg_ret": 1.96
       },
       "长阳_真金": {
-        "win_rate": 47.3,
-        "avg_ret": 1.44
+        "win_rate": 47.7,
+        "avg_ret": 1.96
       },
       "价升量缩": {
-        "win_rate": 52.0,
-        "avg_ret": 2.4
+        "win_rate": 51.9,
+        "avg_ret": 2.39
       },
       "价升量缩_真金": {
-        "win_rate": 52.0,
-        "avg_ret": 2.4
+        "win_rate": 51.9,
+        "avg_ret": 2.39
       },
       "元帅柱": {
-        "win_rate": 55.6,
-        "avg_ret": 1.83
+        "win_rate": 55.8,
+        "avg_ret": 1.86
       },
       "元帅柱_真金": {
-        "win_rate": 55.6,
-        "avg_ret": 1.83
+        "win_rate": 55.8,
+        "avg_ret": 1.86
       },
       "极阴次阳": {
-        "win_rate": 52.5,
-        "avg_ret": 5.03
+        "win_rate": 51.7,
+        "avg_ret": 5.09
       },
       "极阴次阳_真金": {
-        "win_rate": 52.5,
-        "avg_ret": 5.03
+        "win_rate": 51.7,
+        "avg_ret": 5.09
       }
     }
   },
@@ -441,59 +433,59 @@
     "上升趋势": {
       "倍量不穿": {
         "win_rate": 48.7,
-        "avg_ret": 1.69
+        "avg_ret": 1.64
       },
       "倍量不穿_真金": {
         "win_rate": 48.7,
-        "avg_ret": 1.69
+        "avg_ret": 1.64
       },
       "黄金柱": {
-        "win_rate": 48.7,
-        "avg_ret": 1.64
+        "win_rate": 48.9,
+        "avg_ret": 1.71
       },
       "黄金柱_真金": {
-        "win_rate": 48.7,
-        "avg_ret": 1.64
+        "win_rate": 48.9,
+        "avg_ret": 1.71
       },
       "底背离": {
-        "win_rate": 8.3,
-        "avg_ret": -13.03
+        "win_rate": 11.1,
+        "avg_ret": -13.34
       },
       "底背离_真金": {
-        "win_rate": 8.3,
-        "avg_ret": -13.03
+        "win_rate": 11.1,
+        "avg_ret": -13.34
       },
       "平量柱": {
-        "win_rate": 48.6,
-        "avg_ret": 1.51
+        "win_rate": 49.1,
+        "avg_ret": 1.63
       },
       "平量柱_真金": {
-        "win_rate": 48.6,
-        "avg_ret": 1.51
+        "win_rate": 49.1,
+        "avg_ret": 1.63
       },
       "梯量柱": {
-        "win_rate": 47.9,
-        "avg_ret": 1.55
+        "win_rate": 48.7,
+        "avg_ret": 1.81
       },
       "梯量柱_真金": {
-        "win_rate": 47.9,
-        "avg_ret": 1.55
+        "win_rate": 48.7,
+        "avg_ret": 1.81
       },
       "阳胜进": {
-        "win_rate": 49.0,
-        "avg_ret": 1.93
+        "win_rate": 49.6,
+        "avg_ret": 2.03
       },
       "阳胜进_真金": {
+        "win_rate": 49.6,
+        "avg_ret": 2.03
+      },
+      "十字星": {
         "win_rate": 49.0,
         "avg_ret": 1.93
       },
-      "十字星": {
-        "win_rate": 48.4,
-        "avg_ret": 1.82
-      },
       "十字星_真金": {
-        "win_rate": 48.4,
-        "avg_ret": 1.82
+        "win_rate": 49.0,
+        "avg_ret": 1.93
       },
       "低量柱（地量）": {
         "win_rate": 46.9,
@@ -504,350 +496,350 @@
         "avg_ret": 0.39
       },
       "阳包阴": {
-        "win_rate": 49.4,
-        "avg_ret": 1.96
+        "win_rate": 49.7,
+        "avg_ret": 2.02
       },
       "阳包阴_真金": {
-        "win_rate": 49.4,
-        "avg_ret": 1.96
+        "win_rate": 49.7,
+        "avg_ret": 2.02
       },
       "地量群": {
-        "win_rate": 48.0,
+        "win_rate": 48.3,
         "avg_ret": 1.56
       },
       "地量群_真金": {
-        "win_rate": 48.0,
+        "win_rate": 48.3,
         "avg_ret": 1.56
       },
       "倍量伸缩": {
-        "win_rate": 47.9,
-        "avg_ret": 1.66
+        "win_rate": 48.2,
+        "avg_ret": 1.69
       },
       "倍量伸缩_真金": {
-        "win_rate": 47.9,
-        "avg_ret": 1.66
+        "win_rate": 48.2,
+        "avg_ret": 1.69
       },
       "缩量柱": {
-        "win_rate": 49.5,
-        "avg_ret": 1.79
+        "win_rate": 49.7,
+        "avg_ret": 1.77
       },
       "缩量柱_真金": {
-        "win_rate": 49.5,
-        "avg_ret": 1.79
+        "win_rate": 49.7,
+        "avg_ret": 1.77
       },
       "倍量柱": {
-        "win_rate": 47.5,
-        "avg_ret": 2.15
+        "win_rate": 48.2,
+        "avg_ret": 2.24
       },
       "倍量柱_真金": {
-        "win_rate": 47.5,
-        "avg_ret": 2.15
+        "win_rate": 48.2,
+        "avg_ret": 2.24
       },
       "回踩谷底线不破": {
-        "win_rate": 43.0,
+        "win_rate": 43.4,
         "avg_ret": 1.05
       },
       "回踩谷底线不破_真金": {
-        "win_rate": 43.0,
+        "win_rate": 43.4,
         "avg_ret": 1.05
       },
       "洗盘": {
-        "win_rate": 48.3,
-        "avg_ret": 1.55
+        "win_rate": 48.7,
+        "avg_ret": 1.65
       },
       "洗盘_真金": {
-        "win_rate": 48.3,
-        "avg_ret": 1.55
+        "win_rate": 48.7,
+        "avg_ret": 1.65
       },
       "回踩精准线": {
-        "win_rate": 48.9,
-        "avg_ret": 1.62
+        "win_rate": 49.3,
+        "avg_ret": 1.69
       },
       "回踩精准线_真金": {
-        "win_rate": 48.9,
-        "avg_ret": 1.62
+        "win_rate": 49.3,
+        "avg_ret": 1.69
       },
       "将军柱": {
-        "win_rate": 49.0,
-        "avg_ret": 1.95
+        "win_rate": 48.8,
+        "avg_ret": 1.81
       },
       "将军柱_真金": {
-        "win_rate": 49.0,
-        "avg_ret": 1.95
+        "win_rate": 48.8,
+        "avg_ret": 1.81
       },
       "高量柱": {
-        "win_rate": 48.4,
-        "avg_ret": 2.28
+        "win_rate": 49.1,
+        "avg_ret": 2.4
       },
       "高量柱_真金": {
-        "win_rate": 48.4,
-        "avg_ret": 2.28
+        "win_rate": 49.1,
+        "avg_ret": 2.4
       },
       "涨停板": {
-        "win_rate": 57.1,
-        "avg_ret": 4.79
+        "win_rate": 56.2,
+        "avg_ret": 3.83
       },
       "涨停板_真金": {
-        "win_rate": 57.1,
-        "avg_ret": 4.79
+        "win_rate": 56.2,
+        "avg_ret": 3.83
       },
       "过左峰": {
-        "win_rate": 49.2,
-        "avg_ret": 1.35
+        "win_rate": 50.2,
+        "avg_ret": 1.52
       },
       "过左峰_真金": {
-        "win_rate": 49.2,
-        "avg_ret": 1.35
+        "win_rate": 50.2,
+        "avg_ret": 1.52
       },
       "长阴": {
         "win_rate": 48.6,
-        "avg_ret": 1.59
+        "avg_ret": 1.52
       },
       "长阴_真金": {
         "win_rate": 48.6,
-        "avg_ret": 1.59
+        "avg_ret": 1.52
       },
       "突破大阴实顶": {
-        "win_rate": 48.9,
-        "avg_ret": 1.53
+        "win_rate": 49.2,
+        "avg_ret": 1.61
       },
       "突破大阴实顶_真金": {
-        "win_rate": 48.9,
-        "avg_ret": 1.53
+        "win_rate": 49.2,
+        "avg_ret": 1.61
       },
       "小倍阳（矮将军）": {
-        "win_rate": 48.1,
-        "avg_ret": 1.78
+        "win_rate": 48.6,
+        "avg_ret": 1.92
       },
       "小倍阳（矮将军）_真金": {
-        "win_rate": 48.1,
-        "avg_ret": 1.78
+        "win_rate": 48.6,
+        "avg_ret": 1.92
       },
       "顶背离": {
-        "win_rate": 51.6,
-        "avg_ret": 2.03
+        "win_rate": 51.3,
+        "avg_ret": 1.92
       },
       "顶背离_真金": {
-        "win_rate": 51.6,
-        "avg_ret": 2.03
+        "win_rate": 51.3,
+        "avg_ret": 1.92
       },
       "长阳": {
-        "win_rate": 50.3,
-        "avg_ret": 2.61
+        "win_rate": 51.2,
+        "avg_ret": 3.05
       },
       "长阳_真金": {
-        "win_rate": 50.3,
-        "avg_ret": 2.61
+        "win_rate": 51.2,
+        "avg_ret": 3.05
       },
       "价升量缩": {
-        "win_rate": 51.3,
-        "avg_ret": 1.49
+        "win_rate": 51.1,
+        "avg_ret": 1.47
       },
       "价升量缩_真金": {
-        "win_rate": 51.3,
-        "avg_ret": 1.49
+        "win_rate": 51.1,
+        "avg_ret": 1.47
       },
       "元帅柱": {
-        "win_rate": 49.6,
-        "avg_ret": 3.1
+        "win_rate": 50.6,
+        "avg_ret": 3.18
       },
       "元帅柱_真金": {
-        "win_rate": 49.6,
-        "avg_ret": 3.1
+        "win_rate": 50.6,
+        "avg_ret": 3.18
       },
       "拉升": {
-        "win_rate": 54.7,
-        "avg_ret": 3.47
+        "win_rate": 55.4,
+        "avg_ret": 3.56
       },
       "拉升_真金": {
-        "win_rate": 54.7,
-        "avg_ret": 3.47
+        "win_rate": 55.4,
+        "avg_ret": 3.56
       },
       "极阴次阳": {
-        "win_rate": 50.0,
-        "avg_ret": 0.11
+        "win_rate": 52.6,
+        "avg_ret": 0.64
       },
       "极阴次阳_真金": {
-        "win_rate": 50.0,
-        "avg_ret": 0.11
+        "win_rate": 52.6,
+        "avg_ret": 0.64
       }
     },
     "下降趋势": {
       "倍量不穿": {
-        "win_rate": 46.2,
-        "avg_ret": 1.03
+        "win_rate": 46.0,
+        "avg_ret": 0.89
       },
       "倍量不穿_真金": {
-        "win_rate": 46.2,
-        "avg_ret": 1.03
+        "win_rate": 46.0,
+        "avg_ret": 0.89
       },
       "黄金柱": {
-        "win_rate": 44.6,
-        "avg_ret": 0.44
+        "win_rate": 44.7,
+        "avg_ret": 0.5
       },
       "黄金柱_真金": {
-        "win_rate": 44.6,
-        "avg_ret": 0.44
+        "win_rate": 44.7,
+        "avg_ret": 0.5
       },
       "底背离": {
-        "win_rate": 56.9,
-        "avg_ret": 3.62
+        "win_rate": 56.3,
+        "avg_ret": 3.46
       },
       "底背离_真金": {
-        "win_rate": 56.9,
-        "avg_ret": 3.62
+        "win_rate": 56.3,
+        "avg_ret": 3.46
       },
       "平量柱": {
-        "win_rate": 47.2,
-        "avg_ret": 1.08
+        "win_rate": 47.4,
+        "avg_ret": 1.14
       },
       "平量柱_真金": {
-        "win_rate": 47.2,
-        "avg_ret": 1.08
+        "win_rate": 47.4,
+        "avg_ret": 1.14
       },
       "梯量柱": {
-        "win_rate": 43.8,
-        "avg_ret": 0.41
+        "win_rate": 44.4,
+        "avg_ret": 0.53
       },
       "梯量柱_真金": {
-        "win_rate": 43.8,
-        "avg_ret": 0.41
+        "win_rate": 44.4,
+        "avg_ret": 0.53
       },
       "阳胜进": {
-        "win_rate": 46.6,
-        "avg_ret": 1.02
+        "win_rate": 46.7,
+        "avg_ret": 1.06
       },
       "阳胜进_真金": {
-        "win_rate": 46.6,
-        "avg_ret": 1.02
+        "win_rate": 46.7,
+        "avg_ret": 1.06
       },
       "十字星": {
-        "win_rate": 49.1,
-        "avg_ret": 0.88
+        "win_rate": 48.9,
+        "avg_ret": 0.83
       },
       "十字星_真金": {
-        "win_rate": 49.1,
-        "avg_ret": 0.88
+        "win_rate": 48.9,
+        "avg_ret": 0.83
       },
       "低量柱（地量）": {
         "win_rate": 42.2,
-        "avg_ret": -0.05
+        "avg_ret": -0.04
       },
       "低量柱（地量）_真金": {
         "win_rate": 42.2,
-        "avg_ret": -0.05
+        "avg_ret": -0.04
       },
       "阳包阴": {
-        "win_rate": 49.3,
-        "avg_ret": 1.52
+        "win_rate": 49.2,
+        "avg_ret": 1.55
       },
       "阳包阴_真金": {
-        "win_rate": 49.3,
-        "avg_ret": 1.52
+        "win_rate": 49.2,
+        "avg_ret": 1.55
       },
       "地量群": {
-        "win_rate": 47.0,
-        "avg_ret": 0.99
+        "win_rate": 47.2,
+        "avg_ret": 1.03
       },
       "地量群_真金": {
-        "win_rate": 47.0,
-        "avg_ret": 0.99
+        "win_rate": 47.2,
+        "avg_ret": 1.03
       },
       "倍量伸缩": {
-        "win_rate": 46.8,
-        "avg_ret": 0.9
+        "win_rate": 46.9,
+        "avg_ret": 0.84
       },
       "倍量伸缩_真金": {
-        "win_rate": 46.8,
-        "avg_ret": 0.9
+        "win_rate": 46.9,
+        "avg_ret": 0.84
       },
       "缩量柱": {
         "win_rate": 45.9,
-        "avg_ret": 0.78
+        "avg_ret": 0.82
       },
       "缩量柱_真金": {
         "win_rate": 45.9,
-        "avg_ret": 0.78
+        "avg_ret": 0.82
       },
       "倍量柱": {
-        "win_rate": 51.5,
-        "avg_ret": 1.77
+        "win_rate": 51.3,
+        "avg_ret": 1.66
       },
       "倍量柱_真金": {
-        "win_rate": 51.5,
-        "avg_ret": 1.77
+        "win_rate": 51.3,
+        "avg_ret": 1.66
       },
       "回踩谷底线不破": {
-        "win_rate": 45.3,
-        "avg_ret": 0.65
+        "win_rate": 45.7,
+        "avg_ret": 0.73
       },
       "回踩谷底线不破_真金": {
-        "win_rate": 45.3,
-        "avg_ret": 0.65
+        "win_rate": 45.7,
+        "avg_ret": 0.73
       },
       "回踩精准线": {
-        "win_rate": 46.4,
-        "avg_ret": 0.65
+        "win_rate": 46.7,
+        "avg_ret": 0.69
       },
       "回踩精准线_真金": {
-        "win_rate": 46.4,
-        "avg_ret": 0.65
+        "win_rate": 46.7,
+        "avg_ret": 0.69
       },
       "将军柱": {
-        "win_rate": 53.3,
-        "avg_ret": 3.46
+        "win_rate": 53.1,
+        "avg_ret": 3.64
       },
       "将军柱_真金": {
-        "win_rate": 53.3,
-        "avg_ret": 3.46
+        "win_rate": 53.1,
+        "avg_ret": 3.64
       },
       "高量柱": {
-        "win_rate": 45.9,
-        "avg_ret": 0.09
+        "win_rate": 46.2,
+        "avg_ret": 0.11
       },
       "高量柱_真金": {
-        "win_rate": 45.9,
-        "avg_ret": 0.09
+        "win_rate": 46.2,
+        "avg_ret": 0.11
       },
       "过左峰": {
-        "win_rate": 64.9,
-        "avg_ret": 4.02
+        "win_rate": 63.6,
+        "avg_ret": 3.68
       },
       "过左峰_真金": {
-        "win_rate": 64.9,
-        "avg_ret": 4.02
+        "win_rate": 63.6,
+        "avg_ret": 3.68
       },
       "长阴": {
-        "win_rate": 55.8,
-        "avg_ret": 1.75
+        "win_rate": 55.4,
+        "avg_ret": 1.67
       },
       "长阴_真金": {
-        "win_rate": 55.8,
-        "avg_ret": 1.75
+        "win_rate": 55.4,
+        "avg_ret": 1.67
       },
       "突破大阴实顶": {
-        "win_rate": 41.3,
-        "avg_ret": -0.74
+        "win_rate": 41.8,
+        "avg_ret": -0.66
       },
       "突破大阴实顶_真金": {
-        "win_rate": 41.3,
-        "avg_ret": -0.74
+        "win_rate": 41.8,
+        "avg_ret": -0.66
       },
       "小倍阳（矮将军）": {
-        "win_rate": 47.7,
-        "avg_ret": 1.08
+        "win_rate": 48.0,
+        "avg_ret": 1.11
       },
       "小倍阳（矮将军）_真金": {
-        "win_rate": 47.7,
-        "avg_ret": 1.08
+        "win_rate": 48.0,
+        "avg_ret": 1.11
       },
       "顶背离": {
-        "win_rate": 46.5,
-        "avg_ret": -1.57
+        "win_rate": 48.8,
+        "avg_ret": -0.79
       },
       "顶背离_真金": {
-        "win_rate": 46.5,
-        "avg_ret": -1.57
+        "win_rate": 48.8,
+        "avg_ret": -0.79
       },
       "长阳": {
         "win_rate": 54.5,
@@ -858,28 +850,28 @@
         "avg_ret": 4.19
       },
       "价升量缩": {
-        "win_rate": 48.6,
-        "avg_ret": 0.95
+        "win_rate": 49.0,
+        "avg_ret": 1.19
       },
       "价升量缩_真金": {
-        "win_rate": 48.6,
-        "avg_ret": 0.95
+        "win_rate": 49.0,
+        "avg_ret": 1.19
       },
       "元帅柱": {
-        "win_rate": 46.3,
-        "avg_ret": 1.29
+        "win_rate": 46.0,
+        "avg_ret": 1.15
       },
       "元帅柱_真金": {
-        "win_rate": 46.3,
-        "avg_ret": 1.29
+        "win_rate": 46.0,
+        "avg_ret": 1.15
       },
       "拉升": {
-        "win_rate": 55.3,
-        "avg_ret": 2.43
+        "win_rate": 54.3,
+        "avg_ret": 2.19
       },
       "拉升_真金": {
-        "win_rate": 55.3,
-        "avg_ret": 2.43
+        "win_rate": 54.3,
+        "avg_ret": 2.19
       },
       "极阴次阳": {
         "win_rate": 45.0,
@@ -894,462 +886,462 @@
   "高位": {
     "上升趋势": {
       "倍量不穿": {
-        "win_rate": 49.2,
-        "avg_ret": 1.84
+        "win_rate": 48.6,
+        "avg_ret": 1.77
       },
       "倍量不穿_真金": {
-        "win_rate": 49.2,
-        "avg_ret": 1.84
+        "win_rate": 48.6,
+        "avg_ret": 1.77
       },
       "黄金柱": {
-        "win_rate": 46.4,
-        "avg_ret": 0.92
+        "win_rate": 46.0,
+        "avg_ret": 0.83
       },
       "黄金柱_真金": {
-        "win_rate": 46.4,
-        "avg_ret": 0.92
+        "win_rate": 46.0,
+        "avg_ret": 0.83
       },
       "底背离": {
-        "win_rate": 31.2,
-        "avg_ret": -2.13
+        "win_rate": 33.3,
+        "avg_ret": -0.58
       },
       "底背离_真金": {
-        "win_rate": 31.2,
-        "avg_ret": -2.13
+        "win_rate": 33.3,
+        "avg_ret": -0.58
       },
       "平量柱": {
-        "win_rate": 47.1,
-        "avg_ret": 1.9
+        "win_rate": 47.2,
+        "avg_ret": 1.97
       },
       "平量柱_真金": {
-        "win_rate": 47.1,
-        "avg_ret": 1.9
+        "win_rate": 47.2,
+        "avg_ret": 1.97
       },
       "梯量柱": {
-        "win_rate": 47.8,
-        "avg_ret": 1.81
+        "win_rate": 47.6,
+        "avg_ret": 1.79
       },
       "梯量柱_真金": {
-        "win_rate": 47.8,
-        "avg_ret": 1.81
+        "win_rate": 47.6,
+        "avg_ret": 1.79
       },
       "阳胜进": {
-        "win_rate": 47.2,
-        "avg_ret": 1.58
+        "win_rate": 47.1,
+        "avg_ret": 1.64
       },
       "阳胜进_真金": {
-        "win_rate": 47.2,
-        "avg_ret": 1.58
+        "win_rate": 47.1,
+        "avg_ret": 1.64
       },
       "十字星": {
-        "win_rate": 47.5,
-        "avg_ret": 1.61
+        "win_rate": 47.3,
+        "avg_ret": 1.64
       },
       "十字星_真金": {
-        "win_rate": 47.5,
-        "avg_ret": 1.61
+        "win_rate": 47.3,
+        "avg_ret": 1.64
       },
       "低量柱（地量）": {
-        "win_rate": 44.5,
-        "avg_ret": 0.55
+        "win_rate": 43.9,
+        "avg_ret": 0.13
       },
       "低量柱（地量）_真金": {
-        "win_rate": 44.5,
-        "avg_ret": 0.55
+        "win_rate": 43.9,
+        "avg_ret": 0.13
       },
       "阳包阴": {
-        "win_rate": 46.4,
-        "avg_ret": 1.65
+        "win_rate": 46.2,
+        "avg_ret": 1.68
       },
       "阳包阴_真金": {
-        "win_rate": 46.4,
-        "avg_ret": 1.65
+        "win_rate": 46.2,
+        "avg_ret": 1.68
       },
       "地量群": {
-        "win_rate": 47.8,
-        "avg_ret": 0.94
+        "win_rate": 47.5,
+        "avg_ret": 0.78
       },
       "地量群_真金": {
-        "win_rate": 47.8,
-        "avg_ret": 0.94
+        "win_rate": 47.5,
+        "avg_ret": 0.78
       },
       "倍量伸缩": {
-        "win_rate": 46.8,
-        "avg_ret": 1.82
+        "win_rate": 46.4,
+        "avg_ret": 1.79
       },
       "倍量伸缩_真金": {
-        "win_rate": 46.8,
-        "avg_ret": 1.82
+        "win_rate": 46.4,
+        "avg_ret": 1.79
       },
       "缩量柱": {
-        "win_rate": 47.4,
-        "avg_ret": 1.84
+        "win_rate": 47.3,
+        "avg_ret": 1.86
       },
       "缩量柱_真金": {
-        "win_rate": 47.4,
-        "avg_ret": 1.84
+        "win_rate": 47.3,
+        "avg_ret": 1.86
       },
       "倍量柱": {
-        "win_rate": 50.1,
-        "avg_ret": 1.96
+        "win_rate": 49.9,
+        "avg_ret": 2.07
       },
       "倍量柱_真金": {
-        "win_rate": 50.1,
-        "avg_ret": 1.96
+        "win_rate": 49.9,
+        "avg_ret": 2.07
       },
       "出货": {
-        "win_rate": 49.8,
-        "avg_ret": 1.97
+        "win_rate": 49.6,
+        "avg_ret": 2.07
       },
       "出货_真金": {
-        "win_rate": 49.8,
-        "avg_ret": 1.97
+        "win_rate": 49.6,
+        "avg_ret": 2.07
       },
       "回踩谷底线不破": {
-        "win_rate": 50.4,
-        "avg_ret": 1.53
+        "win_rate": 50.2,
+        "avg_ret": 1.72
       },
       "回踩谷底线不破_真金": {
-        "win_rate": 50.4,
-        "avg_ret": 1.53
+        "win_rate": 50.2,
+        "avg_ret": 1.72
       },
       "回踩精准线": {
-        "win_rate": 48.5,
-        "avg_ret": 1.17
+        "win_rate": 48.6,
+        "avg_ret": 1.25
       },
       "回踩精准线_真金": {
-        "win_rate": 48.5,
-        "avg_ret": 1.17
+        "win_rate": 48.6,
+        "avg_ret": 1.25
       },
       "将军柱": {
-        "win_rate": 49.7,
-        "avg_ret": 3.19
+        "win_rate": 49.5,
+        "avg_ret": 3.31
       },
       "将军柱_真金": {
-        "win_rate": 49.7,
-        "avg_ret": 3.19
+        "win_rate": 49.5,
+        "avg_ret": 3.31
       },
       "高量柱": {
-        "win_rate": 52.1,
-        "avg_ret": 3.31
+        "win_rate": 51.8,
+        "avg_ret": 3.35
       },
       "高量柱_真金": {
-        "win_rate": 52.1,
-        "avg_ret": 3.31
+        "win_rate": 51.8,
+        "avg_ret": 3.35
       },
       "涨停板": {
-        "win_rate": 52.4,
-        "avg_ret": 3.76
+        "win_rate": 51.2,
+        "avg_ret": 3.34
       },
       "涨停板_真金": {
-        "win_rate": 52.4,
-        "avg_ret": 3.76
+        "win_rate": 51.2,
+        "avg_ret": 3.34
       },
       "过左峰": {
-        "win_rate": 48.1,
-        "avg_ret": 2.07
+        "win_rate": 47.9,
+        "avg_ret": 2.14
       },
       "过左峰_真金": {
-        "win_rate": 48.1,
-        "avg_ret": 2.07
+        "win_rate": 47.9,
+        "avg_ret": 2.14
       },
       "长阴": {
-        "win_rate": 47.5,
-        "avg_ret": 1.67
+        "win_rate": 47.8,
+        "avg_ret": 1.51
       },
       "长阴_真金": {
-        "win_rate": 47.5,
-        "avg_ret": 1.67
+        "win_rate": 47.8,
+        "avg_ret": 1.51
       },
       "突破大阴实顶": {
-        "win_rate": 43.2,
-        "avg_ret": 0.52
+        "win_rate": 42.3,
+        "avg_ret": 0.35
       },
       "突破大阴实顶_真金": {
-        "win_rate": 43.2,
-        "avg_ret": 0.52
+        "win_rate": 42.3,
+        "avg_ret": 0.35
       },
       "小倍阳（矮将军）": {
-        "win_rate": 47.4,
-        "avg_ret": 1.31
+        "win_rate": 47.2,
+        "avg_ret": 1.27
       },
       "小倍阳（矮将军）_真金": {
-        "win_rate": 47.4,
-        "avg_ret": 1.31
+        "win_rate": 47.2,
+        "avg_ret": 1.27
       },
       "顶背离": {
-        "win_rate": 46.0,
-        "avg_ret": 2.06
+        "win_rate": 45.6,
+        "avg_ret": 1.93
       },
       "顶背离_真金": {
-        "win_rate": 46.0,
-        "avg_ret": 2.06
+        "win_rate": 45.6,
+        "avg_ret": 1.93
       },
       "长阳": {
         "win_rate": 54.8,
-        "avg_ret": 3.64
+        "avg_ret": 3.76
       },
       "长阳_真金": {
         "win_rate": 54.8,
-        "avg_ret": 3.64
+        "avg_ret": 3.76
       },
       "价升量缩": {
-        "win_rate": 47.1,
-        "avg_ret": 1.87
+        "win_rate": 47.3,
+        "avg_ret": 1.86
       },
       "价升量缩_真金": {
-        "win_rate": 47.1,
-        "avg_ret": 1.87
+        "win_rate": 47.3,
+        "avg_ret": 1.86
       },
       "元帅柱": {
-        "win_rate": 47.7,
-        "avg_ret": 1.77
+        "win_rate": 47.2,
+        "avg_ret": 1.84
       },
       "元帅柱_真金": {
-        "win_rate": 47.7,
-        "avg_ret": 1.77
+        "win_rate": 47.2,
+        "avg_ret": 1.84
       },
       "出逃": {
-        "win_rate": 35.7,
-        "avg_ret": 0.28
+        "win_rate": 35.8,
+        "avg_ret": 0.05
       },
       "出逃_真金": {
-        "win_rate": 35.7,
-        "avg_ret": 0.28
+        "win_rate": 35.8,
+        "avg_ret": 0.05
       },
       "长阳矮柱": {
-        "win_rate": 56.0,
-        "avg_ret": 4.37
+        "win_rate": 58.6,
+        "avg_ret": 5.74
       },
       "长阳矮柱_真金": {
-        "win_rate": 56.0,
-        "avg_ret": 4.37
+        "win_rate": 58.6,
+        "avg_ret": 5.74
       },
       "极阴次阳": {
-        "win_rate": 44.9,
-        "avg_ret": 4.3
+        "win_rate": 42.2,
+        "avg_ret": 1.99
       },
       "极阴次阳_真金": {
-        "win_rate": 44.9,
-        "avg_ret": 4.3
+        "win_rate": 42.2,
+        "avg_ret": 1.99
       }
     },
     "下降趋势": {
       "倍量不穿": {
-        "win_rate": 41.9,
-        "avg_ret": -0.5
+        "win_rate": 41.8,
+        "avg_ret": -0.49
       },
       "倍量不穿_真金": {
-        "win_rate": 41.9,
-        "avg_ret": -0.5
+        "win_rate": 41.8,
+        "avg_ret": -0.49
       },
       "黄金柱": {
-        "win_rate": 42.7,
-        "avg_ret": -0.28
+        "win_rate": 42.4,
+        "avg_ret": -0.43
       },
       "黄金柱_真金": {
-        "win_rate": 42.7,
-        "avg_ret": -0.28
+        "win_rate": 42.4,
+        "avg_ret": -0.43
       },
       "底背离": {
-        "win_rate": 41.3,
-        "avg_ret": 1.02
+        "win_rate": 40.5,
+        "avg_ret": 0.68
       },
       "底背离_真金": {
-        "win_rate": 41.3,
-        "avg_ret": 1.02
+        "win_rate": 40.5,
+        "avg_ret": 0.68
       },
       "平量柱": {
-        "win_rate": 42.1,
-        "avg_ret": -0.19
+        "win_rate": 41.9,
+        "avg_ret": -0.24
       },
       "平量柱_真金": {
-        "win_rate": 42.1,
-        "avg_ret": -0.19
+        "win_rate": 41.9,
+        "avg_ret": -0.24
       },
       "梯量柱": {
         "win_rate": 41.8,
-        "avg_ret": -0.16
+        "avg_ret": -0.22
       },
       "梯量柱_真金": {
         "win_rate": 41.8,
-        "avg_ret": -0.16
+        "avg_ret": -0.22
       },
       "阳胜进": {
-        "win_rate": 38.6,
+        "win_rate": 38.5,
         "avg_ret": -0.89
       },
       "阳胜进_真金": {
-        "win_rate": 38.6,
+        "win_rate": 38.5,
         "avg_ret": -0.89
       },
       "十字星": {
-        "win_rate": 38.2,
-        "avg_ret": -1.69
+        "win_rate": 38.6,
+        "avg_ret": -1.61
       },
       "十字星_真金": {
-        "win_rate": 38.2,
-        "avg_ret": -1.69
+        "win_rate": 38.6,
+        "avg_ret": -1.61
       },
       "低量柱（地量）": {
-        "win_rate": 35.7,
-        "avg_ret": -1.99
+        "win_rate": 36.0,
+        "avg_ret": -1.93
       },
       "低量柱（地量）_真金": {
-        "win_rate": 35.7,
-        "avg_ret": -1.99
+        "win_rate": 36.0,
+        "avg_ret": -1.93
       },
       "阳包阴": {
-        "win_rate": 36.3,
-        "avg_ret": -1.93
+        "win_rate": 36.6,
+        "avg_ret": -1.67
       },
       "阳包阴_真金": {
-        "win_rate": 36.3,
-        "avg_ret": -1.93
+        "win_rate": 36.6,
+        "avg_ret": -1.67
       },
       "地量群": {
-        "win_rate": 45.0,
-        "avg_ret": 0.01
+        "win_rate": 44.8,
+        "avg_ret": -0.11
       },
       "地量群_真金": {
-        "win_rate": 45.0,
-        "avg_ret": 0.01
+        "win_rate": 44.8,
+        "avg_ret": -0.11
       },
       "倍量伸缩": {
-        "win_rate": 41.4,
-        "avg_ret": -0.63
+        "win_rate": 41.6,
+        "avg_ret": -0.55
       },
       "倍量伸缩_真金": {
-        "win_rate": 41.4,
-        "avg_ret": -0.63
+        "win_rate": 41.6,
+        "avg_ret": -0.55
       },
       "缩量柱": {
-        "win_rate": 41.4,
-        "avg_ret": -0.73
+        "win_rate": 41.1,
+        "avg_ret": -0.79
       },
       "缩量柱_真金": {
-        "win_rate": 41.4,
-        "avg_ret": -0.73
+        "win_rate": 41.1,
+        "avg_ret": -0.79
       },
       "倍量柱": {
-        "win_rate": 38.2,
-        "avg_ret": -0.79
+        "win_rate": 39.1,
+        "avg_ret": -0.52
       },
       "倍量柱_真金": {
-        "win_rate": 38.2,
-        "avg_ret": -0.79
+        "win_rate": 39.1,
+        "avg_ret": -0.52
       },
       "出货": {
-        "win_rate": 41.5,
-        "avg_ret": -0.28
+        "win_rate": 41.3,
+        "avg_ret": -0.29
       },
       "出货_真金": {
-        "win_rate": 41.5,
-        "avg_ret": -0.28
+        "win_rate": 41.3,
+        "avg_ret": -0.29
       },
       "回踩谷底线不破": {
-        "win_rate": 41.9,
-        "avg_ret": -0.54
+        "win_rate": 42.0,
+        "avg_ret": -0.5
       },
       "回踩谷底线不破_真金": {
-        "win_rate": 41.9,
-        "avg_ret": -0.54
+        "win_rate": 42.0,
+        "avg_ret": -0.5
       },
       "回踩精准线": {
-        "win_rate": 43.1,
-        "avg_ret": -0.24
+        "win_rate": 42.5,
+        "avg_ret": -0.53
       },
       "回踩精准线_真金": {
-        "win_rate": 43.1,
-        "avg_ret": -0.24
+        "win_rate": 42.5,
+        "avg_ret": -0.53
       },
       "将军柱": {
-        "win_rate": 40.3,
-        "avg_ret": 1.09
+        "win_rate": 39.1,
+        "avg_ret": 0.87
       },
       "将军柱_真金": {
-        "win_rate": 40.3,
-        "avg_ret": 1.09
+        "win_rate": 39.1,
+        "avg_ret": 0.87
       },
       "高量柱": {
-        "win_rate": 50.9,
-        "avg_ret": 1.29
+        "win_rate": 49.7,
+        "avg_ret": 1.1
       },
       "高量柱_真金": {
-        "win_rate": 50.9,
-        "avg_ret": 1.29
+        "win_rate": 49.7,
+        "avg_ret": 1.1
       },
       "过左峰": {
-        "win_rate": 44.0,
-        "avg_ret": 1.54
+        "win_rate": 36.4,
+        "avg_ret": 1.12
       },
       "过左峰_真金": {
-        "win_rate": 44.0,
-        "avg_ret": 1.54
+        "win_rate": 36.4,
+        "avg_ret": 1.12
       },
       "长阴": {
-        "win_rate": 40.4,
-        "avg_ret": 0.75
+        "win_rate": 38.3,
+        "avg_ret": 0.58
       },
       "长阴_真金": {
-        "win_rate": 40.4,
-        "avg_ret": 0.75
+        "win_rate": 38.3,
+        "avg_ret": 0.58
       },
       "突破大阴实顶": {
-        "win_rate": 37.6,
-        "avg_ret": -1.48
+        "win_rate": 36.9,
+        "avg_ret": -1.73
       },
       "突破大阴实顶_真金": {
-        "win_rate": 37.6,
-        "avg_ret": -1.48
+        "win_rate": 36.9,
+        "avg_ret": -1.73
       },
       "小倍阳（矮将军）": {
-        "win_rate": 40.4,
-        "avg_ret": -1.29
+        "win_rate": 40.7,
+        "avg_ret": -1.13
       },
       "小倍阳（矮将军）_真金": {
-        "win_rate": 40.4,
-        "avg_ret": -1.29
+        "win_rate": 40.7,
+        "avg_ret": -1.13
       },
       "顶背离": {
-        "win_rate": 27.3,
-        "avg_ret": -4.16
+        "win_rate": 24.2,
+        "avg_ret": -5.67
       },
       "顶背离_真金": {
-        "win_rate": 27.3,
-        "avg_ret": -4.16
+        "win_rate": 24.2,
+        "avg_ret": -5.67
       },
       "长阳": {
-        "win_rate": 28.6,
-        "avg_ret": -2.9
+        "win_rate": 37.5,
+        "avg_ret": 2.29
       },
       "长阳_真金": {
-        "win_rate": 28.6,
-        "avg_ret": -2.9
+        "win_rate": 37.5,
+        "avg_ret": 2.29
       },
       "价升量缩": {
-        "win_rate": 34.2,
-        "avg_ret": -2.26
+        "win_rate": 34.0,
+        "avg_ret": -2.41
       },
       "价升量缩_真金": {
-        "win_rate": 34.2,
-        "avg_ret": -2.26
+        "win_rate": 34.0,
+        "avg_ret": -2.41
       },
       "元帅柱": {
-        "win_rate": 41.1,
-        "avg_ret": -0.05
+        "win_rate": 40.9,
+        "avg_ret": -0.03
       },
       "元帅柱_真金": {
-        "win_rate": 41.1,
-        "avg_ret": -0.05
+        "win_rate": 40.9,
+        "avg_ret": -0.03
       },
       "出逃": {
-        "win_rate": 52.0,
-        "avg_ret": 3.53
+        "win_rate": 50.0,
+        "avg_ret": 3.5
       },
       "出逃_真金": {
-        "win_rate": 52.0,
-        "avg_ret": 3.53
+        "win_rate": 50.0,
+        "avg_ret": 3.5
       },
       "极阴次阳": {
         "win_rate": 42.9,
