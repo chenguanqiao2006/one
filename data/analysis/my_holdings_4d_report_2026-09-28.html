@@ -1,0 +1,2730 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>四维循环看盘报告 - 2026-09-28</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: #0f172a; 
+            color: #e2e8f0; 
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        .header { 
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); 
+            color: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            margin-bottom: 20px;
+            border-left: 4px solid #fbbf24;
+        }
+        .header h1 { font-size: 24px; color: #fbbf24; margin-bottom: 8px; }
+        .header .date { opacity: 0.8; font-size: 14px; }
+        
+        .signal-guide {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #334155;
+        }
+        .signal-guide h2 {
+            font-size: 18px;
+            color: #fbbf24;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #334155;
+        }
+        .signal-item {
+            margin-bottom: 12px;
+            padding: 10px;
+            background: #0f172a;
+            border-radius: 8px;
+        }
+        .signal-item h3 {
+            font-size: 14px;
+            color: #60a5fa;
+            margin-bottom: 6px;
+        }
+        .signal-item p {
+            font-size: 12px;
+            color: #cbd5e1;
+            margin-bottom: 4px;
+        }
+        .signal-item .source {
+            font-size: 11px;
+            color: #94a3b8;
+            font-style: italic;
+        }
+        
+        .stock-card { 
+            background: #1e293b; 
+            border-radius: 12px; 
+            padding: 20px; 
+            margin-bottom: 15px; 
+            border: 1px solid #334155;
+        }
+        .stock-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 15px; 
+            padding-bottom: 15px; 
+            border-bottom: 1px solid #334155;
+        }
+        .stock-name { font-size: 18px; font-weight: bold; color: #e2e8f0; }
+        .stock-code { font-size: 12px; color: #94a3b8; }
+        .stock-price { font-size: 22px; font-weight: bold; }
+        .price-up { color: #ef4444; }
+        .price-down { color: #22c55e; }
+        
+        .step-section { margin-bottom: 15px; }
+        .step-title { 
+            font-size: 14px; 
+            font-weight: bold; 
+            color: #60a5fa; 
+            margin-bottom: 8px; 
+            padding-left: 8px; 
+            border-left: 3px solid #fbbf24; 
+        }
+        .step-content { 
+            background: #0f172a; 
+            padding: 12px; 
+            border-radius: 8px; 
+            font-size: 13px; 
+            color: #cbd5e1; 
+        }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .grid-item { 
+            background: #0f172a; 
+            padding: 8px; 
+            border-radius: 6px; 
+            font-size: 13px; 
+        }
+        .grid-item .label { color: #94a3b8; font-size: 11px; }
+        .grid-item .value { font-weight: bold; color: #e2e8f0; font-size: 12px; }
+        .grid-item .value-none { color: #94a3b8; font-weight: normal; font-size: 11px; }
+        .grid-item .value-strong { color: #ef4444; font-weight: normal; font-size: 11px; }
+        .grid-item .value-weak { color: #22c55e; font-weight: normal; font-size: 11px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>四维循环看盘报告</h1>
+            <div class="date">2026-09-28</div>
+            <div class="note" style="margin-top:10px;font-size:13px;opacity:0.7">量能自适应版 · 核心定义保留官方 · 辅助判断用分位数</div>
+        </div>
+        
+        <div class="signal-guide">
+            <h2>参数说明（全部参数化，方便调整）</h2>
+            
+            <div class="signal-item">
+                <h3>【核心定义·保留官方】</h3>
+                <p>倍量柱：今天量/昨天量 ≥ 1.8（官方最低90%）</p>
+                <p>高量柱：前20天最高</p>
+                <p>低量柱：前20天最低</p>
+                <p>梯量柱：连续3天递增</p>
+                <p>缩量柱：连续3天递减</p>
+                <p>平量柱：和前5天平均差不超过15%</p>
+                <p class="source">来源：股海明灯官网</p>
+            </div>
+            
+            <div class="signal-item">
+                <h3>【辅助判断·分位数自适应】</h3>
+                <p>大量/放量：过去20日量的80%分位以上</p>
+                <p>小量/缩量：过去20日量的20%分位以下</p>
+                <p>王牌柱基柱：基柱量在过去20日的60%分位以上</p>
+                <p>倍量伸缩：放量到80%分位 + 缩量到20%分位</p>
+                <p class="source">来源：量化行业通用做法</p>
+            </div>
+            
+            <div class="signal-item">
+                <h3>【王牌柱官方定义】</h3>
+                <p>三原则：①三日收盘不破底 ②量柱三日不过头 ③基柱是相对高量</p>
+                <p>搜索优先级：元帅柱 > 黄金柱 > 将军柱</p>
+                <p class="source">来源：股海明灯官网《王子老师语录十》</p>
+            </div>
+            
+            <div class="signal-item">
+                <h3>【最高原则】</h3>
+                <p><strong>所有参数、阈值都要适配当前最新市场环境</strong></p>
+                <p><strong>代码不要写死，能用参数阈值的就用参数阈值</strong></p>
+                <p><strong>不构成任何交易建议，只做客观描述</strong></p>
+            </div>
+        </div>
+        
+        
+        <div class="stock-card">
+            <div class="stock-header">
+                <div>
+                    <div class="stock-name">长电科技</div>
+                    <div class="stock-code">sh600584</div>
+                </div>
+                <div class="stock-price price-down">65.43元 (-4.87%)</div>
+            </div>
+            
+            
+            <div style="background:#94a3b820; border-radius:8px; padding:12px; margin-bottom:10px; border-left:4px solid #94a3b8;">
+                <div style="font-size:16px; font-weight:bold; color:#94a3b8;">
+                    🎯 主力意图：观望
+                </div>
+                <div style="font-size:12px; color:#94a3b8; margin-top:2px;">
+                    暂无明显主力意图
+                </div>
+            </div>
+            
+
+            
+            <div style="background:#8b5cf620; border-radius:8px; padding:12px; margin-bottom:15px; border-left:4px solid #8b5cf6;">
+                <div style="font-size:14px; font-weight:bold; color:#8b5cf6;">
+                    🤖 AI 研判（Agnes AI）
+                </div>
+                <div style="font-size:12px; color:#cbd5e1; margin-top:4px; line-height: 1.6;">
+                    长电科技现下降趋势，收盘价65.43元低于20日均线69.75元，短期空头占优。当日下跌4.87%，量比1.12显示平量特征，下跌动能未显著放大，无恐慌抛压但也缺乏承接。后续关注能否止跌企稳及量能变化，警惕持续缩量阴跌风险。客观描述，非投资建议。
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #ef4444;">
+                <div style="font-size:14px; font-weight:bold; color:#ef4444;">
+                    🏛️ 大盘环境：空头市场
+                </div>
+                <div style="font-size:12px; color:#ef4444; margin-top:2px;">
+                    上证指数-2.5%（vs 20日线）
+                </div>
+            </div>
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:12px; margin-bottom:15px; border-left:4px solid #ef4444;">
+                <div style="font-size:16px; font-weight:bold; color:#ef4444;">
+                    📊 低位（26%分位）· 下降趋势
+                </div>
+                <div style="font-size:13px; color:#ef4444; margin-top:4px;">
+                    ❌ 下降趋势，谨慎操作
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            <div style="background:#60a5fa20; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #60a5fa;">
+                <div style="font-size:14px; font-weight:bold; color:#60a5fa;">
+                    👥 筹码：筹码稳定
+                </div>
+                <div style="font-size:12px; color:#60a5fa; margin-top:2px;">
+                    股东户数+0.5%
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#a78bfa20; border-radius:8px; padding:10px; margin-bottom:15px; border-left:4px solid #a78bfa;">
+                <div style="font-size:14px; font-weight:bold; color:#a78bfa;">
+                    💰 主力成本区：81.22元
+                </div>
+                <div style="font-size:12px; color:#a78bfa; margin-top:2px;">
+                    当前价格-19.4%（60日VWAP）
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:10px; margin-bottom:15px; border-left:4px solid #ef4444;">
+                <div style="font-size:14px; font-weight:bold; color:#ef4444;">
+                    📅 周线MACD空头
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#f59e0b20; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #f59e0b;">
+                <div style="font-size:14px; font-weight:bold; color:#f59e0b;">
+                    🛡️ 黄金柱线：75.15元
+                </div>
+                <div style="font-size:12px; color:#f59e0b; margin-top:2px;">
+                    当前价格-12.9%
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#8b5cf620; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #8b5cf6;">
+                <div style="font-size:14px; font-weight:bold; color:#8b5cf6;">
+                    📈 今日价柱：长阴
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            <div class="step-section">
+                <div class="step-title">📐 本股ATR参数（自动计算）</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">ATR(14)</div>
+                            <div class="value">4.23%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">中大阴线阈值</div>
+                            <div class="value">6.35%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">起点：大阴实顶</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">大阴实顶（近60日）</div>
+                            <div class="value">78.56（2026-08-24）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">当前位置</div>
+                            <div class="value" style="color:#22c55e">下方（弱势）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">① 从右向左看：比较价柱的高低阴阳</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">价格vs大阴实顶</div>
+                            <div class="value">-16.71%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">阳线/阴线数量</div>
+                            <div class="value">9阳 / 16阴</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">阴阳比</div>
+                            <div class="value">0.56</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日高点</div>
+                            <div class="value">76.38</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日低点</div>
+                            <div class="value">65.06</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">② 从上往下看：比较量价的真假大小</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">大阴实顶的量</div>
+                            <div class="value">小量</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">今日量柱形态</div>
+                            <div class="value">普通量柱</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">③ 从左往右看：比较量柱的远近多少</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">时间距离</div>
+                            <div class="value">24天前</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">时间影响力</div>
+                            <div class="value">中等（影响力一般）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">今天量vs大阴实顶量</div>
+                            <div class="value">54.2%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">关键位量影响力</div>
+                            <div class="value" style="color:#fbbf24">中</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">④ 从下往上看：比较量价的长短伸缩</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">量柱长短</div>
+                            <div class="value">短量柱（地量）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">量能位置(20日)</div>
+                            <div class="value">12.9%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">价柱伸缩</div>
+                            <div class="value">中等价柱</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">实体占比</div>
+                            <div class="value">80.5%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">📊 今日信号（25种涨停基因全）</div>
+                <div class="step-content">
+                    <span style="display:inline-block; background:#fbbf24; color:#000; padding:2px 8px; border-radius:4px; font-size:11px; margin:2px;">阴胜出</span><span style="display:inline-block; background:#ef444420; color:#ef4444; padding:4px 8px; border-radius:4px; font-size:11px; margin:2px; border:1px solid #ef4444;">地量群 ❌<br><span style="font-size:10px;">胜率49.7% · ⭐⭐⭐</span></span>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">王牌柱体系（官方版·优先级搜索·基柱自适应）</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        
+            <div class="grid-item" style="border:2px solid #fbbf24;">
+                <div class="label">⭐ 黄金柱</div>
+                <div class="value" style="color:#fbbf24;">2026-08-07</div>
+            </div>
+            
+                        <div class="grid-item">
+                            <div class="label">黄金线（基柱最低价）</div>
+                            <div class="value">73.97</div>
+                        </div>
+                        
+            <div class="grid-item" style="border:2px solid #a78bfa;">
+                <div class="label">🎯 凹口线</div>
+                <div class="value" style="color:#a78bfa;">76.70（2026-08-12，间隔13天）</div>
+            </div>
+            
+                        <div class="grid-item">
+                            <div class="label">20日量柱位置</div>
+                            <div class="value">12.9%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">⑤ 左侧关键位</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">平衡线</div>
+                            <div class="value">78.56（2026-08-24）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">精准线</div>
+                            <div class="value">75.50（7点）</div>
+                        </div>
+                        
+                <div class="grid-item">
+                    <div class="label">20日峰顶线</div>
+                    <div class="value">74.50（2026-09-22）</div>
+                </div>
+                
+                        
+                <div class="grid-item">
+                    <div class="label">20日谷底线</div>
+                    <div class="value">66.63（2026-09-04）</div>
+                </div>
+                
+                        <div class="grid-item">
+                            <div class="label">20日安全线</div>
+                            <div class="value">73.00（2026-09-18）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日风险线</div>
+                            <div class="value">69.10（2026-09-18）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">📖 综合解读（量学理论推导）</div>
+                <div class="step-content" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);">
+                    
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【总结论】主力意图 + 操作建议</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🎯 观望：暂无明显主力意图</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">⏸️ 操作建议：观望！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>怎么看的？</strong>：接下来我一步步给你拆解！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第一步】天时：大盘环境怎么样？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📊 上证指数在20日线下方-2.5%，大盘走弱！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：大盘差的时候，大部分股票都难涨！逆风局！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：大盘是水，个股是船！水涨船高，水落船低！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第二步】地利：股价在什么位置？趋势怎么样？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📍 位置：股价在近120天的低位区域（26%分位）</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：低位意味着风险小，上涨空间大！主力最喜欢在低位建仓！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">
+📈 趋势：均线空头排列，股价在均线下方！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：下降趋势说明主力在往下做！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：位置决定风险！趋势决定方向！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第三步】人和：今天是什么量柱？有没有王牌柱？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📊 今日量柱：普通量柱</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">👑 王牌柱：黄金柱</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：量柱是主力的脚印！王牌柱是主力留下的重要标记！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：有王牌柱的股票才有主力！没王牌柱的股票没人管！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第四步】去伪：这个量柱是真的还是假的？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🤖 量能判断：未知</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：有一点量化，但不多！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：量化对倒出来的量柱是假的！真金白银的量柱才是真的！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第五步】验证：其他信号确认</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🛡️ 王牌线：75.15元（当前-12.9%）</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：多一个信号确认，胜率就高一分！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第六步】为什么得出这个结论？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">为什么判断是<strong>观望</strong>？因为：暂无明显主力意图</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>推理逻辑</strong>：天时（大盘）+ 地利（位置趋势）+ 人和（量柱王牌柱）+ 去伪（真假量柱）= 主力意图！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：四维循环看盘法，就是从这四个维度综合判断！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【补充】大阴实顶的市场意义</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">大阴实顶发生在24天前（2026-08-24），价格78.56元。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：这是多空双方上次「休战」的警戒点。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>推导</strong>：现在价格在大阴实顶<strong>下方</strong> -16.71%，说明买方还没能收复那天卖方的失地，卖方在这个区间仍占优。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：大阴实顶是回形针看盘法的起点。</p>
+            </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stock-card">
+            <div class="stock-header">
+                <div>
+                    <div class="stock-name">通富微电</div>
+                    <div class="stock-code">sz002156</div>
+                </div>
+                <div class="stock-price price-down">58.90元 (-3.47%)</div>
+            </div>
+            
+            
+            <div style="background:#94a3b820; border-radius:8px; padding:12px; margin-bottom:10px; border-left:4px solid #94a3b8;">
+                <div style="font-size:16px; font-weight:bold; color:#94a3b8;">
+                    🎯 主力意图：观望
+                </div>
+                <div style="font-size:12px; color:#94a3b8; margin-top:2px;">
+                    暂无明显主力意图
+                </div>
+            </div>
+            
+
+            
+            <div style="background:#8b5cf620; border-radius:8px; padding:12px; margin-bottom:15px; border-left:4px solid #8b5cf6;">
+                <div style="font-size:14px; font-weight:bold; color:#8b5cf6;">
+                    🤖 AI 研判（Agnes AI）
+                </div>
+                <div style="font-size:12px; color:#cbd5e1; margin-top:4px; line-height: 1.6;">
+                    股价收于58.9元，跌破MA20（59.73元），确立短线下降趋势。平量柱显示多空力量均衡但缺乏向上动能，量价未现背离。历史胜率47.23%预示方向不明。后续重点观察能否放量收复59.73元，若持续缩量阴跌则需警惕下行风险，暂以观望为主。
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #ef4444;">
+                <div style="font-size:14px; font-weight:bold; color:#ef4444;">
+                    🏛️ 大盘环境：空头市场
+                </div>
+                <div style="font-size:12px; color:#ef4444; margin-top:2px;">
+                    上证指数-2.5%（vs 20日线）
+                </div>
+            </div>
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:12px; margin-bottom:15px; border-left:4px solid #ef4444;">
+                <div style="font-size:16px; font-weight:bold; color:#ef4444;">
+                    📊 中位（32%分位）· 下降趋势
+                </div>
+                <div style="font-size:13px; color:#ef4444; margin-top:4px;">
+                    ❌ 下降趋势，谨慎操作
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            <div style="background:#60a5fa20; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #60a5fa;">
+                <div style="font-size:14px; font-weight:bold; color:#60a5fa;">
+                    👥 筹码：筹码稳定
+                </div>
+                <div style="font-size:12px; color:#60a5fa; margin-top:2px;">
+                    股东户数+0.6%
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#a78bfa20; border-radius:8px; padding:10px; margin-bottom:15px; border-left:4px solid #a78bfa;">
+                <div style="font-size:14px; font-weight:bold; color:#a78bfa;">
+                    💰 主力成本区：66.24元
+                </div>
+                <div style="font-size:12px; color:#a78bfa; margin-top:2px;">
+                    当前价格-11.1%（60日VWAP）
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:10px; margin-bottom:15px; border-left:4px solid #ef4444;">
+                <div style="font-size:14px; font-weight:bold; color:#ef4444;">
+                    📅 周线MACD空头
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#f59e0b20; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #f59e0b;">
+                <div style="font-size:14px; font-weight:bold; color:#f59e0b;">
+                    🛡️ 元帅柱线：59.70元
+                </div>
+                <div style="font-size:12px; color:#f59e0b; margin-top:2px;">
+                    当前价格-1.3%
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            <div class="step-section">
+                <div class="step-title">📐 本股ATR参数（自动计算）</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">ATR(14)</div>
+                            <div class="value">4.05%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">中大阴线阈值</div>
+                            <div class="value">6.08%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">起点：大阴实顶</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">大阴实顶（近60日）</div>
+                            <div class="value">69.00（2026-08-19）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">当前位置</div>
+                            <div class="value" style="color:#22c55e">下方（弱势）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">① 从右向左看：比较价柱的高低阴阳</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">价格vs大阴实顶</div>
+                            <div class="value">-14.64%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">阳线/阴线数量</div>
+                            <div class="value">11阳 / 17阴</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">阴阳比</div>
+                            <div class="value">0.65</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日高点</div>
+                            <div class="value">66.07</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日低点</div>
+                            <div class="value">56.22</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">② 从上往下看：比较量价的真假大小</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">大阴实顶的量</div>
+                            <div class="value">平量</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">今日量柱形态</div>
+                            <div class="value">普通量柱</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">③ 从左往右看：比较量柱的远近多少</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">时间距离</div>
+                            <div class="value">27天前</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">时间影响力</div>
+                            <div class="value">中等（影响力一般）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">今天量vs大阴实顶量</div>
+                            <div class="value">35.4%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">关键位量影响力</div>
+                            <div class="value" style="color:#fbbf24">中</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">④ 从下往上看：比较量价的长短伸缩</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">量柱长短</div>
+                            <div class="value">短量柱（地量）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">量能位置(20日)</div>
+                            <div class="value">15.0%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">价柱伸缩</div>
+                            <div class="value">中等价柱</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">实体占比</div>
+                            <div class="value">64.0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">📊 今日信号（25种涨停基因全）</div>
+                <div class="step-content">
+                    <span style="display:inline-block; background:#fbbf24; color:#000; padding:2px 8px; border-radius:4px; font-size:11px; margin:2px;">阴胜出</span><span style="display:inline-block; background:#fbbf24; color:#000; padding:2px 8px; border-radius:4px; font-size:11px; margin:2px;">阴包阳</span><span style="display:inline-block; background:#ef444420; color:#ef4444; padding:4px 8px; border-radius:4px; font-size:11px; margin:2px; border:1px solid #ef4444;">地量群 ❌<br><span style="font-size:10px;">胜率47.2% · ⭐⭐</span></span><span style="display:inline-block; background:#ef444420; color:#ef4444; padding:4px 8px; border-radius:4px; font-size:11px; margin:2px; border:1px solid #ef4444;">回踩精准线 ❌<br><span style="font-size:10px;">胜率46.7% · ⭐⭐</span></span>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">王牌柱体系（官方版·优先级搜索·基柱自适应）</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        
+            <div class="grid-item" style="border:2px solid #fbbf24;">
+                <div class="label">👑 元帅柱</div>
+                <div class="value" style="color:#fbbf24;">2026-09-18</div>
+            </div>
+            
+                        <div class="grid-item">
+                            <div class="label">黄金线（基柱最低价）</div>
+                            <div class="value">58.93</div>
+                        </div>
+                        
+            <div class="grid-item" style="border:2px solid #a78bfa;">
+                <div class="label">🎯 凹口线</div>
+                <div class="value" style="color:#a78bfa;">61.21（2026-08-14，间隔13天）</div>
+            </div>
+            
+                        <div class="grid-item">
+                            <div class="label">20日量柱位置</div>
+                            <div class="value">15.0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">⑤ 左侧关键位</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">平衡线</div>
+                            <div class="value">69.00（2026-08-19）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">精准线</div>
+                            <div class="value">61.25（14点）</div>
+                        </div>
+                        
+                <div class="grid-item">
+                    <div class="label">20日峰顶线</div>
+                    <div class="value">66.07（2026-09-22）</div>
+                </div>
+                
+                        
+                <div class="grid-item">
+                    <div class="label">20日谷底线</div>
+                    <div class="value">56.38（2026-09-04）</div>
+                </div>
+                
+                        <div class="grid-item">
+                            <div class="label">20日安全线</div>
+                            <div class="value">66.07（2026-09-22）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日风险线</div>
+                            <div class="value">62.83（2026-09-22）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">📖 综合解读（量学理论推导）</div>
+                <div class="step-content" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);">
+                    
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【总结论】主力意图 + 操作建议</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🎯 观望：暂无明显主力意图</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">⏸️ 操作建议：观望！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>怎么看的？</strong>：接下来我一步步给你拆解！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第一步】天时：大盘环境怎么样？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📊 上证指数在20日线下方-2.5%，大盘走弱！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：大盘差的时候，大部分股票都难涨！逆风局！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：大盘是水，个股是船！水涨船高，水落船低！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第二步】地利：股价在什么位置？趋势怎么样？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📍 位置：股价在近120天的中位区域（32%分位）</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：中位比较尴尬，要看主力意图！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">
+📈 趋势：均线空头排列，股价在均线下方！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：下降趋势说明主力在往下做！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：位置决定风险！趋势决定方向！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第三步】人和：今天是什么量柱？有没有王牌柱？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📊 今日量柱：普通量柱</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">👑 王牌柱：元帅柱</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：量柱是主力的脚印！王牌柱是主力留下的重要标记！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：有王牌柱的股票才有主力！没王牌柱的股票没人管！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第四步】去伪：这个量柱是真的还是假的？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🤖 量能判断：未知</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：有一点量化，但不多！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：量化对倒出来的量柱是假的！真金白银的量柱才是真的！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第五步】验证：其他信号确认</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🛡️ 王牌线：59.70元（当前-1.3%）</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：多一个信号确认，胜率就高一分！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第六步】为什么得出这个结论？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">为什么判断是<strong>观望</strong>？因为：暂无明显主力意图</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>推理逻辑</strong>：天时（大盘）+ 地利（位置趋势）+ 人和（量柱王牌柱）+ 去伪（真假量柱）= 主力意图！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：四维循环看盘法，就是从这四个维度综合判断！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【补充】大阴实顶的市场意义</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">大阴实顶发生在27天前（2026-08-19），价格69.00元。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：这是多空双方上次「休战」的警戒点。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>推导</strong>：现在价格在大阴实顶<strong>下方</strong> -14.64%，说明买方还没能收复那天卖方的失地，卖方在这个区间仍占优。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：大阴实顶是回形针看盘法的起点。</p>
+            </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stock-card">
+            <div class="stock-header">
+                <div>
+                    <div class="stock-name">赛腾股份</div>
+                    <div class="stock-code">sh603283</div>
+                </div>
+                <div class="stock-price price-down">42.91元 (-6.76%)</div>
+            </div>
+            
+            
+            <div style="background:#94a3b820; border-radius:8px; padding:12px; margin-bottom:10px; border-left:4px solid #94a3b8;">
+                <div style="font-size:16px; font-weight:bold; color:#94a3b8;">
+                    🎯 主力意图：观望
+                </div>
+                <div style="font-size:12px; color:#94a3b8; margin-top:2px;">
+                    暂无明显主力意图
+                </div>
+            </div>
+            
+
+            
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #ef4444;">
+                <div style="font-size:14px; font-weight:bold; color:#ef4444;">
+                    🏛️ 大盘环境：空头市场
+                </div>
+                <div style="font-size:12px; color:#ef4444; margin-top:2px;">
+                    上证指数-2.5%（vs 20日线）
+                </div>
+            </div>
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:12px; margin-bottom:15px; border-left:4px solid #ef4444;">
+                <div style="font-size:16px; font-weight:bold; color:#ef4444;">
+                    📊 低位（8%分位）· 下降趋势
+                </div>
+                <div style="font-size:13px; color:#ef4444; margin-top:4px;">
+                    ❌ 下降趋势，谨慎操作
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            <div style="background:#60a5fa20; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #60a5fa;">
+                <div style="font-size:14px; font-weight:bold; color:#60a5fa;">
+                    👥 筹码：筹码分散（主力出货）
+                </div>
+                <div style="font-size:12px; color:#60a5fa; margin-top:2px;">
+                    股东户数+5.9%
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#a78bfa20; border-radius:8px; padding:10px; margin-bottom:15px; border-left:4px solid #a78bfa;">
+                <div style="font-size:14px; font-weight:bold; color:#a78bfa;">
+                    💰 主力成本区：48.97元
+                </div>
+                <div style="font-size:12px; color:#a78bfa; margin-top:2px;">
+                    当前价格-12.4%（60日VWAP）
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:10px; margin-bottom:15px; border-left:4px solid #ef4444;">
+                <div style="font-size:14px; font-weight:bold; color:#ef4444;">
+                    📅 周线MACD空头
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#f59e0b20; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #f59e0b;">
+                <div style="font-size:14px; font-weight:bold; color:#f59e0b;">
+                    🛡️ 将军柱线：46.22元
+                </div>
+                <div style="font-size:12px; color:#f59e0b; margin-top:2px;">
+                    当前价格-7.2%
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#8b5cf620; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #8b5cf6;">
+                <div style="font-size:14px; font-weight:bold; color:#8b5cf6;">
+                    📈 今日价柱：长阴
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            <div class="step-section">
+                <div class="step-title">📐 本股ATR参数（自动计算）</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">ATR(14)</div>
+                            <div class="value">4.62%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">中大阴线阈值</div>
+                            <div class="value">6.93%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">起点：大阴实顶</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">大阴实顶（近60日）</div>
+                            <div class="value">46.84（2026-09-04）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">当前位置</div>
+                            <div class="value" style="color:#22c55e">下方（弱势）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">① 从右向左看：比较价柱的高低阴阳</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">价格vs大阴实顶</div>
+                            <div class="value">-8.39%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">阳线/阴线数量</div>
+                            <div class="value">7阳 / 9阴</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">阴阳比</div>
+                            <div class="value">0.78</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日高点</div>
+                            <div class="value">49.94</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日低点</div>
+                            <div class="value">42.04</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">② 从上往下看：比较量价的真假大小</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">大阴实顶的量</div>
+                            <div class="value">平量</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">今日量柱形态</div>
+                            <div class="value">平量柱</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">③ 从左往右看：比较量柱的远近多少</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">时间距离</div>
+                            <div class="value">15天前</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">时间影响力</div>
+                            <div class="value">很近（影响力强）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">今天量vs大阴实顶量</div>
+                            <div class="value">58.0%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">关键位量影响力</div>
+                            <div class="value" style="color:#fbbf24">中</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">④ 从下往上看：比较量价的长短伸缩</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">量柱长短</div>
+                            <div class="value">中等量柱</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">量能位置(20日)</div>
+                            <div class="value">31.1%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">价柱伸缩</div>
+                            <div class="value">中等价柱</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">实体占比</div>
+                            <div class="value">81.9%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">📊 今日信号（25种涨停基因全）</div>
+                <div class="step-content">
+                    <span style="display:inline-block; background:#fbbf24; color:#000; padding:2px 8px; border-radius:4px; font-size:11px; margin:2px;">阴胜出</span><span style="display:inline-block; background:#ef444420; color:#ef4444; padding:4px 8px; border-radius:4px; font-size:11px; margin:2px; border:1px solid #ef4444;">地量群 ❌<br><span style="font-size:10px;">胜率49.7% · ⭐⭐⭐</span></span><span style="display:inline-block; background:#ef444420; color:#ef4444; padding:4px 8px; border-radius:4px; font-size:11px; margin:2px; border:1px solid #ef4444;">回踩精准线 ❌<br><span style="font-size:10px;">胜率48.3% · ⭐⭐⭐</span></span>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">王牌柱体系（官方版·优先级搜索·基柱自适应）</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        
+            <div class="grid-item" style="border:2px solid #60a5fa;">
+                <div class="label">将军柱</div>
+                <div class="value" style="color:#60a5fa;">2026-08-27</div>
+            </div>
+            
+                        <div class="grid-item">
+                            <div class="label">黄金线（基柱最低价）</div>
+                            <div class="value">45.68</div>
+                        </div>
+                        
+            <div class="grid-item" style="border:2px solid #a78bfa;">
+                <div class="label">🎯 凹口线</div>
+                <div class="value" style="color:#a78bfa;">43.30（2026-08-11，间隔13天）</div>
+            </div>
+            
+                        <div class="grid-item">
+                            <div class="label">20日量柱位置</div>
+                            <div class="value">31.1%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">⑤ 左侧关键位</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">平衡线</div>
+                            <div class="value">46.84（2026-09-04）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">精准线</div>
+                            <div class="value">46.34（15点）</div>
+                        </div>
+                        
+                <div class="grid-item">
+                    <div class="label">20日峰顶线</div>
+                    <div class="value">47.90（2026-09-21）</div>
+                </div>
+                
+                        
+                <div class="grid-item">
+                    <div class="label">20日谷底线</div>
+                    <div class="value">43.18（2026-09-04）</div>
+                </div>
+                
+                        <div class="grid-item">
+                            <div class="label">20日安全线</div>
+                            <div class="value">46.84（2026-09-04）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日风险线</div>
+                            <div class="value">43.70（2026-09-04）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">📖 综合解读（量学理论推导）</div>
+                <div class="step-content" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);">
+                    
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【总结论】主力意图 + 操作建议</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🎯 观望：暂无明显主力意图</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">⏸️ 操作建议：观望！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>怎么看的？</strong>：接下来我一步步给你拆解！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第一步】天时：大盘环境怎么样？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📊 上证指数在20日线下方-2.5%，大盘走弱！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：大盘差的时候，大部分股票都难涨！逆风局！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：大盘是水，个股是船！水涨船高，水落船低！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第二步】地利：股价在什么位置？趋势怎么样？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📍 位置：股价在近120天的低位区域（8%分位）</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：低位意味着风险小，上涨空间大！主力最喜欢在低位建仓！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">
+📈 趋势：均线空头排列，股价在均线下方！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：下降趋势说明主力在往下做！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：位置决定风险！趋势决定方向！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第三步】人和：今天是什么量柱？有没有王牌柱？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📊 今日量柱：平量柱</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">👑 王牌柱：将军柱</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：量柱是主力的脚印！王牌柱是主力留下的重要标记！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：有王牌柱的股票才有主力！没王牌柱的股票没人管！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第四步】去伪：这个量柱是真的还是假的？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🤖 量能判断：未知</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：有一点量化，但不多！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：量化对倒出来的量柱是假的！真金白银的量柱才是真的！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第五步】验证：其他信号确认</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🛡️ 王牌线：46.22元（当前-7.2%）</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：多一个信号确认，胜率就高一分！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第六步】为什么得出这个结论？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">为什么判断是<strong>观望</strong>？因为：暂无明显主力意图</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>推理逻辑</strong>：天时（大盘）+ 地利（位置趋势）+ 人和（量柱王牌柱）+ 去伪（真假量柱）= 主力意图！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：四维循环看盘法，就是从这四个维度综合判断！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【补充】大阴实顶的市场意义</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">大阴实顶发生在15天前（2026-09-04），价格46.84元。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：这是多空双方上次「休战」的警戒点。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>推导</strong>：现在价格在大阴实顶<strong>下方</strong> -8.39%，说明买方还没能收复那天卖方的失地，卖方在这个区间仍占优。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：大阴实顶是回形针看盘法的起点。</p>
+            </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stock-card">
+            <div class="stock-header">
+                <div>
+                    <div class="stock-name">天孚通信</div>
+                    <div class="stock-code">sz300394</div>
+                </div>
+                <div class="stock-price price-down">244.80元 (-8.63%)</div>
+            </div>
+            
+            
+            <div style="background:#94a3b820; border-radius:8px; padding:12px; margin-bottom:10px; border-left:4px solid #94a3b8;">
+                <div style="font-size:16px; font-weight:bold; color:#94a3b8;">
+                    🎯 主力意图：观望
+                </div>
+                <div style="font-size:12px; color:#94a3b8; margin-top:2px;">
+                    暂无明显主力意图
+                </div>
+            </div>
+            
+
+            
+            <div style="background:#8b5cf620; border-radius:8px; padding:12px; margin-bottom:15px; border-left:4px solid #8b5cf6;">
+                <div style="font-size:14px; font-weight:bold; color:#8b5cf6;">
+                    🤖 AI 研判（Agnes AI）
+                </div>
+                <div style="font-size:12px; color:#cbd5e1; margin-top:4px; line-height: 1.6;">
+                    天孚通信处于下降趋势，收盘价244.8元跌破MA20。当日放量下跌（量比1.52），显示抛压释放，量价配合呈现弱势特征。信号胜率偏低。需警惕趋势延续风险，建议关注下方支撑位及能否企稳回升。数据仅供参考，不构成投资建议。
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #ef4444;">
+                <div style="font-size:14px; font-weight:bold; color:#ef4444;">
+                    🏛️ 大盘环境：空头市场
+                </div>
+                <div style="font-size:12px; color:#ef4444; margin-top:2px;">
+                    上证指数-2.5%（vs 20日线）
+                </div>
+            </div>
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:12px; margin-bottom:15px; border-left:4px solid #ef4444;">
+                <div style="font-size:16px; font-weight:bold; color:#ef4444;">
+                    📊 低位（18%分位）· 下降趋势
+                </div>
+                <div style="font-size:13px; color:#ef4444; margin-top:4px;">
+                    ❌ 下降趋势，谨慎操作
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            <div style="background:#60a5fa20; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #60a5fa;">
+                <div style="font-size:14px; font-weight:bold; color:#60a5fa;">
+                    👥 筹码：筹码分散（主力出货）
+                </div>
+                <div style="font-size:12px; color:#60a5fa; margin-top:2px;">
+                    股东户数+168.5%
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#a78bfa20; border-radius:8px; padding:10px; margin-bottom:15px; border-left:4px solid #a78bfa;">
+                <div style="font-size:14px; font-weight:bold; color:#a78bfa;">
+                    💰 主力成本区：244.10元
+                </div>
+                <div style="font-size:12px; color:#a78bfa; margin-top:2px;">
+                    当前价格+0.3%（60日VWAP）
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:10px; margin-bottom:15px; border-left:4px solid #ef4444;">
+                <div style="font-size:14px; font-weight:bold; color:#ef4444;">
+                    📅 周线MACD空头
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#f59e0b20; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #f59e0b;">
+                <div style="font-size:14px; font-weight:bold; color:#f59e0b;">
+                    🛡️ 元帅柱线：250.10元
+                </div>
+                <div style="font-size:12px; color:#f59e0b; margin-top:2px;">
+                    当前价格-2.1%
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#8b5cf620; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #8b5cf6;">
+                <div style="font-size:14px; font-weight:bold; color:#8b5cf6;">
+                    📈 今日价柱：长阴
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            <div class="step-section">
+                <div class="step-title">📐 本股ATR参数（自动计算）</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">ATR(14)</div>
+                            <div class="value">6.38%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">中大阴线阈值</div>
+                            <div class="value">9.57%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">起点：大阴实顶</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">大阴实顶（近60日）</div>
+                            <div class="value">180.03（2026-07-30）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">当前位置</div>
+                            <div class="value" style="color:#ef4444">上方（强势）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">① 从右向左看：比较价柱的高低阴阳</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">价格vs大阴实顶</div>
+                            <div class="value">+35.98%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">阳线/阴线数量</div>
+                            <div class="value">23阳 / 19阴</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">阴阳比</div>
+                            <div class="value">1.21</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日高点</div>
+                            <div class="value">292.07</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日低点</div>
+                            <div class="value">237.80</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">② 从上往下看：比较量价的真假大小</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">大阴实顶的量</div>
+                            <div class="value">大量</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">今日量柱形态</div>
+                            <div class="value">平量柱</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">③ 从左往右看：比较量柱的远近多少</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">时间距离</div>
+                            <div class="value">41天前</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">时间影响力</div>
+                            <div class="value">中等（影响力一般）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">今天量vs大阴实顶量</div>
+                            <div class="value">58.0%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">关键位量影响力</div>
+                            <div class="value" style="color:#fbbf24">中</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">④ 从下往上看：比较量价的长短伸缩</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">量柱长短</div>
+                            <div class="value">中等量柱</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">量能位置(20日)</div>
+                            <div class="value">38.6%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">价柱伸缩</div>
+                            <div class="value">中等价柱</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">实体占比</div>
+                            <div class="value">84.3%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">📊 今日信号（25种涨停基因全）</div>
+                <div class="step-content">
+                    <span style="display:inline-block; background:#fbbf24; color:#000; padding:2px 8px; border-radius:4px; font-size:11px; margin:2px;">阴胜出</span><span style="display:inline-block; background:#ef444420; color:#ef4444; padding:4px 8px; border-radius:4px; font-size:11px; margin:2px; border:1px solid #ef4444;">地量群 ❌<br><span style="font-size:10px;">胜率49.7% · ⭐⭐⭐</span></span><span style="display:inline-block; background:#ef444420; color:#ef4444; padding:4px 8px; border-radius:4px; font-size:11px; margin:2px; border:1px solid #ef4444;">回踩精准线 ❌<br><span style="font-size:10px;">胜率48.3% · ⭐⭐⭐</span></span><span style="display:inline-block; background:#ef444420; color:#ef4444; padding:4px 8px; border-radius:4px; font-size:11px; margin:2px; border:1px solid #ef4444;">倍量伸缩 ❌<br><span style="font-size:10px;">胜率49.8% · ⭐⭐⭐</span></span>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">王牌柱体系（官方版·优先级搜索·基柱自适应）</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        
+            <div class="grid-item" style="border:2px solid #fbbf24;">
+                <div class="label">👑 元帅柱</div>
+                <div class="value" style="color:#fbbf24;">2026-08-13</div>
+            </div>
+            
+                        <div class="grid-item">
+                            <div class="label">黄金线（基柱最低价）</div>
+                            <div class="value">250.10</div>
+                        </div>
+                        
+            <div class="grid-item" style="border:2px solid #a78bfa;">
+                <div class="label">🎯 凹口线</div>
+                <div class="value" style="color:#a78bfa;">203.12（2026-07-24，间隔13天）</div>
+            </div>
+            
+                        <div class="grid-item">
+                            <div class="label">20日量柱位置</div>
+                            <div class="value">38.6%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">⑤ 左侧关键位</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">平衡线</div>
+                            <div class="value">-</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">精准线</div>
+                            <div class="value">257.98（8点）</div>
+                        </div>
+                        
+                <div class="grid-item">
+                    <div class="label">20日峰顶线</div>
+                    <div class="value">292.07（2026-09-18）</div>
+                </div>
+                
+                        
+                <div class="grid-item">
+                    <div class="label">20日谷底线</div>
+                    <div class="value value-none value-weak">无（寻底中·偏弱）</div>
+                </div>
+                
+                        <div class="grid-item">
+                            <div class="label">20日安全线</div>
+                            <div class="value">267.00（2026-09-07）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日风险线</div>
+                            <div class="value">256.22（2026-09-07）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">📖 综合解读（量学理论推导）</div>
+                <div class="step-content" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);">
+                    
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【总结论】主力意图 + 操作建议</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🎯 观望：暂无明显主力意图</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">⏸️ 操作建议：观望！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>怎么看的？</strong>：接下来我一步步给你拆解！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第一步】天时：大盘环境怎么样？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📊 上证指数在20日线下方-2.5%，大盘走弱！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：大盘差的时候，大部分股票都难涨！逆风局！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：大盘是水，个股是船！水涨船高，水落船低！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第二步】地利：股价在什么位置？趋势怎么样？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📍 位置：股价在近120天的低位区域（18%分位）</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：低位意味着风险小，上涨空间大！主力最喜欢在低位建仓！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">
+📈 趋势：均线空头排列，股价在均线下方！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：下降趋势说明主力在往下做！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：位置决定风险！趋势决定方向！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第三步】人和：今天是什么量柱？有没有王牌柱？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📊 今日量柱：平量柱</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">👑 王牌柱：元帅柱</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：量柱是主力的脚印！王牌柱是主力留下的重要标记！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：有王牌柱的股票才有主力！没王牌柱的股票没人管！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第四步】去伪：这个量柱是真的还是假的？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🤖 量能判断：未知</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：有一点量化，但不多！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：量化对倒出来的量柱是假的！真金白银的量柱才是真的！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第五步】验证：其他信号确认</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🛡️ 王牌线：250.10元（当前-2.1%）</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：多一个信号确认，胜率就高一分！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第六步】为什么得出这个结论？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">为什么判断是<strong>观望</strong>？因为：暂无明显主力意图</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>推理逻辑</strong>：天时（大盘）+ 地利（位置趋势）+ 人和（量柱王牌柱）+ 去伪（真假量柱）= 主力意图！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：四维循环看盘法，就是从这四个维度综合判断！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【补充】大阴实顶的市场意义</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">大阴实顶发生在41天前（2026-07-30），价格180.03元。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：这是多空双方上次「休战」的警戒点。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>推导</strong>：现在价格在大阴实顶<strong>上方</strong> +35.98%，说明买方已经把那天卖方的成果抢回来了，买方在这个区间占优。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：大阴实顶是回形针看盘法的起点。</p>
+            </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stock-card">
+            <div class="stock-header">
+                <div>
+                    <div class="stock-name">工业富联</div>
+                    <div class="stock-code">sh601138</div>
+                </div>
+                <div class="stock-price price-down">58.92元 (-3.41%)</div>
+            </div>
+            
+            
+            <div style="background:#94a3b820; border-radius:8px; padding:12px; margin-bottom:10px; border-left:4px solid #94a3b8;">
+                <div style="font-size:16px; font-weight:bold; color:#94a3b8;">
+                    🎯 主力意图：观望
+                </div>
+                <div style="font-size:12px; color:#94a3b8; margin-top:2px;">
+                    暂无明显主力意图
+                </div>
+            </div>
+            
+
+            
+            <div style="background:#8b5cf620; border-radius:8px; padding:12px; margin-bottom:15px; border-left:4px solid #8b5cf6;">
+                <div style="font-size:14px; font-weight:bold; color:#8b5cf6;">
+                    🤖 AI 研判（Agnes AI）
+                </div>
+                <div style="font-size:12px; color:#cbd5e1; margin-top:4px; line-height: 1.6;">
+                    工业富联现58.92元，跌3.41%。平量下行，价格跌破MA20，趋势转弱。量价未见有效支撑，显示抛压持续。胜率中性，多空分歧加大。后续需关注58元整数关口支撑及量能能否放大止跌，警惕下跌趋势延续风险。
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #ef4444;">
+                <div style="font-size:14px; font-weight:bold; color:#ef4444;">
+                    🏛️ 大盘环境：空头市场
+                </div>
+                <div style="font-size:12px; color:#ef4444; margin-top:2px;">
+                    上证指数-2.5%（vs 20日线）
+                </div>
+            </div>
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:12px; margin-bottom:15px; border-left:4px solid #ef4444;">
+                <div style="font-size:16px; font-weight:bold; color:#ef4444;">
+                    📊 低位（11%分位）· 下降趋势
+                </div>
+                <div style="font-size:13px; color:#ef4444; margin-top:4px;">
+                    ❌ 下降趋势，谨慎操作
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            <div style="background:#60a5fa20; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #60a5fa;">
+                <div style="font-size:14px; font-weight:bold; color:#60a5fa;">
+                    👥 筹码：筹码分散（主力出货）
+                </div>
+                <div style="font-size:12px; color:#60a5fa; margin-top:2px;">
+                    股东户数+39.7%
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#a78bfa20; border-radius:8px; padding:10px; margin-bottom:15px; border-left:4px solid #a78bfa;">
+                <div style="font-size:14px; font-weight:bold; color:#a78bfa;">
+                    💰 主力成本区：63.24元
+                </div>
+                <div style="font-size:12px; color:#a78bfa; margin-top:2px;">
+                    当前价格-6.8%（60日VWAP）
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:10px; margin-bottom:15px; border-left:4px solid #ef4444;">
+                <div style="font-size:14px; font-weight:bold; color:#ef4444;">
+                    📅 周线MACD空头
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#f59e0b20; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #f59e0b;">
+                <div style="font-size:14px; font-weight:bold; color:#f59e0b;">
+                    🛡️ 元帅柱线：62.00元
+                </div>
+                <div style="font-size:12px; color:#f59e0b; margin-top:2px;">
+                    当前价格-5.0%
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#8b5cf620; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #8b5cf6;">
+                <div style="font-size:14px; font-weight:bold; color:#8b5cf6;">
+                    📈 今日价柱：长阴
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            <div class="step-section">
+                <div class="step-title">📐 本股ATR参数（自动计算）</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">ATR(14)</div>
+                            <div class="value">3.47%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">中大阴线阈值</div>
+                            <div class="value">5.20%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">起点：大阴实顶</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">大阴实顶（近60日）</div>
+                            <div class="value">57.00（2026-07-30）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">当前位置</div>
+                            <div class="value" style="color:#ef4444">上方（强势）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">① 从右向左看：比较价柱的高低阴阳</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">价格vs大阴实顶</div>
+                            <div class="value">+3.37%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">阳线/阴线数量</div>
+                            <div class="value">18阳 / 23阴</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">阴阳比</div>
+                            <div class="value">0.78</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日高点</div>
+                            <div class="value">66.88</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日低点</div>
+                            <div class="value">58.28</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">② 从上往下看：比较量价的真假大小</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">大阴实顶的量</div>
+                            <div class="value">平量</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">今日量柱形态</div>
+                            <div class="value">普通量柱</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">③ 从左往右看：比较量柱的远近多少</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">时间距离</div>
+                            <div class="value">41天前</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">时间影响力</div>
+                            <div class="value">中等（影响力一般）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">今天量vs大阴实顶量</div>
+                            <div class="value">42.2%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">关键位量影响力</div>
+                            <div class="value" style="color:#fbbf24">中</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">④ 从下往上看：比较量价的长短伸缩</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">量柱长短</div>
+                            <div class="value">短量柱（地量）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">量能位置(20日)</div>
+                            <div class="value">16.7%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">价柱伸缩</div>
+                            <div class="value">中等价柱</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">实体占比</div>
+                            <div class="value">76.5%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">📊 今日信号（25种涨停基因全）</div>
+                <div class="step-content">
+                    <span style="display:inline-block; background:#ef444420; color:#ef4444; padding:4px 8px; border-radius:4px; font-size:11px; margin:2px; border:1px solid #ef4444;">地量群 ❌<br><span style="font-size:10px;">胜率49.7% · ⭐⭐⭐</span></span><span style="display:inline-block; background:#ef444420; color:#ef4444; padding:4px 8px; border-radius:4px; font-size:11px; margin:2px; border:1px solid #ef4444;">回踩精准线 ❌<br><span style="font-size:10px;">胜率48.3% · ⭐⭐⭐</span></span>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">王牌柱体系（官方版·优先级搜索·基柱自适应）</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        
+            <div class="grid-item" style="border:2px solid #fbbf24;">
+                <div class="label">👑 元帅柱</div>
+                <div class="value" style="color:#fbbf24;">2026-08-27</div>
+            </div>
+            
+                        <div class="grid-item">
+                            <div class="label">黄金线（基柱最低价）</div>
+                            <div class="value">62.00</div>
+                        </div>
+                        
+            <div class="grid-item" style="border:2px solid #a78bfa;">
+                <div class="label">🎯 凹口线</div>
+                <div class="value" style="color:#a78bfa;">59.50（2026-07-27，间隔13天）</div>
+            </div>
+            
+                        <div class="grid-item">
+                            <div class="label">20日量柱位置</div>
+                            <div class="value">16.7%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">⑤ 左侧关键位</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">平衡线</div>
+                            <div class="value">-</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">精准线</div>
+                            <div class="value">62.96（13点）</div>
+                        </div>
+                        
+                <div class="grid-item">
+                    <div class="label">20日峰顶线</div>
+                    <div class="value">66.88（2026-09-07）</div>
+                </div>
+                
+                        
+                <div class="grid-item">
+                    <div class="label">20日谷底线</div>
+                    <div class="value value-none value-weak">无（寻底中·偏弱）</div>
+                </div>
+                
+                        <div class="grid-item">
+                            <div class="label">20日安全线</div>
+                            <div class="value">66.57（2026-09-07）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日风险线</div>
+                            <div class="value">64.60（2026-09-07）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">📖 综合解读（量学理论推导）</div>
+                <div class="step-content" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);">
+                    
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【总结论】主力意图 + 操作建议</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🎯 观望：暂无明显主力意图</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">⏸️ 操作建议：观望！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>怎么看的？</strong>：接下来我一步步给你拆解！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第一步】天时：大盘环境怎么样？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📊 上证指数在20日线下方-2.5%，大盘走弱！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：大盘差的时候，大部分股票都难涨！逆风局！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：大盘是水，个股是船！水涨船高，水落船低！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第二步】地利：股价在什么位置？趋势怎么样？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📍 位置：股价在近120天的低位区域（11%分位）</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：低位意味着风险小，上涨空间大！主力最喜欢在低位建仓！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">
+📈 趋势：均线空头排列，股价在均线下方！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：下降趋势说明主力在往下做！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：位置决定风险！趋势决定方向！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第三步】人和：今天是什么量柱？有没有王牌柱？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📊 今日量柱：普通量柱</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">👑 王牌柱：元帅柱</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：量柱是主力的脚印！王牌柱是主力留下的重要标记！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：有王牌柱的股票才有主力！没王牌柱的股票没人管！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第四步】去伪：这个量柱是真的还是假的？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🤖 量能判断：未知</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：有一点量化，但不多！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：量化对倒出来的量柱是假的！真金白银的量柱才是真的！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第五步】验证：其他信号确认</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🛡️ 王牌线：62.00元（当前-5.0%）</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：多一个信号确认，胜率就高一分！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第六步】为什么得出这个结论？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">为什么判断是<strong>观望</strong>？因为：暂无明显主力意图</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>推理逻辑</strong>：天时（大盘）+ 地利（位置趋势）+ 人和（量柱王牌柱）+ 去伪（真假量柱）= 主力意图！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：四维循环看盘法，就是从这四个维度综合判断！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【补充】大阴实顶的市场意义</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">大阴实顶发生在41天前（2026-07-30），价格57.00元。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：这是多空双方上次「休战」的警戒点。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>推导</strong>：现在价格在大阴实顶<strong>上方</strong> +3.37%，说明买方已经把那天卖方的成果抢回来了，买方在这个区间占优。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：大阴实顶是回形针看盘法的起点。</p>
+            </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stock-card">
+            <div class="stock-header">
+                <div>
+                    <div class="stock-name">胜宏科技</div>
+                    <div class="stock-code">sz300476</div>
+                </div>
+                <div class="stock-price price-down">213.50元 (-8.25%)</div>
+            </div>
+            
+            
+            <div style="background:#94a3b820; border-radius:8px; padding:12px; margin-bottom:10px; border-left:4px solid #94a3b8;">
+                <div style="font-size:16px; font-weight:bold; color:#94a3b8;">
+                    🎯 主力意图：观望
+                </div>
+                <div style="font-size:12px; color:#94a3b8; margin-top:2px;">
+                    暂无明显主力意图
+                </div>
+            </div>
+            
+
+            
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #ef4444;">
+                <div style="font-size:14px; font-weight:bold; color:#ef4444;">
+                    🏛️ 大盘环境：空头市场
+                </div>
+                <div style="font-size:12px; color:#ef4444; margin-top:2px;">
+                    上证指数-2.5%（vs 20日线）
+                </div>
+            </div>
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:12px; margin-bottom:15px; border-left:4px solid #ef4444;">
+                <div style="font-size:16px; font-weight:bold; color:#ef4444;">
+                    📊 低位（5%分位）· 下降趋势
+                </div>
+                <div style="font-size:13px; color:#ef4444; margin-top:4px;">
+                    ❌ 下降趋势，谨慎操作
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            <div style="background:#60a5fa20; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #60a5fa;">
+                <div style="font-size:14px; font-weight:bold; color:#60a5fa;">
+                    👥 筹码：筹码分散（主力出货）
+                </div>
+                <div style="font-size:12px; color:#60a5fa; margin-top:2px;">
+                    股东户数+81.9%
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#a78bfa20; border-radius:8px; padding:10px; margin-bottom:15px; border-left:4px solid #a78bfa;">
+                <div style="font-size:14px; font-weight:bold; color:#a78bfa;">
+                    💰 主力成本区：246.63元
+                </div>
+                <div style="font-size:12px; color:#a78bfa; margin-top:2px;">
+                    当前价格-13.4%（60日VWAP）
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:10px; margin-bottom:15px; border-left:4px solid #ef4444;">
+                <div style="font-size:14px; font-weight:bold; color:#ef4444;">
+                    📅 周线MACD空头
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#f59e0b20; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #f59e0b;">
+                <div style="font-size:14px; font-weight:bold; color:#f59e0b;">
+                    🛡️ 黄金柱线：228.01元
+                </div>
+                <div style="font-size:12px; color:#f59e0b; margin-top:2px;">
+                    当前价格-6.4%
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#8b5cf620; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #8b5cf6;">
+                <div style="font-size:14px; font-weight:bold; color:#8b5cf6;">
+                    📈 今日价柱：长阴
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#dc262620; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #dc262626;">
+                <div style="font-size:14px; font-weight:bold; color:#dc262626;">
+                    ⚠️ 底背离（价跌量增）
+                </div>
+            </div>
+            
+            
+            
+            
+            <div class="step-section">
+                <div class="step-title">📐 本股ATR参数（自动计算）</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">ATR(14)</div>
+                            <div class="value">5.13%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">中大阴线阈值</div>
+                            <div class="value">7.70%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">起点：大阴实顶</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">大阴实顶（近60日）</div>
+                            <div class="value">231.00（2026-09-28）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">当前位置</div>
+                            <div class="value" style="color:#22c55e">下方（弱势）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">① 从右向左看：比较价柱的高低阴阳</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">价格vs大阴实顶</div>
+                            <div class="value">-7.58%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">阳线/阴线数量</div>
+                            <div class="value">0阳 / 1阴</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">阴阳比</div>
+                            <div class="value">0.00</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日高点</div>
+                            <div class="value">252.00</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日低点</div>
+                            <div class="value">213.29</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">② 从上往下看：比较量价的真假大小</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">大阴实顶的量</div>
+                            <div class="value">平量</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">今日量柱形态</div>
+                            <div class="value">普通量柱</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">③ 从左往右看：比较量柱的远近多少</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">时间距离</div>
+                            <div class="value">0天前</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">时间影响力</div>
+                            <div class="value">很近（影响力强）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">今天量vs大阴实顶量</div>
+                            <div class="value">100.0%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">关键位量影响力</div>
+                            <div class="value" style="color:#fbbf24">中</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">④ 从下往上看：比较量价的长短伸缩</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">量柱长短</div>
+                            <div class="value">中等量柱</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">量能位置(20日)</div>
+                            <div class="value">24.7%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">价柱伸缩</div>
+                            <div class="value">中等价柱</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">实体占比</div>
+                            <div class="value">96.2%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">📊 今日信号（25种涨停基因全）</div>
+                <div class="step-content">
+                    <span style="display:inline-block; background:#fbbf24; color:#000; padding:2px 8px; border-radius:4px; font-size:11px; margin:2px;">阴胜出</span><span style="display:inline-block; background:#ef444420; color:#ef4444; padding:4px 8px; border-radius:4px; font-size:11px; margin:2px; border:1px solid #ef4444;">地量群 ❌<br><span style="font-size:10px;">胜率49.7% · ⭐⭐⭐</span></span>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">王牌柱体系（官方版·优先级搜索·基柱自适应）</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        
+            <div class="grid-item" style="border:2px solid #fbbf24;">
+                <div class="label">⭐ 黄金柱</div>
+                <div class="value" style="color:#fbbf24;">2026-08-06</div>
+            </div>
+            
+                        <div class="grid-item">
+                            <div class="label">黄金线（基柱最低价）</div>
+                            <div class="value">227.00</div>
+                        </div>
+                        
+            <div class="grid-item" style="border:2px solid #a78bfa;">
+                <div class="label">🎯 凹口线</div>
+                <div class="value" style="color:#a78bfa;">230.00（2026-07-24，间隔13天）</div>
+            </div>
+            
+                        <div class="grid-item">
+                            <div class="label">20日量柱位置</div>
+                            <div class="value">24.7%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">⑤ 左侧关键位</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">平衡线</div>
+                            <div class="value">231.00（2026-09-28）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">精准线</div>
+                            <div class="value">343.13（8点）</div>
+                        </div>
+                        
+                <div class="grid-item">
+                    <div class="label">20日峰顶线</div>
+                    <div class="value">252.00（2026-09-22）</div>
+                </div>
+                
+                        
+                <div class="grid-item">
+                    <div class="label">20日谷底线</div>
+                    <div class="value value-none value-weak">无（寻底中·偏弱）</div>
+                </div>
+                
+                        <div class="grid-item">
+                            <div class="label">20日安全线</div>
+                            <div class="value">248.00（2026-09-21）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日风险线</div>
+                            <div class="value">232.23（2026-09-21）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">📖 综合解读（量学理论推导）</div>
+                <div class="step-content" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);">
+                    
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【总结论】主力意图 + 操作建议</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🎯 观望：暂无明显主力意图</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">⏸️ 操作建议：观望！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>怎么看的？</strong>：接下来我一步步给你拆解！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第一步】天时：大盘环境怎么样？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📊 上证指数在20日线下方-2.5%，大盘走弱！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：大盘差的时候，大部分股票都难涨！逆风局！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：大盘是水，个股是船！水涨船高，水落船低！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第二步】地利：股价在什么位置？趋势怎么样？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📍 位置：股价在近120天的低位区域（5%分位）</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：低位意味着风险小，上涨空间大！主力最喜欢在低位建仓！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">
+📈 趋势：均线空头排列，股价在均线下方！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：下降趋势说明主力在往下做！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：位置决定风险！趋势决定方向！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第三步】人和：今天是什么量柱？有没有王牌柱？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📊 今日量柱：普通量柱</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">👑 王牌柱：黄金柱</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：量柱是主力的脚印！王牌柱是主力留下的重要标记！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：有王牌柱的股票才有主力！没王牌柱的股票没人管！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第四步】去伪：这个量柱是真的还是假的？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🤖 量能判断：未知</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：有一点量化，但不多！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：量化对倒出来的量柱是假的！真金白银的量柱才是真的！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第五步】验证：其他信号确认</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🛡️ 王牌线：228.01元（当前-6.4%）</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">⚠️ 底背离（价跌量增）</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：多一个信号确认，胜率就高一分！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第六步】为什么得出这个结论？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">为什么判断是<strong>观望</strong>？因为：暂无明显主力意图</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>推理逻辑</strong>：天时（大盘）+ 地利（位置趋势）+ 人和（量柱王牌柱）+ 去伪（真假量柱）= 主力意图！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：四维循环看盘法，就是从这四个维度综合判断！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【补充】大阴实顶的市场意义</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">大阴实顶发生在0天前（2026-09-28），价格231.00元。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：这是多空双方上次「休战」的警戒点。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>推导</strong>：现在价格在大阴实顶<strong>下方</strong> -7.58%，说明买方还没能收复那天卖方的失地，卖方在这个区间仍占优。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：大阴实顶是回形针看盘法的起点。</p>
+            </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stock-card">
+            <div class="stock-header">
+                <div>
+                    <div class="stock-name">淳中科技</div>
+                    <div class="stock-code">sh603516</div>
+                </div>
+                <div class="stock-price price-down">78.60元 (-4.93%)</div>
+            </div>
+            
+            
+            <div style="background:#94a3b820; border-radius:8px; padding:12px; margin-bottom:10px; border-left:4px solid #94a3b8;">
+                <div style="font-size:16px; font-weight:bold; color:#94a3b8;">
+                    🎯 主力意图：观望
+                </div>
+                <div style="font-size:12px; color:#94a3b8; margin-top:2px;">
+                    暂无明显主力意图
+                </div>
+            </div>
+            
+
+            
+            <div style="background:#8b5cf620; border-radius:8px; padding:12px; margin-bottom:15px; border-left:4px solid #8b5cf6;">
+                <div style="font-size:14px; font-weight:bold; color:#8b5cf6;">
+                    🤖 AI 研判（Agnes AI）
+                </div>
+                <div style="font-size:12px; color:#cbd5e1; margin-top:4px; line-height: 1.6;">
+                    淳中科技处于下降趋势，股价低于MA20，多头乏力。最新交易日放量下跌，量比1.84，显示抛压加剧，量价背离风险显现。当前信号胜率偏低，技术面偏空。需警惕量能持续放大导致的进一步下行风险，后续关注能否止跌企稳及均线支撑情况。此分析仅为数据描述，不构成投资建议。
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #ef4444;">
+                <div style="font-size:14px; font-weight:bold; color:#ef4444;">
+                    🏛️ 大盘环境：空头市场
+                </div>
+                <div style="font-size:12px; color:#ef4444; margin-top:2px;">
+                    上证指数-2.5%（vs 20日线）
+                </div>
+            </div>
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:12px; margin-bottom:15px; border-left:4px solid #ef4444;">
+                <div style="font-size:16px; font-weight:bold; color:#ef4444;">
+                    📊 低位（0%分位）· 下降趋势
+                </div>
+                <div style="font-size:13px; color:#ef4444; margin-top:4px;">
+                    ❌ 下降趋势，谨慎操作
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            <div style="background:#a78bfa20; border-radius:8px; padding:10px; margin-bottom:15px; border-left:4px solid #a78bfa;">
+                <div style="font-size:14px; font-weight:bold; color:#a78bfa;">
+                    💰 主力成本区：94.93元
+                </div>
+                <div style="font-size:12px; color:#a78bfa; margin-top:2px;">
+                    当前价格-17.2%（60日VWAP）
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <div style="background:#ef444420; border-radius:8px; padding:10px; margin-bottom:15px; border-left:4px solid #ef4444;">
+                <div style="font-size:14px; font-weight:bold; color:#ef4444;">
+                    📅 周线MACD空头
+                </div>
+            </div>
+            
+            
+            
+            <div style="background:#f59e0b20; border-radius:8px; padding:10px; margin-bottom:10px; border-left:4px solid #f59e0b;">
+                <div style="font-size:14px; font-weight:bold; color:#f59e0b;">
+                    🛡️ 将军柱线：89.35元
+                </div>
+                <div style="font-size:12px; color:#f59e0b; margin-top:2px;">
+                    当前价格-12.0%
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            <div class="step-section">
+                <div class="step-title">📐 本股ATR参数（自动计算）</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">ATR(14)</div>
+                            <div class="value">4.69%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">中大阴线阈值</div>
+                            <div class="value">7.04%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">起点：大阴实顶</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">大阴实顶（近60日）</div>
+                            <div class="value">98.74（2026-08-26）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">当前位置</div>
+                            <div class="value" style="color:#22c55e">下方（弱势）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">① 从右向左看：比较价柱的高低阴阳</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">价格vs大阴实顶</div>
+                            <div class="value">-20.40%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">阳线/阴线数量</div>
+                            <div class="value">6阳 / 17阴</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">阴阳比</div>
+                            <div class="value">0.35</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日高点</div>
+                            <div class="value">96.66</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日低点</div>
+                            <div class="value">77.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">② 从上往下看：比较量价的真假大小</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">大阴实顶的量</div>
+                            <div class="value">大量</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">今日量柱形态</div>
+                            <div class="value">倍量柱</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">③ 从左往右看：比较量柱的远近多少</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">时间距离</div>
+                            <div class="value">22天前</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">时间影响力</div>
+                            <div class="value">中等（影响力一般）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">今天量vs大阴实顶量</div>
+                            <div class="value">43.4%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">关键位量影响力</div>
+                            <div class="value" style="color:#fbbf24">中</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">④ 从下往上看：比较量价的长短伸缩</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">量柱长短</div>
+                            <div class="value">中等量柱</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">量能位置(20日)</div>
+                            <div class="value">58.7%</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">价柱伸缩</div>
+                            <div class="value">中等价柱</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">实体占比</div>
+                            <div class="value">68.4%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">📊 今日信号（25种涨停基因全）</div>
+                <div class="step-content">
+                    <span style="display:inline-block; background:#fbbf24; color:#000; padding:2px 8px; border-radius:4px; font-size:11px; margin:2px;">阴胜出</span><span style="display:inline-block; background:#ef444420; color:#ef4444; padding:4px 8px; border-radius:4px; font-size:11px; margin:2px; border:1px solid #ef4444;">地量群 ❌<br><span style="font-size:10px;">胜率49.7% · ⭐⭐⭐</span></span>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">王牌柱体系（官方版·优先级搜索·基柱自适应）</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        
+            <div class="grid-item" style="border:2px solid #60a5fa;">
+                <div class="label">将军柱</div>
+                <div class="value" style="color:#60a5fa;">2026-08-27</div>
+            </div>
+            
+                        <div class="grid-item">
+                            <div class="label">黄金线（基柱最低价）</div>
+                            <div class="value">89.26</div>
+                        </div>
+                        
+            <div class="grid-item" style="border:2px solid #a78bfa;">
+                <div class="label">🎯 凹口线</div>
+                <div class="value" style="color:#a78bfa;">106.50（2026-07-14，间隔13天）</div>
+            </div>
+            
+                        <div class="grid-item">
+                            <div class="label">20日量柱位置</div>
+                            <div class="value">58.7%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">⑤ 左侧关键位</div>
+                <div class="step-content">
+                    <div class="grid-2">
+                        <div class="grid-item">
+                            <div class="label">平衡线</div>
+                            <div class="value">98.74（2026-08-26）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">精准线</div>
+                            <div class="value">98.85（10点）</div>
+                        </div>
+                        
+                <div class="grid-item">
+                    <div class="label">20日峰顶线</div>
+                    <div class="value">88.88（2026-09-14）</div>
+                </div>
+                
+                        
+                <div class="grid-item">
+                    <div class="label">20日谷底线</div>
+                    <div class="value value-none value-weak">无（寻底中·偏弱）</div>
+                </div>
+                
+                        <div class="grid-item">
+                            <div class="label">20日安全线</div>
+                            <div class="value">96.49（2026-09-03）</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="label">20日风险线</div>
+                            <div class="value">93.00（2026-09-03）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-title">📖 综合解读（量学理论推导）</div>
+                <div class="step-content" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);">
+                    
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【总结论】主力意图 + 操作建议</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🎯 观望：暂无明显主力意图</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">⏸️ 操作建议：观望！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>怎么看的？</strong>：接下来我一步步给你拆解！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第一步】天时：大盘环境怎么样？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📊 上证指数在20日线下方-2.5%，大盘走弱！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：大盘差的时候，大部分股票都难涨！逆风局！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：大盘是水，个股是船！水涨船高，水落船低！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第二步】地利：股价在什么位置？趋势怎么样？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📍 位置：股价在近120天的低位区域（0%分位）</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：低位意味着风险小，上涨空间大！主力最喜欢在低位建仓！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">
+📈 趋势：均线空头排列，股价在均线下方！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：下降趋势说明主力在往下做！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：位置决定风险！趋势决定方向！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第三步】人和：今天是什么量柱？有没有王牌柱？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">📊 今日量柱：倍量柱</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">👑 王牌柱：将军柱</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：量柱是主力的脚印！王牌柱是主力留下的重要标记！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：有王牌柱的股票才有主力！没王牌柱的股票没人管！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第四步】去伪：这个量柱是真的还是假的？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🤖 量能判断：未知</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：有一点量化，但不多！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：量化对倒出来的量柱是假的！真金白银的量柱才是真的！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第五步】验证：其他信号确认</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">🛡️ 王牌线：89.35元（当前-12.0%）</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：多一个信号确认，胜率就高一分！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【第六步】为什么得出这个结论？</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">为什么判断是<strong>观望</strong>？因为：暂无明显主力意图</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>推理逻辑</strong>：天时（大盘）+ 地利（位置趋势）+ 人和（量柱王牌柱）+ 去伪（真假量柱）= 主力意图！</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：四维循环看盘法，就是从这四个维度综合判断！</p>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #fbbf24;">
+                <div style="font-weight: bold; color: #fbbf24; margin-bottom: 6px; font-size: 13px;">【补充】大阴实顶的市场意义</div>
+                            <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;">大阴实顶发生在22天前（2026-08-26），价格98.74元。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>市场机理</strong>：这是多空双方上次「休战」的警戒点。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>推导</strong>：现在价格在大阴实顶<strong>下方</strong> -20.40%，说明买方还没能收复那天卖方的失地，卖方在这个区间仍占优。</p>
+                <p style="margin: 4px 0; font-size: 12px; color: #cbd5e1; line-height: 1.7;"><strong>量学依据</strong>：大阴实顶是回形针看盘法的起点。</p>
+            </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>
