@@ -39,6 +39,14 @@
       "cv": 0.83,
       "corr": -0.11,
       "tail_ratio": 0.113
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.17,
+      "corr": 0.18,
+      "tail_ratio": 0.137
     }
   },
   "sh603516": {
@@ -81,6 +89,14 @@
       "cv": 1.0,
       "corr": -0.09,
       "tail_ratio": 0.123
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.66,
+      "corr": 0.37,
+      "tail_ratio": 0.156
     }
   },
   "sz300394": {
@@ -123,6 +139,14 @@
       "cv": 0.94,
       "corr": -0.21,
       "tail_ratio": 0.088
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.01,
+      "corr": 0.16,
+      "tail_ratio": 0.105
     }
   },
   "sz300476": {
@@ -165,6 +189,14 @@
       "cv": 0.78,
       "corr": -0.26,
       "tail_ratio": 0.12
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.88,
+      "corr": 0.19,
+      "tail_ratio": 0.134
     }
   },
   "sh000001": {
@@ -207,6 +239,14 @@
       "cv": 0.9,
       "corr": -0.14,
       "tail_ratio": 0.11
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.93,
+      "corr": 0.09,
+      "tail_ratio": 0.143
     }
   },
   "sh603283": {
@@ -249,6 +289,14 @@
       "cv": 0.86,
       "corr": -0.3,
       "tail_ratio": 0.104
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.35,
+      "corr": -0.12,
+      "tail_ratio": 0.106
     }
   },
   "sz002156": {
@@ -291,6 +339,14 @@
       "cv": 0.77,
       "corr": -0.12,
       "tail_ratio": 0.106
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.47,
+      "corr": 0.33,
+      "tail_ratio": 0.099
     }
   },
   "sh601231": {
@@ -333,6 +389,14 @@
       "cv": 1.02,
       "corr": -0.3,
       "tail_ratio": 0.088
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.02,
+      "corr": 0.32,
+      "tail_ratio": 0.12
     }
   },
   "sh601138": {
@@ -375,6 +439,14 @@
       "cv": 0.95,
       "corr": -0.44,
       "tail_ratio": 0.083
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.87,
+      "corr": 0.1,
+      "tail_ratio": 0.184
     }
   },
   "sh600018": {
@@ -417,6 +489,14 @@
       "cv": 1.12,
       "corr": -0.12,
       "tail_ratio": 0.162
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.3,
+      "corr": 0.02,
+      "tail_ratio": 0.166
     }
   },
   "sz002142": {
@@ -459,6 +539,14 @@
       "cv": 0.77,
       "corr": 0.01,
       "tail_ratio": 0.148
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.17,
+      "corr": 0.07,
+      "tail_ratio": 0.266
     }
   },
   "sh601877": {
@@ -501,6 +589,14 @@
       "cv": 0.82,
       "corr": -0.08,
       "tail_ratio": 0.135
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.08,
+      "corr": 0.02,
+      "tail_ratio": 0.128
     }
   },
   "sh601136": {
@@ -543,6 +639,14 @@
       "cv": 0.99,
       "corr": -0.17,
       "tail_ratio": 0.15
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.29,
+      "corr": 0.06,
+      "tail_ratio": 0.188
     }
   },
   "sh601117": {
@@ -585,6 +689,14 @@
       "cv": 1.16,
       "corr": 0.04,
       "tail_ratio": 0.109
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.53,
+      "corr": -0.03,
+      "tail_ratio": 0.211
     }
   },
   "sh601127": {
@@ -627,6 +739,14 @@
       "cv": 1.17,
       "corr": 0.23,
       "tail_ratio": 0.111
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.18,
+      "corr": 0.26,
+      "tail_ratio": 0.11
     }
   },
   "sz300999": {
@@ -669,6 +789,14 @@
       "cv": 0.89,
       "corr": -0.01,
       "tail_ratio": 0.182
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 0.95,
+      "corr": -0.29,
+      "tail_ratio": 0.166
     }
   },
   "sh601318": {
@@ -711,6 +839,14 @@
       "cv": 0.77,
       "corr": -0.1,
       "tail_ratio": 0.17
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.89,
+      "corr": -0.14,
+      "tail_ratio": 0.137
     }
   },
   "sz301269": {
@@ -753,6 +889,14 @@
       "cv": 0.81,
       "corr": 0.3,
       "tail_ratio": 0.114
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.93,
+      "corr": -0.04,
+      "tail_ratio": 0.179
     }
   },
   "sh601800": {
@@ -795,6 +939,14 @@
       "cv": 1.35,
       "corr": -0.04,
       "tail_ratio": 0.132
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.78,
+      "corr": 0.12,
+      "tail_ratio": 0.124
     }
   },
   "sz001391": {
@@ -837,6 +989,14 @@
       "cv": 1.6,
       "corr": -0.08,
       "tail_ratio": 0.086
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 2.0,
+      "corr": 0.15,
+      "tail_ratio": 0.193
     }
   },
   "sh600000": {
@@ -879,6 +1039,14 @@
       "cv": 1.5,
       "corr": 0.28,
       "tail_ratio": 0.092
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.15,
+      "corr": 0.18,
+      "tail_ratio": 0.149
     }
   },
   "sh600519": {
@@ -920,6 +1088,14 @@
       "quant_pct": 26.7,
       "cv": 1.01,
       "corr": 0.08,
+      "tail_ratio": 0.152
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.91,
+      "corr": -0.11,
       "tail_ratio": 0.152
     }
   },
@@ -963,6 +1139,14 @@
       "cv": 1.66,
       "corr": -0.03,
       "tail_ratio": 0.103
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 2.25,
+      "corr": 0.2,
+      "tail_ratio": 0.205
     }
   },
   "sh600938": {
@@ -1005,6 +1189,14 @@
       "cv": 0.85,
       "corr": 0.26,
       "tail_ratio": 0.107
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.06,
+      "corr": -0.28,
+      "tail_ratio": 0.104
     }
   },
   "sh600025": {
@@ -1047,6 +1239,14 @@
       "cv": 1.08,
       "corr": 0.24,
       "tail_ratio": 0.161
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.33,
+      "corr": 0.08,
+      "tail_ratio": 0.179
     }
   },
   "sh601398": {
@@ -1089,6 +1289,14 @@
       "cv": 1.08,
       "corr": 0.03,
       "tail_ratio": 0.124
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.1,
+      "corr": 0.06,
+      "tail_ratio": 0.149
     }
   },
   "sh600039": {
@@ -1131,6 +1339,14 @@
       "cv": 1.1,
       "corr": 0.13,
       "tail_ratio": 0.102
+    },
+    "2026-09-29": {
+      "is_real": false,
+      "verdict": "量化对倒",
+      "quant_pct": 36.7,
+      "cv": 1.12,
+      "corr": -0.0,
+      "tail_ratio": 0.322
     }
   },
   "sz300408": {
@@ -1173,6 +1389,14 @@
       "cv": 0.7,
       "corr": -0.12,
       "tail_ratio": 0.117
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.88,
+      "corr": 0.09,
+      "tail_ratio": 0.152
     }
   },
   "sh600372": {
@@ -1215,6 +1439,14 @@
       "cv": 1.21,
       "corr": 0.26,
       "tail_ratio": 0.098
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.15,
+      "corr": -0.04,
+      "tail_ratio": 0.169
     }
   },
   "sh601698": {
@@ -1257,6 +1489,14 @@
       "cv": 1.04,
       "corr": 0.09,
       "tail_ratio": 0.109
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.04,
+      "corr": -0.07,
+      "tail_ratio": 0.224
     }
   },
   "sh601225": {
@@ -1299,6 +1539,14 @@
       "cv": 0.68,
       "corr": 0.06,
       "tail_ratio": 0.104
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 0.88,
+      "corr": -0.23,
+      "tail_ratio": 0.122
     }
   },
   "sz002074": {
@@ -1341,6 +1589,14 @@
       "cv": 1.0,
       "corr": -0.07,
       "tail_ratio": 0.164
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 10.0,
+      "cv": 4.48,
+      "corr": 0.64,
+      "tail_ratio": 0.022
     }
   },
   "sh601919": {
@@ -1383,6 +1639,14 @@
       "cv": 0.82,
       "corr": 0.1,
       "tail_ratio": 0.137
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 0.89,
+      "corr": -0.24,
+      "tail_ratio": 0.16
     }
   },
   "sh600196": {
@@ -1425,6 +1689,14 @@
       "cv": 0.94,
       "corr": 0.34,
       "tail_ratio": 0.139
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.21,
+      "corr": 0.24,
+      "tail_ratio": 0.094
     }
   },
   "sz300866": {
@@ -1467,6 +1739,14 @@
       "cv": 1.8,
       "corr": 0.18,
       "tail_ratio": 0.115
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.97,
+      "corr": 0.08,
+      "tail_ratio": 0.147
     }
   },
   "sh688012": {
@@ -1509,6 +1789,14 @@
       "cv": 0.81,
       "corr": -0.07,
       "tail_ratio": 0.115
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.04,
+      "corr": 0.07,
+      "tail_ratio": 0.135
     }
   },
   "sh601186": {
@@ -1551,6 +1839,14 @@
       "cv": 1.54,
       "corr": 0.02,
       "tail_ratio": 0.147
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.64,
+      "corr": 0.14,
+      "tail_ratio": 0.138
     }
   },
   "sh601857": {
@@ -1593,6 +1889,14 @@
       "cv": 0.62,
       "corr": 0.23,
       "tail_ratio": 0.161
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.01,
+      "corr": -0.04,
+      "tail_ratio": 0.15
     }
   },
   "sh600436": {
@@ -1635,6 +1939,14 @@
       "cv": 1.05,
       "corr": -0.03,
       "tail_ratio": 0.147
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.11,
+      "corr": -0.15,
+      "tail_ratio": 0.146
     }
   },
   "sz300832": {
@@ -1677,6 +1989,14 @@
       "cv": 1.1,
       "corr": 0.52,
       "tail_ratio": 0.166
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.03,
+      "corr": 0.02,
+      "tail_ratio": 0.119
     }
   },
   "sh600585": {
@@ -1719,6 +2039,14 @@
       "cv": 1.04,
       "corr": -0.18,
       "tail_ratio": 0.094
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.29,
+      "corr": 0.03,
+      "tail_ratio": 0.152
     }
   },
   "sh603369": {
@@ -1761,6 +2089,14 @@
       "cv": 1.08,
       "corr": 0.03,
       "tail_ratio": 0.149
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.49,
+      "corr": 0.09,
+      "tail_ratio": 0.196
     }
   },
   "sz301308": {
@@ -1803,6 +2139,14 @@
       "cv": 0.95,
       "corr": -0.16,
       "tail_ratio": 0.098
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.8,
+      "corr": 0.17,
+      "tail_ratio": 0.144
     }
   },
   "sh600188": {
@@ -1845,6 +2189,14 @@
       "cv": 0.99,
       "corr": 0.11,
       "tail_ratio": 0.105
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.95,
+      "corr": -0.06,
+      "tail_ratio": 0.104
     }
   },
   "sz002736": {
@@ -1887,6 +2239,14 @@
       "cv": 1.16,
       "corr": -0.03,
       "tail_ratio": 0.133
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.25,
+      "corr": 0.19,
+      "tail_ratio": 0.159
     }
   },
   "sz000002": {
@@ -1929,6 +2289,14 @@
       "cv": 1.6,
       "corr": 0.23,
       "tail_ratio": 0.098
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.85,
+      "corr": 0.35,
+      "tail_ratio": 0.012
     }
   },
   "sh601818": {
@@ -1971,6 +2339,14 @@
       "cv": 2.06,
       "corr": -0.11,
       "tail_ratio": 0.17
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 4.28,
+      "corr": 0.08,
+      "tail_ratio": 0.117
     }
   },
   "sh601688": {
@@ -2013,6 +2389,14 @@
       "cv": 0.9,
       "corr": -0.35,
       "tail_ratio": 0.117
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.05,
+      "corr": -0.02,
+      "tail_ratio": 0.212
     }
   },
   "sz002241": {
@@ -2055,6 +2439,14 @@
       "cv": 0.84,
       "corr": 0.0,
       "tail_ratio": 0.115
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.93,
+      "corr": 0.05,
+      "tail_ratio": 0.164
     }
   },
   "sh600029": {
@@ -2097,6 +2489,14 @@
       "cv": 1.86,
       "corr": 0.03,
       "tail_ratio": 0.064
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.79,
+      "corr": 0.03,
+      "tail_ratio": 0.199
     }
   },
   "sz300059": {
@@ -2139,6 +2539,14 @@
       "cv": 0.9,
       "corr": -0.14,
       "tail_ratio": 0.142
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.04,
+      "corr": -0.16,
+      "tail_ratio": 0.292
     }
   },
   "sh601988": {
@@ -2181,6 +2589,14 @@
       "cv": 1.48,
       "corr": -0.0,
       "tail_ratio": 0.1
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.23,
+      "corr": 0.11,
+      "tail_ratio": 0.154
     }
   },
   "sh600019": {
@@ -2223,6 +2639,14 @@
       "cv": 1.26,
       "corr": 0.11,
       "tail_ratio": 0.095
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.55,
+      "corr": 0.29,
+      "tail_ratio": 0.259
     }
   },
   "sh688008": {
@@ -2265,6 +2689,14 @@
       "cv": 0.67,
       "corr": -0.05,
       "tail_ratio": 0.104
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.75,
+      "corr": 0.11,
+      "tail_ratio": 0.124
     }
   },
   "sz002049": {
@@ -2307,6 +2739,14 @@
       "cv": 0.86,
       "corr": -0.15,
       "tail_ratio": 0.073
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.96,
+      "corr": 0.02,
+      "tail_ratio": 0.18
     }
   },
   "sh688072": {
@@ -2349,6 +2789,14 @@
       "cv": 0.87,
       "corr": -0.23,
       "tail_ratio": 0.129
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.11,
+      "corr": -0.13,
+      "tail_ratio": 0.185
     }
   },
   "sh688981": {
@@ -2391,6 +2839,14 @@
       "cv": 0.74,
       "corr": -0.15,
       "tail_ratio": 0.078
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 0.83,
+      "corr": 0.25,
+      "tail_ratio": 0.149
     }
   },
   "sh601601": {
@@ -2433,6 +2889,14 @@
       "cv": 0.78,
       "corr": 0.19,
       "tail_ratio": 0.106
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.07,
+      "corr": -0.19,
+      "tail_ratio": 0.128
     }
   },
   "sh600309": {
@@ -2475,6 +2939,14 @@
       "cv": 0.85,
       "corr": -0.06,
       "tail_ratio": 0.11
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 0.94,
+      "corr": -0.39,
+      "tail_ratio": 0.106
     }
   },
   "sh600026": {
@@ -2517,6 +2989,14 @@
       "cv": 0.96,
       "corr": -0.02,
       "tail_ratio": 0.086
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.06,
+      "corr": -0.23,
+      "tail_ratio": 0.175
     }
   },
   "sz002463": {
@@ -2559,6 +3039,14 @@
       "cv": 0.92,
       "corr": 0.02,
       "tail_ratio": 0.087
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 0.9,
+      "corr": 0.33,
+      "tail_ratio": 0.129
     }
   },
   "sh600150": {
@@ -2601,6 +3089,14 @@
       "cv": 1.0,
       "corr": -0.02,
       "tail_ratio": 0.093
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.0,
+      "corr": 0.18,
+      "tail_ratio": 0.168
     }
   },
   "sz300661": {
@@ -2643,6 +3139,14 @@
       "cv": 0.86,
       "corr": 0.27,
       "tail_ratio": 0.094
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.66,
+      "corr": -0.1,
+      "tail_ratio": 0.145
     }
   },
   "sz002236": {
@@ -2685,6 +3189,14 @@
       "cv": 1.39,
       "corr": -0.34,
       "tail_ratio": 0.098
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.15,
+      "corr": 0.16,
+      "tail_ratio": 0.184
     }
   },
   "sz000063": {
@@ -2727,6 +3239,14 @@
       "cv": 1.1,
       "corr": -0.4,
       "tail_ratio": 0.097
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.96,
+      "corr": 0.01,
+      "tail_ratio": 0.15
     }
   },
   "sz000792": {
@@ -2769,6 +3289,14 @@
       "cv": 1.46,
       "corr": 0.13,
       "tail_ratio": 0.077
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 0.95,
+      "corr": 0.37,
+      "tail_ratio": 0.17
     }
   },
   "sz002532": {
@@ -2811,6 +3339,14 @@
       "cv": 1.34,
       "corr": 0.03,
       "tail_ratio": 0.103
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 1.05,
+      "corr": 0.35,
+      "tail_ratio": 0.218
     }
   },
   "sh601336": {
@@ -2853,6 +3389,14 @@
       "cv": 1.19,
       "corr": -0.34,
       "tail_ratio": 0.225
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.11,
+      "corr": 0.08,
+      "tail_ratio": 0.247
     }
   },
   "sh601058": {
@@ -2895,6 +3439,14 @@
       "cv": 0.75,
       "corr": -0.26,
       "tail_ratio": 0.143
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.12,
+      "corr": -0.23,
+      "tail_ratio": 0.153
     }
   },
   "sz002714": {
@@ -2937,6 +3489,14 @@
       "cv": 0.8,
       "corr": 0.29,
       "tail_ratio": 0.109
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.87,
+      "corr": 0.04,
+      "tail_ratio": 0.13
     }
   },
   "sz300308": {
@@ -2979,6 +3539,14 @@
       "cv": 0.96,
       "corr": -0.39,
       "tail_ratio": 0.081
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.97,
+      "corr": 0.16,
+      "tail_ratio": 0.152
     }
   },
   "sh600489": {
@@ -3021,6 +3589,14 @@
       "cv": 1.36,
       "corr": -0.2,
       "tail_ratio": 0.1
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.11,
+      "corr": 0.14,
+      "tail_ratio": 0.131
     }
   },
   "sh688183": {
@@ -3063,6 +3639,14 @@
       "cv": 0.9,
       "corr": -0.22,
       "tail_ratio": 0.108
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 0.79,
+      "corr": 0.27,
+      "tail_ratio": 0.114
     }
   },
   "sh600016": {
@@ -3105,6 +3689,14 @@
       "cv": 1.78,
       "corr": -0.03,
       "tail_ratio": 0.115
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.92,
+      "corr": -0.01,
+      "tail_ratio": 0.121
     }
   },
   "sz000538": {
@@ -3147,6 +3739,14 @@
       "cv": 0.9,
       "corr": 0.27,
       "tail_ratio": 0.117
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.96,
+      "corr": 0.13,
+      "tail_ratio": 0.107
     }
   },
   "sh601077": {
@@ -3189,6 +3789,14 @@
       "cv": 1.1,
       "corr": 0.11,
       "tail_ratio": 0.102
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.3,
+      "corr": -0.14,
+      "tail_ratio": 0.168
     }
   },
   "sh601727": {
@@ -3231,6 +3839,14 @@
       "cv": 1.48,
       "corr": -0.06,
       "tail_ratio": 0.071
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.52,
+      "corr": -0.09,
+      "tail_ratio": 0.282
     }
   },
   "sz300433": {
@@ -3273,6 +3889,14 @@
       "cv": 0.96,
       "corr": -0.1,
       "tail_ratio": 0.133
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.1,
+      "corr": 0.44,
+      "tail_ratio": 0.189
     }
   },
   "sz002384": {
@@ -3315,6 +3939,14 @@
       "cv": 0.86,
       "corr": -0.35,
       "tail_ratio": 0.104
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 0.97,
+      "corr": 0.31,
+      "tail_ratio": 0.124
     }
   },
   "sh600233": {
@@ -3357,6 +3989,14 @@
       "cv": 1.11,
       "corr": 0.17,
       "tail_ratio": 0.267
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.0,
+      "corr": 0.06,
+      "tail_ratio": 0.119
     }
   },
   "sz000776": {
@@ -3399,6 +4039,14 @@
       "cv": 0.74,
       "corr": -0.3,
       "tail_ratio": 0.123
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 46.7,
+      "cv": 0.96,
+      "corr": -0.13,
+      "tail_ratio": 0.216
     }
   },
   "sh601100": {
@@ -3441,6 +4089,14 @@
       "cv": 0.97,
       "corr": 0.13,
       "tail_ratio": 0.16
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.79,
+      "corr": 0.02,
+      "tail_ratio": 0.186
     }
   },
   "sz000651": {
@@ -3483,6 +4139,14 @@
       "cv": 0.7,
       "corr": 0.25,
       "tail_ratio": 0.201
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.87,
+      "corr": -0.1,
+      "tail_ratio": 0.161
     }
   },
   "sh600036": {
@@ -3525,6 +4189,14 @@
       "cv": 0.87,
       "corr": 0.31,
       "tail_ratio": 0.123
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.76,
+      "corr": 0.01,
+      "tail_ratio": 0.166
     }
   },
   "sz000708": {
@@ -3567,6 +4239,14 @@
       "cv": 1.03,
       "corr": -0.21,
       "tail_ratio": 0.107
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.05,
+      "corr": -0.04,
+      "tail_ratio": 0.195
     }
   },
   "sz002028": {
@@ -3609,6 +4289,14 @@
       "cv": 1.1,
       "corr": -0.27,
       "tail_ratio": 0.099
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.82,
+      "corr": 0.02,
+      "tail_ratio": 0.122
     }
   },
   "sz002415": {
@@ -3651,6 +4339,14 @@
       "cv": 1.19,
       "corr": -0.07,
       "tail_ratio": 0.107
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 0.83,
+      "corr": 0.25,
+      "tail_ratio": 0.136
     }
   },
   "sz002938": {
@@ -3693,6 +4389,14 @@
       "cv": 0.71,
       "corr": -0.23,
       "tail_ratio": 0.144
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.76,
+      "corr": 0.13,
+      "tail_ratio": 0.114
     }
   },
   "sz300033": {
@@ -3735,6 +4439,14 @@
       "cv": 0.92,
       "corr": -0.33,
       "tail_ratio": 0.147
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.91,
+      "corr": 0.05,
+      "tail_ratio": 0.164
     }
   },
   "sh601669": {
@@ -3777,6 +4489,14 @@
       "cv": 1.67,
       "corr": 0.09,
       "tail_ratio": 0.113
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 2.01,
+      "corr": -0.06,
+      "tail_ratio": 0.196
     }
   },
   "sz000963": {
@@ -3819,6 +4539,14 @@
       "cv": 1.46,
       "corr": 0.37,
       "tail_ratio": 0.118
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.5,
+      "corr": -0.02,
+      "tail_ratio": 0.083
     }
   },
   "sz300750": {
@@ -3861,6 +4589,14 @@
       "cv": 1.18,
       "corr": 0.26,
       "tail_ratio": 0.101
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.93,
+      "corr": 0.0,
+      "tail_ratio": 0.155
     }
   },
   "sz002558": {
@@ -3903,6 +4639,14 @@
       "cv": 0.76,
       "corr": -0.36,
       "tail_ratio": 0.189
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.91,
+      "corr": 0.12,
+      "tail_ratio": 0.155
     }
   },
   "sh600111": {
@@ -3945,6 +4689,14 @@
       "cv": 1.16,
       "corr": -0.4,
       "tail_ratio": 0.095
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.09,
+      "corr": 0.33,
+      "tail_ratio": 0.197
     }
   },
   "sh601229": {
@@ -3987,6 +4739,14 @@
       "cv": 1.28,
       "corr": 0.11,
       "tail_ratio": 0.127
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.18,
+      "corr": 0.03,
+      "tail_ratio": 0.137
     }
   },
   "sz000100": {
@@ -4029,6 +4789,14 @@
       "cv": 1.13,
       "corr": -0.02,
       "tail_ratio": 0.124
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.29,
+      "corr": 0.08,
+      "tail_ratio": 0.147
     }
   },
   "sh688303": {
@@ -4071,6 +4839,14 @@
       "cv": 1.15,
       "corr": 0.04,
       "tail_ratio": 0.156
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.16,
+      "corr": 0.22,
+      "tail_ratio": 0.185
     }
   },
   "sh601628": {
@@ -4113,6 +4889,14 @@
       "cv": 0.89,
       "corr": -0.19,
       "tail_ratio": 0.147
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 46.7,
+      "cv": 0.99,
+      "corr": -0.15,
+      "tail_ratio": 0.242
     }
   },
   "sh601319": {
@@ -4155,6 +4939,14 @@
       "cv": 1.18,
       "corr": -0.15,
       "tail_ratio": 0.118
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.18,
+      "corr": -0.01,
+      "tail_ratio": 0.193
     }
   },
   "sh603993": {
@@ -4197,6 +4989,14 @@
       "cv": 1.18,
       "corr": -0.24,
       "tail_ratio": 0.099
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.0,
+      "corr": -0.27,
+      "tail_ratio": 0.123
     }
   },
   "sz000657": {
@@ -4239,6 +5039,14 @@
       "cv": 0.9,
       "corr": -0.11,
       "tail_ratio": 0.139
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.84,
+      "corr": -0.05,
+      "tail_ratio": 0.115
     }
   },
   "sz001965": {
@@ -4281,6 +5089,14 @@
       "cv": 1.09,
       "corr": 0.11,
       "tail_ratio": 0.137
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.88,
+      "corr": 0.15,
+      "tail_ratio": 0.148
     }
   },
   "sh601788": {
@@ -4323,6 +5139,14 @@
       "cv": 1.41,
       "corr": -0.15,
       "tail_ratio": 0.096
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.3,
+      "corr": -0.23,
+      "tail_ratio": 0.236
     }
   },
   "sz002466": {
@@ -4365,6 +5189,14 @@
       "cv": 1.13,
       "corr": -0.06,
       "tail_ratio": 0.117
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 0.98,
+      "corr": 0.46,
+      "tail_ratio": 0.112
     }
   },
   "sz000338": {
@@ -4407,6 +5239,14 @@
       "cv": 0.94,
       "corr": -0.16,
       "tail_ratio": 0.17
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 0.75,
+      "corr": 0.27,
+      "tail_ratio": 0.157
     }
   },
   "sh601633": {
@@ -4449,6 +5289,14 @@
       "cv": 0.94,
       "corr": 0.14,
       "tail_ratio": 0.14
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.14,
+      "corr": 0.01,
+      "tail_ratio": 0.263
     }
   },
   "sz000977": {
@@ -4491,6 +5339,14 @@
       "cv": 0.76,
       "corr": -0.12,
       "tail_ratio": 0.113
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 0.89,
+      "corr": 0.39,
+      "tail_ratio": 0.121
     }
   },
   "sh600989": {
@@ -4533,6 +5389,14 @@
       "cv": 1.11,
       "corr": 0.15,
       "tail_ratio": 0.13
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.95,
+      "corr": 0.07,
+      "tail_ratio": 0.117
     }
   },
   "sz000725": {
@@ -4575,6 +5439,14 @@
       "cv": 1.47,
       "corr": 0.18,
       "tail_ratio": 0.086
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.39,
+      "corr": -0.34,
+      "tail_ratio": 0.118
     }
   },
   "sh600570": {
@@ -4617,6 +5489,14 @@
       "cv": 1.28,
       "corr": -0.43,
       "tail_ratio": 0.161
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.23,
+      "corr": 0.05,
+      "tail_ratio": 0.206
     }
   },
   "sh600048": {
@@ -4659,6 +5539,14 @@
       "cv": 1.14,
       "corr": -0.1,
       "tail_ratio": 0.103
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.09,
+      "corr": 0.22,
+      "tail_ratio": 0.087
     }
   },
   "sh600941": {
@@ -4701,6 +5589,14 @@
       "cv": 1.15,
       "corr": 0.26,
       "tail_ratio": 0.122
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.06,
+      "corr": 0.07,
+      "tail_ratio": 0.15
     }
   },
   "sh601456": {
@@ -4743,6 +5639,14 @@
       "cv": 1.14,
       "corr": 0.14,
       "tail_ratio": 0.147
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.36,
+      "corr": -0.03,
+      "tail_ratio": 0.211
     }
   },
   "sh601888": {
@@ -4785,6 +5689,14 @@
       "cv": 0.94,
       "corr": -0.07,
       "tail_ratio": 0.101
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.04,
+      "corr": 0.13,
+      "tail_ratio": 0.171
     }
   },
   "sh600219": {
@@ -4827,6 +5739,14 @@
       "cv": 1.36,
       "corr": -0.29,
       "tail_ratio": 0.087
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.46,
+      "corr": 0.21,
+      "tail_ratio": 0.137
     }
   },
   "sh601009": {
@@ -4869,6 +5789,14 @@
       "cv": 0.99,
       "corr": -0.21,
       "tail_ratio": 0.107
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.13,
+      "corr": -0.2,
+      "tail_ratio": 0.128
     }
   },
   "sz002709": {
@@ -4911,6 +5839,14 @@
       "cv": 0.93,
       "corr": -0.01,
       "tail_ratio": 0.124
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 10.0,
+      "cv": 1.29,
+      "corr": 0.66,
+      "tail_ratio": 0.117
     }
   },
   "sh600346": {
@@ -4953,6 +5889,14 @@
       "cv": 1.39,
       "corr": 0.29,
       "tail_ratio": 0.081
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 0.93,
+      "corr": -0.21,
+      "tail_ratio": 0.139
     }
   },
   "sh601018": {
@@ -4995,6 +5939,14 @@
       "cv": 1.8,
       "corr": 0.05,
       "tail_ratio": 0.139
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.99,
+      "corr": 0.22,
+      "tail_ratio": 0.227
     }
   },
   "sz002304": {
@@ -5037,6 +5989,14 @@
       "cv": 0.99,
       "corr": -0.24,
       "tail_ratio": 0.088
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.0,
+      "corr": -0.07,
+      "tail_ratio": 0.194
     }
   },
   "sz002422": {
@@ -5079,6 +6039,14 @@
       "cv": 1.03,
       "corr": 0.32,
       "tail_ratio": 0.123
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.19,
+      "corr": 0.21,
+      "tail_ratio": 0.062
     }
   },
   "sz000988": {
@@ -5121,6 +6089,14 @@
       "cv": 0.77,
       "corr": -0.36,
       "tail_ratio": 0.09
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.04,
+      "corr": 0.23,
+      "tail_ratio": 0.129
     }
   },
   "sh688036": {
@@ -5163,6 +6139,14 @@
       "cv": 0.99,
       "corr": -0.18,
       "tail_ratio": 0.11
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 46.7,
+      "cv": 0.95,
+      "corr": 0.05,
+      "tail_ratio": 0.204
     }
   },
   "sh600066": {
@@ -5205,6 +6189,14 @@
       "cv": 0.99,
       "corr": -0.07,
       "tail_ratio": 0.161
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.04,
+      "corr": 0.05,
+      "tail_ratio": 0.246
     }
   },
   "sh600115": {
@@ -5247,6 +6239,14 @@
       "cv": 1.83,
       "corr": 0.01,
       "tail_ratio": 0.097
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.87,
+      "corr": 0.02,
+      "tail_ratio": 0.184
     }
   },
   "sh601390": {
@@ -5289,6 +6289,14 @@
       "cv": 1.45,
       "corr": -0.02,
       "tail_ratio": 0.116
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 2.25,
+      "corr": 0.11,
+      "tail_ratio": 0.125
     }
   },
   "sz002311": {
@@ -5331,6 +6339,14 @@
       "cv": 1.02,
       "corr": 0.03,
       "tail_ratio": 0.267
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 46.7,
+      "cv": 0.99,
+      "corr": 0.01,
+      "tail_ratio": 0.263
     }
   },
   "sh601998": {
@@ -5373,6 +6389,14 @@
       "cv": 0.94,
       "corr": 0.21,
       "tail_ratio": 0.255
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.86,
+      "corr": -0.05,
+      "tail_ratio": 0.146
     }
   },
   "sz000975": {
@@ -5415,6 +6439,14 @@
       "cv": 0.96,
       "corr": 0.28,
       "tail_ratio": 0.079
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.96,
+      "corr": 0.13,
+      "tail_ratio": 0.13
     }
   },
   "sh601689": {
@@ -5457,6 +6489,14 @@
       "cv": 1.11,
       "corr": 0.15,
       "tail_ratio": 0.116
+    },
+    "2026-09-29": {
+      "is_real": false,
+      "verdict": "量化对倒",
+      "quant_pct": 36.7,
+      "cv": 1.5,
+      "corr": 0.02,
+      "tail_ratio": 0.31
     }
   },
   "sz300502": {
@@ -5499,6 +6539,14 @@
       "cv": 1.01,
       "corr": -0.44,
       "tail_ratio": 0.094
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.88,
+      "corr": -0.07,
+      "tail_ratio": 0.143
     }
   },
   "sh601607": {
@@ -5541,6 +6589,14 @@
       "cv": 1.05,
       "corr": -0.04,
       "tail_ratio": 0.14
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.96,
+      "corr": 0.19,
+      "tail_ratio": 0.134
     }
   },
   "sh601360": {
@@ -5583,6 +6639,14 @@
       "cv": 1.4,
       "corr": -0.15,
       "tail_ratio": 0.093
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.31,
+      "corr": 0.41,
+      "tail_ratio": 0.119
     }
   },
   "sh603501": {
@@ -5625,6 +6689,14 @@
       "cv": 0.72,
       "corr": 0.24,
       "tail_ratio": 0.112
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.84,
+      "corr": 0.08,
+      "tail_ratio": 0.137
     }
   },
   "sh600549": {
@@ -5667,6 +6739,14 @@
       "cv": 0.98,
       "corr": -0.24,
       "tail_ratio": 0.1
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.09,
+      "corr": 0.24,
+      "tail_ratio": 0.124
     }
   },
   "sh600415": {
@@ -5709,6 +6789,14 @@
       "cv": 1.74,
       "corr": 0.38,
       "tail_ratio": 0.102
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.33,
+      "corr": -0.25,
+      "tail_ratio": 0.14
     }
   },
   "sh600760": {
@@ -5751,6 +6839,14 @@
       "cv": 1.0,
       "corr": 0.29,
       "tail_ratio": 0.133
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.92,
+      "corr": 0.07,
+      "tail_ratio": 0.122
     }
   },
   "sz002001": {
@@ -5793,6 +6889,14 @@
       "cv": 0.97,
       "corr": -0.07,
       "tail_ratio": 0.16
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.79,
+      "corr": -0.14,
+      "tail_ratio": 0.163
     }
   },
   "sz300015": {
@@ -5835,6 +6939,14 @@
       "cv": 0.98,
       "corr": 0.02,
       "tail_ratio": 0.12
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.05,
+      "corr": 0.05,
+      "tail_ratio": 0.202
     }
   },
   "sh601838": {
@@ -5877,6 +6989,14 @@
       "cv": 0.74,
       "corr": 0.1,
       "tail_ratio": 0.093
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.17,
+      "corr": 0.04,
+      "tail_ratio": 0.159
     }
   },
   "sh603296": {
@@ -5919,6 +7039,14 @@
       "cv": 0.81,
       "corr": -0.28,
       "tail_ratio": 0.107
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.88,
+      "corr": 0.01,
+      "tail_ratio": 0.148
     }
   },
   "sh601328": {
@@ -5961,6 +7089,14 @@
       "cv": 1.3,
       "corr": -0.07,
       "tail_ratio": 0.11
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.13,
+      "corr": -0.05,
+      "tail_ratio": 0.123
     }
   },
   "sh688396": {
@@ -6003,6 +7139,14 @@
       "cv": 0.68,
       "corr": -0.13,
       "tail_ratio": 0.111
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.15,
+      "corr": 0.06,
+      "tail_ratio": 0.161
     }
   },
   "sh600999": {
@@ -6045,6 +7189,14 @@
       "cv": 0.8,
       "corr": -0.39,
       "tail_ratio": 0.12
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.03,
+      "corr": -0.29,
+      "tail_ratio": 0.188
     }
   },
   "sz301236": {
@@ -6087,6 +7239,14 @@
       "cv": 0.94,
       "corr": -0.11,
       "tail_ratio": 0.121
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.02,
+      "corr": 0.04,
+      "tail_ratio": 0.181
     }
   },
   "sz000157": {
@@ -6129,6 +7289,14 @@
       "cv": 1.17,
       "corr": -0.18,
       "tail_ratio": 0.106
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.4,
+      "corr": 0.2,
+      "tail_ratio": 0.105
     }
   },
   "sz301165": {
@@ -6171,6 +7339,14 @@
       "cv": 0.84,
       "corr": -0.08,
       "tail_ratio": 0.125
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 0.88,
+      "corr": 0.36,
+      "tail_ratio": 0.135
     }
   },
   "sh600918": {
@@ -6213,6 +7389,14 @@
       "cv": 1.2,
       "corr": 0.05,
       "tail_ratio": 0.213
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.58,
+      "corr": 0.35,
+      "tail_ratio": 0.131
     }
   },
   "sz000768": {
@@ -6255,6 +7439,14 @@
       "cv": 1.26,
       "corr": 0.41,
       "tail_ratio": 0.141
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.93,
+      "corr": -0.09,
+      "tail_ratio": 0.163
     }
   },
   "sh600089": {
@@ -6297,6 +7489,14 @@
       "cv": 0.9,
       "corr": -0.12,
       "tail_ratio": 0.096
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.03,
+      "corr": -0.13,
+      "tail_ratio": 0.193
     }
   },
   "sh601059": {
@@ -6357,6 +7557,14 @@
       "cv": 1.14,
       "corr": 0.06,
       "tail_ratio": 0.109
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.24,
+      "corr": 0.07,
+      "tail_ratio": 0.185
     }
   },
   "sh600887": {
@@ -6399,6 +7607,14 @@
       "cv": 0.93,
       "corr": 0.12,
       "tail_ratio": 0.175
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.53,
+      "corr": 0.45,
+      "tail_ratio": 0.128
     }
   },
   "sh601066": {
@@ -6441,6 +7657,14 @@
       "cv": 1.02,
       "corr": -0.06,
       "tail_ratio": 0.127
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.62,
+      "corr": -0.2,
+      "tail_ratio": 0.213
     }
   },
   "sh600183": {
@@ -6483,6 +7707,14 @@
       "cv": 0.89,
       "corr": -0.04,
       "tail_ratio": 0.097
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.76,
+      "corr": 0.1,
+      "tail_ratio": 0.126
     }
   },
   "sz002625": {
@@ -6525,6 +7757,14 @@
       "cv": 1.28,
       "corr": -0.52,
       "tail_ratio": 0.03
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.68,
+      "corr": -0.24,
+      "tail_ratio": 0.093
     }
   },
   "sh600875": {
@@ -6567,6 +7807,14 @@
       "cv": 0.85,
       "corr": -0.24,
       "tail_ratio": 0.09
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 1.0,
+      "corr": 0.31,
+      "tail_ratio": 0.14
     }
   },
   "sz000625": {
@@ -6609,6 +7857,14 @@
       "cv": 1.32,
       "corr": 0.15,
       "tail_ratio": 0.137
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.47,
+      "corr": 0.22,
+      "tail_ratio": 0.167
     }
   },
   "sh600845": {
@@ -6651,6 +7907,14 @@
       "cv": 0.99,
       "corr": -0.04,
       "tail_ratio": 0.114
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.86,
+      "corr": 0.1,
+      "tail_ratio": 0.183
     }
   },
   "sh600795": {
@@ -6693,6 +7957,14 @@
       "cv": 1.44,
       "corr": 0.16,
       "tail_ratio": 0.09
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.44,
+      "corr": 0.14,
+      "tail_ratio": 0.13
     }
   },
   "sz002475": {
@@ -6735,6 +8007,14 @@
       "cv": 0.99,
       "corr": -0.04,
       "tail_ratio": 0.079
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 0.94,
+      "corr": 0.42,
+      "tail_ratio": 0.174
     }
   },
   "sz000408": {
@@ -6777,6 +8057,14 @@
       "cv": 1.03,
       "corr": 0.17,
       "tail_ratio": 0.109
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.95,
+      "corr": 0.06,
+      "tail_ratio": 0.125
     }
   },
   "sh600930": {
@@ -6819,6 +8107,14 @@
       "cv": 1.65,
       "corr": -0.1,
       "tail_ratio": 0.095
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.75,
+      "corr": -0.08,
+      "tail_ratio": 0.166
     }
   },
   "sz002202": {
@@ -6861,6 +8157,14 @@
       "cv": 1.23,
       "corr": -0.21,
       "tail_ratio": 0.106
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 46.7,
+      "cv": 0.9,
+      "corr": 0.18,
+      "tail_ratio": 0.213
     }
   },
   "sh688111": {
@@ -6903,6 +8207,14 @@
       "cv": 1.04,
       "corr": -0.07,
       "tail_ratio": 0.102
+    },
+    "2026-09-29": {
+      "is_real": false,
+      "verdict": "量化对倒",
+      "quant_pct": 26.7,
+      "cv": 1.07,
+      "corr": -0.24,
+      "tail_ratio": 0.369
     }
   },
   "sh603019": {
@@ -6945,6 +8257,14 @@
       "cv": 0.94,
       "corr": -0.14,
       "tail_ratio": 0.13
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.01,
+      "corr": 0.31,
+      "tail_ratio": 0.175
     }
   },
   "sh603259": {
@@ -6987,6 +8307,14 @@
       "cv": 1.16,
       "corr": 0.08,
       "tail_ratio": 0.096
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.07,
+      "corr": 0.11,
+      "tail_ratio": 0.102
     }
   },
   "sh601728": {
@@ -7029,6 +8357,14 @@
       "cv": 0.9,
       "corr": 0.12,
       "tail_ratio": 0.196
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.07,
+      "corr": 0.12,
+      "tail_ratio": 0.131
     }
   },
   "sh600547": {
@@ -7071,6 +8407,14 @@
       "cv": 2.19,
       "corr": -0.43,
       "tail_ratio": 0.03
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 10.0,
+      "cv": 1.24,
+      "corr": 0.59,
+      "tail_ratio": 0.103
     }
   },
   "sh600893": {
@@ -7113,6 +8457,14 @@
       "cv": 1.47,
       "corr": 0.49,
       "tail_ratio": 0.115
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.02,
+      "corr": -0.02,
+      "tail_ratio": 0.105
     }
   },
   "sh600926": {
@@ -7155,6 +8507,14 @@
       "cv": 1.04,
       "corr": -0.29,
       "tail_ratio": 0.095
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.88,
+      "corr": 0.01,
+      "tail_ratio": 0.12
     }
   },
   "sz002050": {
@@ -7197,6 +8557,14 @@
       "cv": 1.0,
       "corr": 0.18,
       "tail_ratio": 0.096
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.18,
+      "corr": 0.12,
+      "tail_ratio": 0.145
     }
   },
   "sz300442": {
@@ -7239,6 +8607,14 @@
       "cv": 0.93,
       "corr": -0.05,
       "tail_ratio": 0.116
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 1.0,
+      "corr": 0.44,
+      "tail_ratio": 0.15
     }
   },
   "sh601825": {
@@ -7281,6 +8657,14 @@
       "cv": 1.28,
       "corr": 0.04,
       "tail_ratio": 0.145
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.24,
+      "corr": 0.02,
+      "tail_ratio": 0.178
     }
   },
   "sh601618": {
@@ -7323,6 +8707,14 @@
       "cv": 2.33,
       "corr": -0.18,
       "tail_ratio": 0.119
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 2.54,
+      "corr": 0.15,
+      "tail_ratio": 0.07
     }
   },
   "sh601668": {
@@ -7365,6 +8757,14 @@
       "cv": 1.59,
       "corr": -0.09,
       "tail_ratio": 0.107
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.87,
+      "corr": 0.12,
+      "tail_ratio": 0.145
     }
   },
   "sh601006": {
@@ -7407,6 +8807,14 @@
       "cv": 1.49,
       "corr": -0.07,
       "tail_ratio": 0.134
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 2.46,
+      "corr": 0.07,
+      "tail_ratio": 0.161
     }
   },
   "sh600515": {
@@ -7449,6 +8857,14 @@
       "cv": 1.9,
       "corr": -0.04,
       "tail_ratio": 0.097
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 2.37,
+      "corr": 0.26,
+      "tail_ratio": 0.102
     }
   },
   "sz002230": {
@@ -7491,6 +8907,14 @@
       "cv": 1.06,
       "corr": -0.27,
       "tail_ratio": 0.126
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.05,
+      "corr": 0.1,
+      "tail_ratio": 0.208
     }
   },
   "sh601878": {
@@ -7533,6 +8957,14 @@
       "cv": 1.26,
       "corr": -0.15,
       "tail_ratio": 0.105
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.59,
+      "corr": 0.02,
+      "tail_ratio": 0.185
     }
   },
   "sh603986": {
@@ -7575,6 +9007,14 @@
       "cv": 0.82,
       "corr": -0.31,
       "tail_ratio": 0.109
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 0.88,
+      "corr": 0.33,
+      "tail_ratio": 0.149
     }
   },
   "sh600900": {
@@ -7617,6 +9057,14 @@
       "cv": 0.97,
       "corr": 0.46,
       "tail_ratio": 0.111
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.0,
+      "corr": 0.02,
+      "tail_ratio": 0.145
     }
   },
   "sh603392": {
@@ -7659,6 +9107,14 @@
       "cv": 1.25,
       "corr": 0.37,
       "tail_ratio": 0.188
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.22,
+      "corr": 0.19,
+      "tail_ratio": 0.152
     }
   },
   "sh688047": {
@@ -7701,6 +9157,14 @@
       "cv": 1.06,
       "corr": -0.13,
       "tail_ratio": 0.112
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.13,
+      "corr": 0.29,
+      "tail_ratio": 0.153
     }
   },
   "sz002920": {
@@ -7743,6 +9207,14 @@
       "cv": 0.94,
       "corr": -0.08,
       "tail_ratio": 0.143
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.16,
+      "corr": -0.28,
+      "tail_ratio": 0.12
     }
   },
   "sz002179": {
@@ -7785,6 +9257,14 @@
       "cv": 1.23,
       "corr": -0.4,
       "tail_ratio": 0.062
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.03,
+      "corr": -0.31,
+      "tail_ratio": 0.12
     }
   },
   "sh600050": {
@@ -7827,6 +9307,14 @@
       "cv": 1.7,
       "corr": -0.13,
       "tail_ratio": 0.087
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 2.08,
+      "corr": 0.19,
+      "tail_ratio": 0.187
     }
   },
   "sz002353": {
@@ -7869,6 +9357,14 @@
       "cv": 0.89,
       "corr": -0.18,
       "tail_ratio": 0.071
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.74,
+      "corr": -0.01,
+      "tail_ratio": 0.126
     }
   },
   "sh600674": {
@@ -7911,6 +9407,14 @@
       "cv": 0.97,
       "corr": 0.32,
       "tail_ratio": 0.113
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 0.98,
+      "corr": 0.25,
+      "tail_ratio": 0.128
     }
   },
   "sz300896": {
@@ -7953,6 +9457,14 @@
       "cv": 0.99,
       "corr": -0.14,
       "tail_ratio": 0.168
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.69,
+      "corr": 0.35,
+      "tail_ratio": 0.125
     }
   },
   "sh600061": {
@@ -7995,6 +9507,14 @@
       "cv": 1.36,
       "corr": -0.06,
       "tail_ratio": 0.101
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.59,
+      "corr": 0.08,
+      "tail_ratio": 0.12
     }
   },
   "sh601766": {
@@ -8037,6 +9557,14 @@
       "cv": 1.08,
       "corr": 0.21,
       "tail_ratio": 0.117
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.37,
+      "corr": 0.18,
+      "tail_ratio": 0.101
     }
   },
   "sh601985": {
@@ -8079,6 +9607,14 @@
       "cv": 1.03,
       "corr": 0.36,
       "tail_ratio": 0.122
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.13,
+      "corr": 0.24,
+      "tail_ratio": 0.161
     }
   },
   "sh688256": {
@@ -8121,6 +9657,14 @@
       "cv": 1.12,
       "corr": -0.42,
       "tail_ratio": 0.142
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 0.88,
+      "corr": 0.37,
+      "tail_ratio": 0.15
     }
   },
   "sz300418": {
@@ -8163,6 +9707,14 @@
       "cv": 0.86,
       "corr": -0.22,
       "tail_ratio": 0.113
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.8,
+      "corr": 0.19,
+      "tail_ratio": 0.14
     }
   },
   "sz002602": {
@@ -8205,6 +9757,14 @@
       "cv": 1.07,
       "corr": -0.1,
       "tail_ratio": 0.135
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.06,
+      "corr": -0.02,
+      "tail_ratio": 0.257
     }
   },
   "sh688521": {
@@ -8247,6 +9807,14 @@
       "cv": 0.96,
       "corr": -0.21,
       "tail_ratio": 0.094
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.89,
+      "corr": 0.15,
+      "tail_ratio": 0.159
     }
   },
   "sh600741": {
@@ -8289,6 +9857,14 @@
       "cv": 1.03,
       "corr": 0.07,
       "tail_ratio": 0.165
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 1.02,
+      "corr": 0.31,
+      "tail_ratio": 0.228
     }
   },
   "sh601377": {
@@ -8331,6 +9907,14 @@
       "cv": 1.35,
       "corr": -0.23,
       "tail_ratio": 0.132
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.97,
+      "corr": -0.17,
+      "tail_ratio": 0.246
     }
   },
   "sh600460": {
@@ -8373,6 +9957,14 @@
       "cv": 0.79,
       "corr": -0.2,
       "tail_ratio": 0.126
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.4,
+      "corr": 0.23,
+      "tail_ratio": 0.114
     }
   },
   "sz300251": {
@@ -8415,6 +10007,14 @@
       "cv": 1.49,
       "corr": 0.18,
       "tail_ratio": 0.118
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.99,
+      "corr": 0.05,
+      "tail_ratio": 0.167
     }
   },
   "sh600660": {
@@ -8457,6 +10057,14 @@
       "cv": 0.88,
       "corr": 0.26,
       "tail_ratio": 0.085
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.19,
+      "corr": 0.01,
+      "tail_ratio": 0.192
     }
   },
   "sz002916": {
@@ -8499,6 +10107,14 @@
       "cv": 0.76,
       "corr": -0.11,
       "tail_ratio": 0.102
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.84,
+      "corr": 0.12,
+      "tail_ratio": 0.151
     }
   },
   "sz002837": {
@@ -8541,6 +10157,14 @@
       "cv": 1.0,
       "corr": -0.08,
       "tail_ratio": 0.102
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.17,
+      "corr": 0.2,
+      "tail_ratio": 0.277
     }
   },
   "sh600809": {
@@ -8583,6 +10207,14 @@
       "cv": 1.05,
       "corr": -0.1,
       "tail_ratio": 0.109
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.42,
+      "corr": 0.45,
+      "tail_ratio": 0.107
     }
   },
   "sz002648": {
@@ -8625,6 +10257,14 @@
       "cv": 0.78,
       "corr": 0.25,
       "tail_ratio": 0.137
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.09,
+      "corr": -0.09,
+      "tail_ratio": 0.131
     }
   },
   "sh688009": {
@@ -8667,6 +10307,14 @@
       "cv": 1.05,
       "corr": 0.0,
       "tail_ratio": 0.124
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.43,
+      "corr": -0.14,
+      "tail_ratio": 0.187
     }
   },
   "sh600406": {
@@ -8709,6 +10357,14 @@
       "cv": 1.18,
       "corr": 0.46,
       "tail_ratio": 0.123
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.32,
+      "corr": -0.3,
+      "tail_ratio": 0.13
     }
   },
   "sh601169": {
@@ -8751,6 +10407,14 @@
       "cv": 1.24,
       "corr": 0.07,
       "tail_ratio": 0.114
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.23,
+      "corr": 0.05,
+      "tail_ratio": 0.127
     }
   },
   "sh600905": {
@@ -8793,6 +10457,14 @@
       "cv": 1.62,
       "corr": -0.07,
       "tail_ratio": 0.131
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.87,
+      "corr": -0.11,
+      "tail_ratio": 0.192
     }
   },
   "sh688126": {
@@ -8835,6 +10507,14 @@
       "cv": 0.89,
       "corr": -0.24,
       "tail_ratio": 0.124
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.99,
+      "corr": -0.01,
+      "tail_ratio": 0.137
     }
   },
   "sh600600": {
@@ -8877,6 +10557,14 @@
       "cv": 1.05,
       "corr": 0.0,
       "tail_ratio": 0.123
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.42,
+      "corr": -0.31,
+      "tail_ratio": 0.149
     }
   },
   "sz002460": {
@@ -8919,6 +10607,14 @@
       "cv": 1.16,
       "corr": 0.18,
       "tail_ratio": 0.092
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.12,
+      "corr": 0.29,
+      "tail_ratio": 0.114
     }
   },
   "sh688271": {
@@ -8961,6 +10657,14 @@
       "cv": 1.2,
       "corr": 0.23,
       "tail_ratio": 0.123
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.15,
+      "corr": 0.12,
+      "tail_ratio": 0.153
     }
   },
   "sh601658": {
@@ -9003,6 +10707,14 @@
       "cv": 1.55,
       "corr": 0.09,
       "tail_ratio": 0.103
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.46,
+      "corr": 0.04,
+      "tail_ratio": 0.131
     }
   },
   "sh600438": {
@@ -9045,6 +10757,14 @@
       "cv": 1.31,
       "corr": 0.36,
       "tail_ratio": 0.112
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.3,
+      "corr": -0.06,
+      "tail_ratio": 0.156
     }
   },
   "sh601088": {
@@ -9087,6 +10807,14 @@
       "cv": 0.69,
       "corr": 0.05,
       "tail_ratio": 0.161
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 0.91,
+      "corr": -0.3,
+      "tail_ratio": 0.134
     }
   },
   "sh605117": {
@@ -9129,6 +10857,14 @@
       "cv": 1.23,
       "corr": 0.37,
       "tail_ratio": 0.092
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.95,
+      "corr": 0.17,
+      "tail_ratio": 0.12
     }
   },
   "sh600362": {
@@ -9171,6 +10907,14 @@
       "cv": 1.65,
       "corr": -0.17,
       "tail_ratio": 0.102
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.89,
+      "corr": 0.05,
+      "tail_ratio": 0.133
     }
   },
   "sh603893": {
@@ -9213,6 +10957,14 @@
       "cv": 0.98,
       "corr": -0.13,
       "tail_ratio": 0.098
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.07,
+      "corr": -0.01,
+      "tail_ratio": 0.194
     }
   },
   "sz300413": {
@@ -9255,6 +11007,14 @@
       "cv": 1.25,
       "corr": 0.16,
       "tail_ratio": 0.127
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 10.0,
+      "cv": 1.19,
+      "corr": 0.59,
+      "tail_ratio": 0.118
     }
   },
   "sz002371": {
@@ -9297,6 +11057,14 @@
       "cv": 0.63,
       "corr": -0.18,
       "tail_ratio": 0.109
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.85,
+      "corr": -0.06,
+      "tail_ratio": 0.152
     }
   },
   "sh601939": {
@@ -9339,6 +11107,14 @@
       "cv": 1.08,
       "corr": -0.16,
       "tail_ratio": 0.103
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.88,
+      "corr": -0.2,
+      "tail_ratio": 0.174
     }
   },
   "sh601600": {
@@ -9381,6 +11157,14 @@
       "cv": 1.01,
       "corr": -0.27,
       "tail_ratio": 0.09
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 0.94,
+      "corr": 0.32,
+      "tail_ratio": 0.176
     }
   },
   "sh600919": {
@@ -9423,6 +11207,14 @@
       "cv": 0.83,
       "corr": 0.1,
       "tail_ratio": 0.124
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.97,
+      "corr": -0.14,
+      "tail_ratio": 0.123
     }
   },
   "sh601916": {
@@ -9465,6 +11257,14 @@
       "cv": 2.56,
       "corr": 0.06,
       "tail_ratio": 0.144
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.93,
+      "corr": 0.2,
+      "tail_ratio": 0.141
     }
   },
   "sz000938": {
@@ -9507,6 +11307,14 @@
       "cv": 1.22,
       "corr": -0.25,
       "tail_ratio": 0.118
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 0.79,
+      "corr": 0.35,
+      "tail_ratio": 0.154
     }
   },
   "sh601211": {
@@ -9549,6 +11357,14 @@
       "cv": 0.9,
       "corr": -0.11,
       "tail_ratio": 0.119
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.05,
+      "corr": -0.03,
+      "tail_ratio": 0.296
     }
   },
   "sz300124": {
@@ -9591,6 +11407,14 @@
       "cv": 1.12,
       "corr": 0.19,
       "tail_ratio": 0.087
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.73,
+      "corr": 0.07,
+      "tail_ratio": 0.187
     }
   },
   "sh603288": {
@@ -9633,6 +11457,14 @@
       "cv": 0.92,
       "corr": -0.36,
       "tail_ratio": 0.216
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.6,
+      "corr": -0.34,
+      "tail_ratio": 0.085
     }
   },
   "sh600588": {
@@ -9675,6 +11507,14 @@
       "cv": 1.0,
       "corr": 0.06,
       "tail_ratio": 0.1
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 1.0,
+      "corr": 0.3,
+      "tail_ratio": 0.178
     }
   },
   "sz000895": {
@@ -9717,6 +11557,14 @@
       "cv": 1.22,
       "corr": 0.46,
       "tail_ratio": 0.074
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.28,
+      "corr": 0.13,
+      "tail_ratio": 0.099
     }
   },
   "sh601288": {
@@ -9759,6 +11607,14 @@
       "cv": 1.14,
       "corr": -0.16,
       "tail_ratio": 0.135
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.11,
+      "corr": 0.1,
+      "tail_ratio": 0.133
     }
   },
   "sz300316": {
@@ -9801,6 +11657,14 @@
       "cv": 0.85,
       "corr": -0.27,
       "tail_ratio": 0.162
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.7,
+      "corr": 0.06,
+      "tail_ratio": 0.12
     }
   },
   "sh600426": {
@@ -9843,6 +11707,14 @@
       "cv": 0.93,
       "corr": 0.08,
       "tail_ratio": 0.107
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.91,
+      "corr": -0.09,
+      "tail_ratio": 0.134
     }
   },
   "sz001280": {
@@ -9885,6 +11757,14 @@
       "cv": 1.26,
       "corr": -0.16,
       "tail_ratio": 0.079
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.17,
+      "corr": 0.13,
+      "tail_ratio": 0.126
     }
   },
   "sz002352": {
@@ -9927,6 +11807,14 @@
       "cv": 0.87,
       "corr": 0.15,
       "tail_ratio": 0.139
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.98,
+      "corr": 0.07,
+      "tail_ratio": 0.098
     }
   },
   "sh600023": {
@@ -9969,6 +11857,14 @@
       "cv": 1.45,
       "corr": 0.25,
       "tail_ratio": 0.082
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.48,
+      "corr": 0.07,
+      "tail_ratio": 0.199
     }
   },
   "sz003816": {
@@ -10011,6 +11907,14 @@
       "cv": 1.17,
       "corr": 0.12,
       "tail_ratio": 0.114
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.39,
+      "corr": 0.07,
+      "tail_ratio": 0.158
     }
   },
   "sh600030": {
@@ -10053,6 +11957,14 @@
       "cv": 0.92,
       "corr": -0.14,
       "tail_ratio": 0.115
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.03,
+      "corr": 0.12,
+      "tail_ratio": 0.19
     }
   },
   "sh601872": {
@@ -10095,6 +12007,14 @@
       "cv": 0.88,
       "corr": -0.12,
       "tail_ratio": 0.113
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.12,
+      "corr": -0.22,
+      "tail_ratio": 0.152
     }
   },
   "sh600803": {
@@ -10137,6 +12057,14 @@
       "cv": 0.98,
       "corr": 0.18,
       "tail_ratio": 0.19
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.0,
+      "corr": 0.11,
+      "tail_ratio": 0.188
     }
   },
   "sh601899": {
@@ -10179,6 +12107,14 @@
       "cv": 1.07,
       "corr": -0.28,
       "tail_ratio": 0.103
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.77,
+      "corr": 0.05,
+      "tail_ratio": 0.152
     }
   },
   "sh600028": {
@@ -10221,6 +12157,14 @@
       "cv": 1.01,
       "corr": 0.03,
       "tail_ratio": 0.154
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.26,
+      "corr": 0.03,
+      "tail_ratio": 0.167
     }
   },
   "sz300450": {
@@ -10263,6 +12207,14 @@
       "cv": 0.82,
       "corr": -0.27,
       "tail_ratio": 0.123
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.12,
+      "corr": 0.35,
+      "tail_ratio": 0.115
     }
   },
   "sh688506": {
@@ -10305,6 +12257,14 @@
       "cv": 1.13,
       "corr": -0.02,
       "tail_ratio": 0.137
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.14,
+      "corr": 0.13,
+      "tail_ratio": 0.117
     }
   },
   "sz000807": {
@@ -10347,6 +12307,14 @@
       "cv": 1.06,
       "corr": -0.03,
       "tail_ratio": 0.099
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 0.87,
+      "corr": 0.3,
+      "tail_ratio": 0.174
     }
   },
   "sz300014": {
@@ -10389,6 +12357,14 @@
       "cv": 0.97,
       "corr": -0.16,
       "tail_ratio": 0.152
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.05,
+      "corr": 0.32,
+      "tail_ratio": 0.11
     }
   },
   "sh600522": {
@@ -10431,6 +12407,14 @@
       "cv": 1.08,
       "corr": -0.45,
       "tail_ratio": 0.07
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.13,
+      "corr": 0.15,
+      "tail_ratio": 0.118
     }
   },
   "sh601111": {
@@ -10473,6 +12457,14 @@
       "cv": 1.42,
       "corr": -0.08,
       "tail_ratio": 0.112
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.55,
+      "corr": 0.07,
+      "tail_ratio": 0.141
     }
   },
   "sz000630": {
@@ -10515,6 +12507,14 @@
       "cv": 1.0,
       "corr": -0.25,
       "tail_ratio": 0.109
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.09,
+      "corr": 0.1,
+      "tail_ratio": 0.141
     }
   },
   "sz000166": {
@@ -10557,6 +12557,14 @@
       "cv": 1.37,
       "corr": -0.04,
       "tail_ratio": 0.091
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.8,
+      "corr": -0.04,
+      "tail_ratio": 0.198
     }
   },
   "sh601881": {
@@ -10599,6 +12607,14 @@
       "cv": 1.17,
       "corr": -0.1,
       "tail_ratio": 0.113
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.24,
+      "corr": -0.1,
+      "tail_ratio": 0.287
     }
   },
   "sh601166": {
@@ -10641,6 +12657,14 @@
       "cv": 0.96,
       "corr": -0.14,
       "tail_ratio": 0.129
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.39,
+      "corr": -0.06,
+      "tail_ratio": 0.174
     }
   },
   "sh601901": {
@@ -10683,6 +12707,14 @@
       "cv": 1.5,
       "corr": -0.15,
       "tail_ratio": 0.094
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.57,
+      "corr": 0.04,
+      "tail_ratio": 0.183
     }
   },
   "sh601012": {
@@ -10725,6 +12757,14 @@
       "cv": 1.17,
       "corr": -0.11,
       "tail_ratio": 0.084
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.13,
+      "corr": 0.21,
+      "tail_ratio": 0.147
     }
   },
   "sh688082": {
@@ -10767,6 +12807,14 @@
       "cv": 1.22,
       "corr": -0.14,
       "tail_ratio": 0.093
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 10.0,
+      "cv": 1.73,
+      "corr": 0.61,
+      "tail_ratio": 0.117
     }
   },
   "sh601898": {
@@ -10809,6 +12857,14 @@
       "cv": 0.82,
       "corr": 0.22,
       "tail_ratio": 0.131
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.89,
+      "corr": -0.12,
+      "tail_ratio": 0.089
     }
   },
   "sz300760": {
@@ -10851,6 +12907,14 @@
       "cv": 1.01,
       "corr": 0.41,
       "tail_ratio": 0.104
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.86,
+      "corr": 0.19,
+      "tail_ratio": 0.158
     }
   },
   "sh600482": {
@@ -10893,6 +12957,14 @@
       "cv": 0.79,
       "corr": 0.26,
       "tail_ratio": 0.082
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.02,
+      "corr": -0.05,
+      "tail_ratio": 0.116
     }
   },
   "sh600958": {
@@ -10935,6 +13007,14 @@
       "cv": 1.04,
       "corr": 0.04,
       "tail_ratio": 0.11
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.32,
+      "corr": -0.08,
+      "tail_ratio": 0.137
     }
   },
   "sz000596": {
@@ -10977,6 +13057,14 @@
       "cv": 1.38,
       "corr": -0.33,
       "tail_ratio": 0.099
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.48,
+      "corr": 0.39,
+      "tail_ratio": 0.126
     }
   },
   "sz000858": {
@@ -11019,6 +13107,14 @@
       "cv": 1.09,
       "corr": -0.21,
       "tail_ratio": 0.089
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.95,
+      "corr": -0.1,
+      "tail_ratio": 0.194
     }
   },
   "sz300274": {
@@ -11061,6 +13157,14 @@
       "cv": 0.73,
       "corr": -0.14,
       "tail_ratio": 0.099
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 10.0,
+      "cv": 1.03,
+      "corr": 0.57,
+      "tail_ratio": 0.124
     }
   },
   "sh600104": {
@@ -11103,6 +13207,14 @@
       "cv": 1.15,
       "corr": 0.08,
       "tail_ratio": 0.103
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.02,
+      "corr": -0.07,
+      "tail_ratio": 0.138
     }
   },
   "sz300803": {
@@ -11145,6 +13257,14 @@
       "cv": 0.9,
       "corr": -0.25,
       "tail_ratio": 0.106
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 0.85,
+      "corr": 0.36,
+      "tail_ratio": 0.187
     }
   },
   "sz000425": {
@@ -11187,6 +13307,14 @@
       "cv": 1.18,
       "corr": 0.02,
       "tail_ratio": 0.115
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.09,
+      "corr": -0.05,
+      "tail_ratio": 0.166
     }
   },
   "sz000999": {
@@ -11229,6 +13357,14 @@
       "cv": 0.96,
       "corr": 0.22,
       "tail_ratio": 0.119
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.16,
+      "corr": -0.01,
+      "tail_ratio": 0.131
     }
   },
   "sz000301": {
@@ -11271,6 +13407,14 @@
       "cv": 1.07,
       "corr": -0.18,
       "tail_ratio": 0.134
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 26.7,
+      "cv": 0.93,
+      "corr": -0.44,
+      "tail_ratio": 0.121
     }
   },
   "sz002493": {
@@ -11313,6 +13457,14 @@
       "cv": 1.13,
       "corr": 0.36,
       "tail_ratio": 0.091
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.97,
+      "corr": -0.16,
+      "tail_ratio": 0.117
     }
   },
   "sh600031": {
@@ -11355,6 +13507,14 @@
       "cv": 1.24,
       "corr": 0.33,
       "tail_ratio": 0.12
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.12,
+      "corr": 0.22,
+      "tail_ratio": 0.172
     }
   },
   "sh600118": {
@@ -11397,6 +13557,14 @@
       "cv": 1.11,
       "corr": -0.02,
       "tail_ratio": 0.096
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.95,
+      "corr": 0.16,
+      "tail_ratio": 0.194
     }
   },
   "sh603260": {
@@ -11439,6 +13607,14 @@
       "cv": 1.09,
       "corr": -0.31,
       "tail_ratio": 0.084
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 16.7,
+      "cv": 1.73,
+      "corr": 0.21,
+      "tail_ratio": 0.158
     }
   },
   "sz302132": {
@@ -11481,6 +13657,14 @@
       "cv": 1.1,
       "corr": 0.47,
       "tail_ratio": 0.094
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.04,
+      "corr": -0.16,
+      "tail_ratio": 0.092
     }
   },
   "sh600085": {
@@ -11523,6 +13707,14 @@
       "cv": 1.28,
       "corr": 0.39,
       "tail_ratio": 0.169
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.33,
+      "corr": 0.01,
+      "tail_ratio": 0.183
     }
   },
   "sh688223": {
@@ -11565,6 +13757,14 @@
       "cv": 1.4,
       "corr": 0.24,
       "tail_ratio": 0.074
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.39,
+      "corr": 0.09,
+      "tail_ratio": 0.157
     }
   },
   "sh600160": {
@@ -11607,6 +13807,14 @@
       "cv": 1.09,
       "corr": 0.22,
       "tail_ratio": 0.075
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.18,
+      "corr": -0.19,
+      "tail_ratio": 0.116
     }
   },
   "sz300628": {
@@ -11649,6 +13857,14 @@
       "cv": 1.13,
       "corr": 0.48,
       "tail_ratio": 0.141
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.21,
+      "corr": -0.17,
+      "tail_ratio": 0.157
     }
   },
   "sz002600": {
@@ -11691,6 +13907,14 @@
       "cv": 1.17,
       "corr": 0.35,
       "tail_ratio": 0.089
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.97,
+      "corr": 0.18,
+      "tail_ratio": 0.178
     }
   },
   "sh600027": {
@@ -11733,6 +13957,14 @@
       "cv": 1.42,
       "corr": 0.04,
       "tail_ratio": 0.102
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.55,
+      "corr": 0.2,
+      "tail_ratio": 0.104
     }
   },
   "sh605499": {
@@ -11775,6 +14007,14 @@
       "cv": 1.17,
       "corr": -0.18,
       "tail_ratio": 0.1
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.17,
+      "corr": -0.03,
+      "tail_ratio": 0.186
     }
   },
   "sh600176": {
@@ -11817,6 +14057,14 @@
       "cv": 1.0,
       "corr": -0.22,
       "tail_ratio": 0.095
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.91,
+      "corr": 0.11,
+      "tail_ratio": 0.114
     }
   },
   "sh601238": {
@@ -11835,6 +14083,14 @@
       "cv": 1.48,
       "corr": -0.1,
       "tail_ratio": 0.094
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 4.16,
+      "corr": 0.0,
+      "tail_ratio": 0.082
     }
   },
   "sh601868": {
@@ -11877,6 +14133,14 @@
       "cv": 2.49,
       "corr": -0.03,
       "tail_ratio": 0.081
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 3.07,
+      "corr": 0.01,
+      "tail_ratio": 0.157
     }
   },
   "sz000568": {
@@ -11919,6 +14183,14 @@
       "cv": 1.02,
       "corr": -0.1,
       "tail_ratio": 0.116
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.87,
+      "corr": -0.29,
+      "tail_ratio": 0.214
     }
   },
   "sz000333": {
@@ -11961,6 +14233,14 @@
       "cv": 0.95,
       "corr": 0.03,
       "tail_ratio": 0.104
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.85,
+      "corr": 0.04,
+      "tail_ratio": 0.173
     }
   },
   "sh603799": {
@@ -12003,6 +14283,14 @@
       "cv": 1.1,
       "corr": -0.27,
       "tail_ratio": 0.083
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.88,
+      "corr": -0.11,
+      "tail_ratio": 0.187
     }
   },
   "sh601021": {
@@ -12045,6 +14333,14 @@
       "cv": 0.91,
       "corr": 0.15,
       "tail_ratio": 0.166
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.38,
+      "corr": 0.07,
+      "tail_ratio": 0.085
     }
   },
   "sh600276": {
@@ -12087,6 +14383,14 @@
       "cv": 0.76,
       "corr": 0.07,
       "tail_ratio": 0.105
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 10.0,
+      "cv": 1.75,
+      "corr": 0.64,
+      "tail_ratio": 0.099
     }
   },
   "sh600011": {
@@ -12129,6 +14433,14 @@
       "cv": 1.04,
       "corr": 0.35,
       "tail_ratio": 0.187
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.26,
+      "corr": 0.17,
+      "tail_ratio": 0.148
     }
   },
   "sh600010": {
@@ -12171,6 +14483,14 @@
       "cv": 2.08,
       "corr": -0.14,
       "tail_ratio": 0.093
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 3.01,
+      "corr": 0.04,
+      "tail_ratio": 0.133
     }
   },
   "sh688041": {
@@ -12213,6 +14533,14 @@
       "cv": 0.69,
       "corr": -0.13,
       "tail_ratio": 0.097
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.71,
+      "corr": 0.06,
+      "tail_ratio": 0.104
     }
   },
   "sh688472": {
@@ -12255,6 +14583,14 @@
       "cv": 0.93,
       "corr": 0.04,
       "tail_ratio": 0.118
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.05,
+      "corr": 0.11,
+      "tail_ratio": 0.165
     }
   },
   "sz002594": {
@@ -12297,6 +14633,14 @@
       "cv": 0.95,
       "corr": -0.04,
       "tail_ratio": 0.127
+    },
+    "2026-09-29": {
+      "is_real": true,
+      "verdict": "真金白银",
+      "quant_pct": 16.7,
+      "cv": 1.07,
+      "corr": -0.33,
+      "tail_ratio": 0.149
     }
   },
   "sh600221": {
@@ -12339,6 +14683,14 @@
       "cv": 3.63,
       "corr": -0.02,
       "tail_ratio": 0.106
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 3.43,
+      "corr": 0.08,
+      "tail_ratio": 0.278
     }
   },
   "sz002027": {
@@ -12381,6 +14733,14 @@
       "cv": 1.34,
       "corr": 0.16,
       "tail_ratio": 0.127
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.26,
+      "corr": -0.06,
+      "tail_ratio": 0.129
     }
   },
   "sh600886": {
@@ -12423,6 +14783,14 @@
       "cv": 1.12,
       "corr": 0.34,
       "tail_ratio": 0.089
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.51,
+      "corr": -0.1,
+      "tail_ratio": 0.142
     }
   },
   "sh601995": {
@@ -12465,6 +14833,14 @@
       "cv": 1.27,
       "corr": -0.32,
       "tail_ratio": 0.081
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.09,
+      "corr": 0.19,
+      "tail_ratio": 0.183
     }
   },
   "sz000617": {
@@ -12507,6 +14883,14 @@
       "cv": 0.96,
       "corr": -0.25,
       "tail_ratio": 0.146
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.4,
+      "corr": -0.05,
+      "tail_ratio": 0.249
     }
   },
   "sh600690": {
@@ -12549,6 +14933,14 @@
       "cv": 0.9,
       "corr": 0.35,
       "tail_ratio": 0.132
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.04,
+      "corr": -0.03,
+      "tail_ratio": 0.156
     }
   },
   "sz000001": {
@@ -12591,6 +14983,14 @@
       "cv": 1.21,
       "corr": 0.22,
       "tail_ratio": 0.112
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.06,
+      "corr": -0.08,
+      "tail_ratio": 0.137
     }
   },
   "sz001979": {
@@ -12633,6 +15033,14 @@
       "cv": 0.79,
       "corr": -0.06,
       "tail_ratio": 0.11
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 26.7,
+      "cv": 1.14,
+      "corr": 0.03,
+      "tail_ratio": 0.093
     }
   },
   "sz300122": {
@@ -12675,6 +15083,14 @@
       "cv": 0.98,
       "corr": -0.04,
       "tail_ratio": 0.119
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.03,
+      "corr": 0.12,
+      "tail_ratio": 0.221
     }
   },
   "sz300498": {
@@ -12717,6 +15133,14 @@
       "cv": 0.86,
       "corr": 0.37,
       "tail_ratio": 0.133
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 0.94,
+      "corr": 0.19,
+      "tail_ratio": 0.199
     }
   },
   "sh601816": {
@@ -12759,6 +15183,14 @@
       "cv": 1.46,
       "corr": 0.2,
       "tail_ratio": 0.139
+    },
+    "2026-09-29": {
+      "is_real": null,
+      "verdict": "疑似量化",
+      "quant_pct": 36.7,
+      "cv": 1.63,
+      "corr": -0.04,
+      "tail_ratio": 0.254
     }
   }
 }
