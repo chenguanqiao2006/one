@@ -37,6 +37,18 @@ HOLDINGS = [
 ]
 
 # ============================================================
+# 【统一配置接入】优先使用 config.py 的持仓股（字典格式）；缺失则用内置默认
+# 为什么这么做：AI 研判与报告/回测共用同一份持仓，改 config.py 一处即可，
+# 避免换股时漏改本脚本；try/except 保证 config 不在也能运行。
+# ============================================================
+try:
+    from config import HOLDINGS_DICT as _CFG_HOLDINGS
+    HOLDINGS = list(_CFG_HOLDINGS)
+    print("[config] 已从 config.py 加载持仓股（字典格式）")
+except Exception as _cfg_err:
+    print(f"[config] 未加载 config.py，使用脚本内置持仓（{_cfg_err}）")
+
+# ============================================================
 # 工具函数
 # ============================================================
 def flatten_winrate(node, ctx=None, acc=None):
