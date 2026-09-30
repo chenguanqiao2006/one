@@ -36,6 +36,18 @@ HOLDINGS = [
     ("sh", "601138"), ("sh", "601231"), ("sz", "300476"), ("sh", "603516"),
 ]
 
+# ============================================================
+# 【统一配置接入】优先使用 config.py 的持仓股；config 缺失时用上面内置默认
+# 为什么这么做：实现"改持仓只改 config.py 一处"，避免多个脚本不同步；
+# 用 try/except 包裹，config 不在也能正常运行，不增加故障点。
+# ============================================================
+try:
+    from config import HOLDINGS_TUPLE as _CFG_HOLDINGS
+    HOLDINGS = list(_CFG_HOLDINGS)
+    print("[config] 已从 config.py 加载持仓股")
+except Exception as _cfg_err:
+    print(f"[config] 未加载 config.py，使用脚本内置持仓（{_cfg_err}）")
+
 HOLD_PERIODS = [5, 10, 20]
 
 MAX_WAIT_DAYS = 10
@@ -93,6 +105,20 @@ VOL_PERCENTILE = 0.7
 
 BODY_RATIO_THRESHOLD = 0.6
 NIUGU_TOUCH_TOLERANCE = 0.01
+
+# ============================================================
+# 【B5修复】量价背离：价格创窗口新高/新低 + 量能低于近期均量 双确认
+# 与 level4d_report_html.py 保持同一口径
+# ============================================================
+DIVERGENCE_LOOKBACK = 20
+DIVERGENCE_VOL_SHRINK = 0.85
+
+# ============================================================
+# 【T5】二次三倍量（自媒体说法、权威性待考——纳入回测用数据验证）
+# ============================================================
+SANBEI_RATIO = 3.0
+SANBEI_LOOKBACK = 60
+SANBEI_MIN_GAP = 3
 
 
 # ============================================================
@@ -154,7 +180,8 @@ def is_real_money(market, code, trade_date):
 
     filepath = MIN1_DIR / f"{market}{code}.json"
     if not filepath.exists():
-        result = (True, 0)
+        # 无任何数据可判 → 第三态"未知"(None)，不再乐观当真金，避免系统性高估真金样本
+        result = (None, None)
         _real_money_cache[cache_key] = result
         return result
 
@@ -162,10 +189,12 @@ def is_real_money(market, code, trade_date):
         with open(filepath, 'r') as f: data = json.load(f)
         klines = data.get('klines', [])
         if len(klines) < 100:
-            result = (True, 0); _real_money_cache[cache_key] = result; return result
+            # 1分钟样本太少、无法可靠判真假 → 未知，不混入真金
+            result = (None, None); _real_money_cache[cache_key] = result; return result
         day_klines = [k for k in klines if k[0].startswith(trade_date)]
         if len(day_klines) < 200:
-            result = (True, 0); _real_money_cache[cache_key] = result; return result
+            # 当天1分钟K线不足（停牌/数据残缺）→ 未知，不乐观当真金
+            result = (None, None); _real_money_cache[cache_key] = result; return result
         volumes = [float(k[5]) for k in day_klines]
         closes = [float(k[2]) for k in day_klines]
         vol_mean, vol_std = np.mean(volumes), np.std(volumes)
@@ -185,7 +214,8 @@ def is_real_money(market, code, trade_date):
         _real_money_cache[cache_key] = result
         return result
     except Exception:
-        result = (True, 0); _real_money_cache[cache_key] = result; return result
+        # 解析异常属于"判不出来"→ 未知，避免异常样本被默认真金
+        result = (None, None); _real_money_cache[cache_key] = result; return result
 
 
 def get_atr_threshold(atr_pct, mult, fallback):
@@ -351,7 +381,11 @@ def check_chang_duan_yin(df, i, atr_pct):
 def check_yang_bao_yin(df, i):
     if i < 2: return False, None
     today, yesterday = df.iloc[i], df.iloc[i-1]
-    return (True, today['open']) if (today['close'] > yesterday['open'] and today['open'] < yesterday['close'] and today['close'] > today['open']) else (False, None)
+    # B3修复：要求昨天是阴线（昨收<昨开），两根阳线不算阳包阴
+    return (True, today['open']) if (yesterday['close'] < yesterday['open']
+            and today['close'] > yesterday['open']
+            and today['open'] < yesterday['close']
+            and today['close'] > today['open']) else (False, None)
 
 def check_ban_zhang(df, i, code):
     if i < 2: return False, None
@@ -399,7 +433,8 @@ def check_beiliang_buchuan(df, i, code):
 
 def check_gaoliang_bupo(df, i):
     if i < 60: return False, None
-    recent_60 = df.iloc[i-59:i+1]
+    # B1修复：切片重置索引（标签=位置），避免 idxmax 返回大标签、iloc 按位置越界
+    recent_60 = df.iloc[i-59:i+1].reset_index(drop=True)
     mvi = recent_60['volume'].idxmax()
     bottom = recent_60.loc[mvi]['low']
     future = recent_60.iloc[mvi + 1:]
@@ -453,23 +488,66 @@ def identify_price_pattern(df, i, atr_pct):
 
 
 def check_divergence(df, i):
-    if i < 10: return None, None
-    r10 = df.iloc[i-10:i+1]
-    pc = (r10.iloc[-1]['close'] - r10.iloc[0]['close']) / r10.iloc[0]['close'] * 100
-    fv = r10.iloc[0]['volume']
-    vc = (r10.iloc[-1]['volume'] - fv) / fv * 100 if fv > 0 else 0
-    if pc > 5 and vc < -20: return "顶背离", r10.iloc[-1]['close']
-    if pc < -5 and vc > 20: return "底背离", r10.iloc[-1]['close']
+    # B5修复：与报告同一口径——价格真创窗口新高/新低 + 量能低于近期均量
+    if i < DIVERGENCE_LOOKBACK: return None, None
+    win = df.iloc[i-DIVERGENCE_LOOKBACK+1:i+1]
+    last = win.iloc[-1]
+    prior_avg_vol = win.iloc[:-1]['volume'].mean()
+    if prior_avg_vol <= 0: return None, None
+    if last['close'] >= win['high'].max() and last['volume'] < prior_avg_vol * DIVERGENCE_VOL_SHRINK:
+        return "顶背离", last['close']
+    if last['close'] <= win['low'].min() and last['volume'] < prior_avg_vol * DIVERGENCE_VOL_SHRINK:
+        return "底背离", last['close']
     return None, None
 
 
-def check_main_intent(position, stock_trend, vol_pattern, pillar_type, price_pattern):
+# ============================================================
+# 【T5】二次三倍量（自媒体说法、权威性待考）
+# 截至第 i 天出现第二次三倍量（间隔达标）才返回 True，用于回测验证胜率
+# ============================================================
+def check_second_sanbei(df, i):
+    if i < SANBEI_MIN_GAP + 1: return False, None
+    win = df.iloc[max(0, i-SANBEI_LOOKBACK):i+1]
+    days = []
+    for j in range(1, len(win)):
+        prev_v = win.iloc[j-1]['volume']
+        v = win.iloc[j]['volume']
+        if prev_v > 0 and v / prev_v >= SANBEI_RATIO:
+            days.append(j)
+    if len(days) >= 2 and (days[-1] - days[-2]) >= SANBEI_MIN_GAP:
+        return True, win.iloc[days[-1]]['open']
+    return False, None
+
+
+def identify_vol_pattern_bt(df, i):
+    # 审计第7点修复：与报告 identify_vol_pattern 同优先级，返回"纯量柱名称"
+    # （signal_checks 里的 name 带括号后缀如"低量柱（地量）"，直接拿去匹配意图会失败）
+    if i < 1: return "普通量柱"
+    for name, fn in [("倍量柱", check_bei_liang), ("高量柱", check_gao_liang),
+                     ("低量柱", check_di_liang), ("梯量柱", check_ti_liang),
+                     ("缩量柱", check_suo_liang), ("平量柱", check_ping_liang)]:
+        try:
+            ok, _ = fn(df, i)
+            if ok: return name
+        except Exception:
+            pass
+    return "普通量柱"
+
+
+def check_main_intent(position, stock_trend, vol_pattern, pillar_type, price_pattern,
+                      is_real_sig=None, has_diliang=False):
+    # 与报告 get_main_force_intent 口径对齐：is_real_sig True=真金/False=量化/None=未知
     intents = []
-    if position == "低位" and vol_pattern == "倍量柱" and stock_trend == "上升趋势": intents.append(("建仓中", None))
-    if position == "中位" and pillar_type == "黄金柱" and stock_trend == "上升趋势": intents.append(("洗盘", None))
+    real = (is_real_sig is True)
+    fake = (is_real_sig is False)
+    if position == "低位" and vol_pattern == "倍量柱" and real and stock_trend == "上升趋势": intents.append(("建仓中", None))
+    # B7对齐：洗盘=中位上升中王牌柱后缩量/平量回踩，而非旧的"黄金柱+上升"
+    if position == "中位" and stock_trend == "上升趋势" and pillar_type in ["黄金柱", "将军柱"] and vol_pattern in ["缩量柱", "平量柱", "低量柱"]: intents.append(("洗盘", None))
     if position == "中位" and pillar_type == "元帅柱" and vol_pattern == "倍量柱": intents.append(("拉升", None))
-    if position == "高位" and vol_pattern == "倍量柱": intents.append(("出货", None))
+    if position == "高位" and vol_pattern == "倍量柱" and fake: intents.append(("出货", None))
     if position == "高位" and price_pattern == "长阴" and vol_pattern in ["倍量柱", "高量柱"]: intents.append(("出逃", None))
+    if position == "低位" and has_diliang and real: intents.append(("吸筹", None))
+    if position in ["中位", "高位"] and vol_pattern == "倍量柱" and fake: intents.append(("诱多", None))
     return intents
 
 
@@ -577,7 +655,8 @@ def main():
             market_regime = get_market_regime(index_df, df.iloc[i]['date'])
 
             signals_today = []
-            vol_pattern = "无"
+            # 审计第7点修复：直接用统一识别得到纯量柱名称（不再靠信号name兜底、避免括号后缀）
+            vol_pattern = identify_vol_pattern_bt(df, i)
 
             # 【关键修复】：用 lambda 包装所有信号检测
             signal_checks = [
@@ -602,6 +681,7 @@ def main():
                 ("价升量缩", lambda: check_jiasheng_liangsou(df, i)),
                 ("倍量伸缩", lambda: check_beishuo_shensuo(df, i)),
                 ("回踩精准线", lambda: check_huicai_jingzhun(df, i, precise_price)),
+                ("二次三倍量(待验证)", lambda: check_second_sanbei(df, i)),
             ]
             for name, check in signal_checks:
                 try:
@@ -623,7 +703,10 @@ def main():
             div_name, div_support = check_divergence(df, i)
             if div_name: signals_today.append((div_name, div_support))
 
-            for intent_name, intent_support in check_main_intent(position, stock_trend, vol_pattern, pillar_type, price_pattern):
+            # 意图判断需真假量与地量群，先取（is_real_money 带缓存）
+            is_real_sig, _ = is_real_money(market, code, df.iloc[i]['date'])
+            has_diliang, _ = check_diliang_qun(df, i)
+            for intent_name, intent_support in check_main_intent(position, stock_trend, vol_pattern, pillar_type, price_pattern, is_real_sig, has_diliang):
                 signals_today.append((intent_name, intent_support if intent_support else df.iloc[i]['close']))
 
             for signal_name, support_price in signals_today:
@@ -633,14 +716,14 @@ def main():
                 buy_today, buy_yesterday = df.iloc[buy_idx], df.iloc[buy_idx - 1]
                 if buy_today['open'] == buy_today['close'] and (buy_today['close'] - buy_yesterday['close']) / buy_yesterday['close'] * 100 > 9.5: continue
                 bp = df.iloc[buy_idx]['open']
-                is_real, _ = is_real_money(market, code, df.iloc[i]['date'])
+                # 复用上方意图判断已取的 is_real_sig（同一信号日），不再重复调用
                 for hold_days in HOLD_PERIODS:
                     sell_idx = buy_idx + hold_days
                     if sell_idx >= n: continue
                     sp = df.iloc[sell_idx]['close']
                     if bp <= 0: continue
                     ret = (sp - bp) / bp * 100 - TOTAL_COST * 100
-                    all_trades[signal_name][position][stock_trend][market_regime][hold_days].append((ret, is_real))
+                    all_trades[signal_name][position][stock_trend][market_regime][hold_days].append((ret, is_real_sig))
 
     print("\n" + "=" * 70)
     print("回测完成，生成 winrate.json ...")
@@ -676,6 +759,13 @@ def main():
                     winrate_data[pos][trend][f"{signal_name}_量化"] = {
                         "win_rate": round(sum(1 for r in quant_returns if r > 0) / len(quant_returns) * 100, 1),
                         "avg_ret": round(float(np.mean(quant_returns)), 2)
+                    }
+                # 新增第三态细分：数据缺失/异常的"未知"样本单独统计，不混入真金也不混入量化
+                unknown_returns = [t[0] for t in all_list if t[1] is None]
+                if len(unknown_returns) >= 5:
+                    winrate_data[pos][trend][f"{signal_name}_未知"] = {
+                        "win_rate": round(sum(1 for r in unknown_returns if r > 0) / len(unknown_returns) * 100, 1),
+                        "avg_ret": round(float(np.mean(unknown_returns)), 2)
                     }
 
     output_dir = Path(__file__).parent.parent / "data" / "analysis"
