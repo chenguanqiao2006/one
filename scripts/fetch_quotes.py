@@ -15,8 +15,12 @@ fetch_quotes.py — 行情拉取（日线 + 1 分钟），北交所全程过滤
     日线：东财 → 腾讯 → 新浪
     1 分钟：东财(klt=1) → 腾讯(分时接口，仅当日)
 
-说明：本脚本基于原 workflow 的拉取逻辑重建。首次使用请用
-workflow_dispatch 手动触发一次，从 Actions 日志确认数据源可达。
+本版修复：
+    [1] 沪深300 列名兼容（akshare 新版叫"成分券代码"）
+    [2] 周末假期不再被误判为盘中（只在工作日盘中跳过日线）
+    [3] 东财请求加 Referer 头（降低被拒概率）
+    [4] 腾讯分时幽灵K线过滤（只保留 09:30-11:30 / 13:00-15:00）
+    [5] 腾讯分时累计量重置保护
 """
 
 import json
@@ -35,17 +39,20 @@ K1M_DIR = BASE / 'data' / 'kline_1min'
 HUS300_FILE = BASE / 'data' / 'hushen300.json'
 
 CST = timezone(timedelta(hours=8))
-UA = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+UA = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+    'Referer': 'https://quote.eastmoney.com/',
+}
 TIMEOUT = 15
 MAX_WORKERS = 5
 
-# ⚠️ 唯一需要你动手的地方：你原仓库有 9 只自选，我只确认了下面 3 只。
-#    把其余 6 只按同样格式补全（sh600xxx / sz00xxxx / sz300xxx）。
+# ⚠️ 唯一需要你动手的地方：把你的 9 只自选补全（我目前只确认了 3 只）。
+#    格式照抄：沪市 sh 开头，深市 sz 开头。不会改就先不动，不影响运行。
 HOLDINGS_1MIN = [
     'sh601138',   # 工业富联
     'sz002156',   # 通富微电
     'sh600584',   # 长电科技
-    # 'sh600000',  # ← 剩余自选加在这里
+    # 'shXXXXXX',  # ← 其余自选加在这里
 ]
 
 
@@ -184,13 +191,21 @@ def min1_from_tencent(code):
         p = r.split()                    # '0930 15.00 1234'
         if len(p) < 3 or len(p[0]) != 4:
             continue
+        # [修复4] 幽灵K线过滤：只保留连续竞价时段 09:30-11:30 / 13:00-15:00，
+        # 竞价 / 午休 / 盘后多吐的数据行全部丢弃
+        hhmm = p[0]
+        if not ('0930' <= hhmm <= '1130' or '1300' <= hhmm <= '1500'):
+            continue
         try:
             price, cum = float(p[1]), int(float(p[2]))
         except ValueError:
             continue
+        # [修复5] 累计量重置保护（午间重启等情况：新半场从 0 重新累计）
+        if cum < prev:
+            prev = 0
         vol = max(0, cum - prev)
         prev = cum
-        out.append([f'{day} {p[0][:2]}:{p[0][2:]}',
+        out.append([f'{day} {hhmm[:2]}:{hhmm[2:]}',
                     price, price, price, price, vol])
     return out
 
@@ -269,10 +284,17 @@ def load_hushen300():
     try:
         import akshare as ak
         df = ak.index_stock_cons_csindex(symbol='000300')
-        out = [normalize_code(str(x)) for x in df['代码'].tolist()]
+        # [修复1] 兼容不同 akshare 版本：自动找"成分券代码"这类列，排除"指数代码"
+        col = next((c for c in df.columns
+                    if '代码' in str(c) and '指数' not in str(c)), None)
+        if col is None:
+            raise ValueError(f'未找到成分股代码列，实际列名: {list(df.columns)}')
+        out = [normalize_code(str(x)) for x in df[col].tolist()]
         out = [c for c in out if c]
+        if not out:
+            raise ValueError('成分股列表为空')
         save_json(HUS300_FILE, out)
-        print(f'[INFO] 沪深300 成分股已拉取并缓存: {len(out)} 只')
+        print(f'[INFO] 沪深300 成分股已缓存: {len(out)} 只 (列名: {col})')
         return out
     except Exception as e:
         print(f'[WARN] 沪深300 拉取失败（1分钟范围将只用自选）: {e}')
@@ -368,12 +390,13 @@ def run_threaded(codes, worker):
 def main():
     now = beijing_now()
     sunday, trading = is_sunday(now), in_trading_hours(now)
-    print(f'[INFO] 北京时间 {now:%Y-%m-%d %H:%M}  周日={sunday}  交易时段={trading}')
+    print(f'[INFO] 北京时间 {now:%Y-%m-%d %H:%M}  周几={now.weekday() + 1}  交易时段={trading}')
 
     # --- 日线 ---
     daily_codes = get_daily_universe()
     print(f'[INFO] 日线股票池: {len(daily_codes)} 只')
-    if trading and not sunday:
+    # [修复2] 只有"工作日的盘中"才跳过日线；周末和假期照常拉取
+    if trading and now.weekday() < 5:
         print('[INFO] 当前处于 A 股交易时段，跳过日线拉取（避免盘中数据不完整）')
     else:
         datalen, full = (1023, True) if sunday else (10, False)
