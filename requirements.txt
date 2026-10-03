@@ -1,0 +1,2 @@
+requests>=2.31
+akshare>=1.12
