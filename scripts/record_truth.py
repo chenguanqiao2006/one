@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-record_truth.py — 真假量柱账本分析器 v2.2
+record_truth.py — 真假量柱账本分析器 v2.3
 ==========================================
 
 职责链：
@@ -13,8 +13,19 @@ record_truth.py — 真假量柱账本分析器 v2.2
 
 v2.2 相对 v2.1 的变更：
     [新增] filter_session 兜底过滤 —— 每日 K 线只保留连续竞价时段
-           （09:30-11:30 / 13:00-15:00），并裁掉尾部连续零量行，
-           防止盘后"幽灵K线"稀释尾盘占比指标。
+           （09:30-11:30 / 13:00-15:00），并裁掉尾部连续零量行。
+
+v2.3 相对 v2.2 的变更（三大新增信号，只记录、暂不入投票）：
+    [新增] flat_vol_ratio  平价放量占比 —— bar内 |收-开| ≤ 1个tick(0.01元)
+           且量 ≥ 2×当日分钟均量 的分钟数 / 有成交分钟数。
+           「价不动、量在动」是对倒成交最直接的指纹。
+    [新增] tail_gain       尾盘30分钟涨幅 —— (末根close/尾窗前一根close)-1。
+           正值+量增=真拉升；≈0+量增=对倒护盘嫌疑。
+    [新增] zero_vol_mins   零成交分钟数（尾部幽灵行已由 filter_session 裁剪，
+           此处统计的是盘中真实的零成交）。
+    设计原则：与 v1/v2 历史账目保持判定口径一致 —— 三个新字段只存不投，
+    不影响 verdict / quant_pct / 四指标投票；待 2026-11-01 阈值体检
+    给出新字段的真实分布后，再决定是否纳入投票体系。
 
 用法：
     python scripts/record_truth.py               # 正常运行
@@ -60,6 +71,10 @@ SESSION_SPLITS = [
     ('尾盘前',   180, 210),
     ('尾盘30分', 210, 240),
 ]
+
+# --- v2.3 新信号参数 ---
+TICK_SIZE = 0.011        # 平价判定：|收-开| ≤ 约1个tick（A股统一0.01元，留浮点余量）
+HEAVY_VOL_MULT = 2.0     # 放量判定：分钟量 ≥ 2 × 当日分钟均量
 
 
 # ---------------------------------------------------------------------------
@@ -180,7 +195,7 @@ def extract_date(t):
 
 
 # ---------------------------------------------------------------------------
-# [v2.2 新增] 幽灵K线兜底过滤
+# 幽灵K线兜底过滤（v2.2 引入）
 # ---------------------------------------------------------------------------
 
 def filter_session(bars):
@@ -231,7 +246,7 @@ def load_and_group_days(path: Path):
         print(f'[WARN] {path.name} 时间字段无日期信息，跳过')
     else:
         for d in days:
-            days[d] = filter_session(days[d])   # [v2.2] 每天先过滤再分析
+            days[d] = filter_session(days[d])   # 每天先过滤再分析
     return days
 
 
@@ -330,6 +345,38 @@ def build_feature_snapshot(volumes):
 
 
 # ---------------------------------------------------------------------------
+# v2.3 新增指标
+# ---------------------------------------------------------------------------
+
+def compute_flat_vol_ratio(bars, volumes, mean_vol):
+    """平价放量占比：bar 内 |close-open| ≤ 1个tick 且 量 ≥ 2×当日分钟均量
+    的分钟数 / 有成交分钟数。对倒（价不动量在动）最直接的指纹。
+    注：用绝对 tick 阈值而非相对百分比，因为 A 股所有股票 tick 统一为
+    0.01 元，在 tick 空间里各价位的判定标准才一致。"""
+    if mean_vol <= 0:
+        return None
+    active, hits = 0, 0
+    for b, v in zip(bars, volumes):
+        if v > 0:
+            active += 1
+            o, c = b['open'], b['close']
+            if o > 0 and abs(c - o) <= TICK_SIZE and v >= HEAVY_VOL_MULT * mean_vol:
+                hits += 1
+    return hits / active if active > 0 else None
+
+
+def compute_tail_gain(bars):
+    """尾盘30分钟涨幅：(末根close / 尾窗前一根close) - 1。
+    配合 tail_ratio 使用：量增价升=真拉升；量增价平=对倒护盘嫌疑。"""
+    if len(bars) < 31:
+        return None
+    base = bars[-31]['close']
+    if not base:
+        return None
+    return bars[-1]['close'] / base - 1.0
+
+
+# ---------------------------------------------------------------------------
 # 涨跌停 / 一字板检测
 # ---------------------------------------------------------------------------
 
@@ -400,6 +447,11 @@ def analyze_day(bars, code, prev_close):
     tail_ratio = sum(volumes[-30:]) / total_vol
     flatness = flatness_score(session_volume_profile(volumes))
 
+    # --- v2.3 新增三信号（只记录，不入投票） ---
+    flat_vol_ratio = compute_flat_vol_ratio(bars, volumes, vol_mean)
+    tail_gain = compute_tail_gain(bars)
+    zero_vol_mins = sum(1 for v in volumes if v <= 0)   # 盘中真实零成交（幽灵行已裁剪）
+
     hits = 0
     if cv < THRESH['cv']:
         hits += 1
@@ -425,6 +477,9 @@ def analyze_day(bars, code, prev_close):
         'corr': round(corr, 4) if corr is not None else None,
         'tail_ratio': round(tail_ratio, 4),
         'flatness': round(flatness, 4) if flatness is not None else None,
+        'flat_vol_ratio': round(flat_vol_ratio, 4) if flat_vol_ratio is not None else None,
+        'tail_gain': round(tail_gain, 6) if tail_gain is not None else None,
+        'zero_vol_mins': zero_vol_mins,
         'limit_status': None,
         'vprofile_24': build_feature_snapshot(volumes),
     }
@@ -513,6 +568,13 @@ def print_summary(stats: dict):
         cnt = stats[f'{key}_n']
         if cnt:
             print(f'  指标均值: {name}={stats[f"{key}_sum"] / cnt:.3f}')
+    # --- v2.3 新信号均值 ---
+    if stats['fv_n']:
+        print(f'  指标均值: flat_vol_ratio={stats["fv_sum"] / stats["fv_n"]:.4f}')
+    if stats['tg_n']:
+        print(f'  指标均值: tail_gain={stats["tg_sum"] / stats["tg_n"]:+.3%}')
+    if stats['zv_n']:
+        print(f'  指标均值: zero_vol_mins={stats["zv_sum"] / stats["zv_n"]:.1f} 分钟')
     print(f'{line}\n')
 
 
@@ -568,12 +630,22 @@ def process_file(path: Path, ledger: LedgerCache, stats: dict, dry_run: bool) ->
             if v is not None:
                 stats[f'{k}_sum'] += v
                 stats[f'{k}_n'] += 1
+        # v2.3 新信号累加
+        for k, v in (('fv', entry.get('flat_vol_ratio')),
+                     ('tg', entry.get('tail_gain'))):
+            if v is not None:
+                stats[f'{k}_sum'] += v
+                stats[f'{k}_n'] += 1
+        zv = entry.get('zero_vol_mins')
+        if zv is not None:
+            stats['zv_sum'] += zv
+            stats['zv_n'] += 1
 
     return entries
 
 
 def main():
-    ap = argparse.ArgumentParser(description='真假量柱账本 v2.2')
+    ap = argparse.ArgumentParser(description='真假量柱账本 v2.3')
     ap.add_argument('--dry-run', action='store_true', help='只分析，不写账本、不删源文件')
     ap.add_argument('--no-delete', action='store_true', help='写账本，但保留源文件')
     args = ap.parse_args()
@@ -583,6 +655,7 @@ def main():
         'skipped_bj', 'skipped_incomplete', 'skipped_exists', 'skipped_bad',
         'files_deleted', 'files_kept',
         'cv_sum', 'cv_n', 'corr_sum', 'corr_n', 'tail_sum', 'tail_n', 'flat_sum', 'flat_n',
+        'fv_sum', 'fv_n', 'tg_sum', 'tg_n', 'zv_sum', 'zv_n',
     )}
 
     if not KLINE_1MIN_DIR.exists():
