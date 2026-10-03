@@ -1,335 +1,66 @@
-name: 每日拉行情数据（全市场版·日线多源）
+name: Daily Quote
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:            # 手动触发（Actions 页面点 Run workflow）
   schedule:
-    - cron: '0 12 * * *'
+    - cron: '0 12 * * *'        # 每天 UTC 12:00 = 北京时间 20:00（已收盘）
 
 permissions:
-  contents: write
+  contents: write               # 允许推送数据到仓库
 
 concurrency:
-  group: data-push
-  cancel-in-progress: false
+  group: daily-quote
+  cancel-in-progress: false     # 防止两次运行撞车
 
 jobs:
-  fetch:
+  pipeline:
     runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:
-      - name: 检出代码
+      - name: 检出仓库（用 GH_TOKEN，后面才能 push）
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_TOKEN }}
 
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
       - name: 安装依赖
         run: |
           python -m pip install --upgrade pip
-          pip install akshare requests numpy
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: 全市场日线 + 1分钟 + 记账（一体化）
+      - name: ① 修补脚本（保留你原有的两个修复步骤，缺文件自动跳过）
         run: |
-          python3 << 'PYEOF'
-          import requests, json, os, time
-          from concurrent.futures import ThreadPoolExecutor, as_completed
-          from datetime import datetime, timezone, timedelta
+          if [ -f scripts/fix_record_truth.py ]; then python scripts/fix_record_truth.py; else echo "无 fix_record_truth.py，跳过"; fi
+          if [ -f scripts/fix_backtest_stats.py ]; then python scripts/fix_backtest_stats.py; else echo "无 fix_backtest_stats.py，跳过"; fi
 
-          MAX_WORKERS = 5
-          IS_SUNDAY = datetime.now(timezone.utc).weekday() == 6
+      - name: ② 拉取行情（日线 + 1分钟，北交所已全程过滤）
+        run: python scripts/fetch_quotes.py
 
-          # ============ 北京时间 + 盘中判断 ============
-          bj_now = datetime.now(timezone.utc) + timedelta(hours=8)
-          minutes_now = bj_now.hour * 60 + bj_now.minute
-          is_trading_hours = (9*60+30) <= minutes_now < (15*60)
-          skip_daily = is_trading_hours and not IS_SUNDAY
-          print(f"[时间] 北京时间: {bj_now.strftime('%Y-%m-%d %H:%M')}")
-          print(f"[时间] 盘中: {is_trading_hours}, 周日: {IS_SUNDAY}, 跳过日线: {skip_daily}")
+      - name: ③ 真假量柱账本（分析 → 写账本 → 删除原始1分钟数据）
+        run: python scripts/record_truth.py
 
-          # ============ 构建1分钟股票列表（9只持仓 + 沪深300）============
-          HOLDINGS_1MIN = [
-              'sh601138', 'sz300476', 'sh603516', 'sz002156',
-              'sh603283', 'sh601231', 'sz300394', 'sh600584',
-              'sh000001',
-          ]
-          HS300_PATH = 'data/hushen300.json'
-          hs300_codes = []
-          if os.path.exists(HS300_PATH):
-              try:
-                  with open(HS300_PATH, 'r', encoding='utf-8') as f:
-                      data = json.load(f)
-                  hs300_codes = data.get('codes', [])
-                  print(f"  [沪深300] 从本地读取 {len(hs300_codes)} 只")
-              except Exception as e:
-                  print(f"  [沪深300] 本地读取失败: {e}")
-
-          if not hs300_codes:
-              try:
-                  import akshare as ak
-                  df = ak.index_stock_cons_csindex(symbol="000300")
-                  for _, row in df.iterrows():
-                      code = str(row['成分券代码']).zfill(6)
-                      if code.startswith('6'):
-                          hs300_codes.append('sh' + code)
-                      elif code.startswith(('0', '3')):
-                          hs300_codes.append('sz' + code)
-                  os.makedirs('data', exist_ok=True)
-                  with open(HS300_PATH, 'w', encoding='utf-8') as f:
-                      json.dump({'updated': datetime.now().isoformat(), 'count': len(hs300_codes), 'codes': hs300_codes}, f, ensure_ascii=False, indent=2)
-                  print(f"  [沪深300] 拉取成功 {len(hs300_codes)} 只")
-              except Exception as e:
-                  print(f"  [沪深300] 拉取失败: {e}")
-
-          ALL_1MIN = list(set(HOLDINGS_1MIN + hs300_codes))
-          print(f"  [1分钟] 目标股票数: {len(ALL_1MIN)} 只")
-
-          # ============================================================
-          # 1. 获取日线股票列表（本地优先）
-          # ============================================================
-          print("\n" + "=" * 60)
-          print("[1/4] 获取日线股票列表...")
-          print(f"    模式: {'周日全量' if IS_SUNDAY else '平日增量(10天)'}")
-          print(f"    盘中跳过: {skip_daily}")
-          print("=" * 60)
-
-          all_stocks = []
-          for market in ['sh', 'sz', 'bj']:
-              dir_path = f'data/kline/{market}'
-              if os.path.exists(dir_path):
-                  for fname in sorted(os.listdir(dir_path)):
-                      if not fname.endswith('.json'):
-                          continue
-                      code = fname[:-5]
-                      try:
-                          with open(f'{dir_path}/{fname}', 'r', encoding='utf-8') as f:
-                              data = json.load(f)
-                              name = data.get('name', code)
-                      except Exception:
-                          name = code
-                      all_stocks.append((code, name))
-
-          if all_stocks:
-              print(f"  [本地] 读取到 {len(all_stocks)} 只股票")
-          else:
-              all_stocks = [
-                  ('sh600584', '长电科技'), ('sz002156', '通富微电'),
-                  ('sh603283', '赛腾股份'), ('sz300394', '天孚通信'),
-                  ('sh601138', '工业富联'), ('sh601231', '环旭电子'),
-                  ('sz300476', '胜宏科技'), ('sh603516', '淳中科技'),
-              ]
-
-          if not any(c == 'sh000001' for c, _ in all_stocks):
-              all_stocks.append(('sh000001', '上证指数'))
-
-          # ============================================================
-          # 2. 并发拉取日线（多源切换）
-          # ============================================================
-          print("\n" + "=" * 60)
-          if skip_daily:
-              print(f"[2/4] 盘中，跳过日线拉取（避免污染）")
-          else:
-              print(f"[2/4] 并发拉取日线（{MAX_WORKERS}线程，{len(all_stocks)}只，多源切换）...")
-          print("=" * 60)
-
-          os.makedirs('data/kline/sh', exist_ok=True)
-          os.makedirs('data/kline/sz', exist_ok=True)
-          os.makedirs('data/kline/bj', exist_ok=True)
-
-          # ============ 三个数据源的 fetch 函数 ============
-          def fetch_from_sina(stock_code, datalen):
-              """新浪源（主）：返回 [[date, open, close, high, low, volume], ...]"""
-              url = f'https://quotes.sina.cn/cn/api/jsonp_v2.php/var=/CN_MarketDataService.getKLineData?symbol={stock_code}&scale=240&ma=no&datalen={datalen}'
-              r = requests.get(url, timeout=15, headers={'User-Agent': 'Mozilla/5.0'})
-              text = r.text
-              start = text.find('([') + 1
-              end = text.rfind('])') + 1
-              if start < 1 or end < 2:
-                  return None
-              data = json.loads(text[start:end])
-              if not data:
-                  return None
-              return [[k['day'], k['open'], k['close'], k['high'], k['low'], k['volume']] for k in data]
-
-          def fetch_from_tencent(stock_code, datalen):
-              """腾讯源（备1）：返回 [[date, open, close, high, low, volume], ...]"""
-              url = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get"
-              params = {'param': f'{stock_code},day,,,{datalen},qfq'}
-              r = requests.get(url, params=params, timeout=15, headers={'User-Agent': 'Mozilla/5.0'})
-              data = r.json()
-              node = data.get('data', {}).get(stock_code, {})
-              klines = node.get('qfqday') or node.get('day')
-              if not klines:
-                  return None
-              # 腾讯前6列: [date, open, close, high, low, volume]
-              result = []
-              for k in klines:
-                  if isinstance(k, list) and len(k) >= 6:
-                      result.append([k[0], k[1], k[2], k[3], k[4], k[5]])
-              return result if result else None
-
-          def fetch_from_eastmoney(stock_code, datalen):
-              """东财源（备2）：返回 [[date, open, close, high, low, volume], ...]"""
-              if stock_code.startswith('sh'):
-                  secid = '1.' + stock_code[2:]
-              else:
-                  secid = '0.' + stock_code[2:]
-              url = "https://push2his.eastmoney.com/api/qt/stock/kline/get"
-              params = {
-                  'secid': secid,
-                  'klt': '101',
-                  'fqt': '1',
-                  'beg': '0',
-                  'end': '20500101',
-                  'lmt': str(datalen),
-                  'fields1': 'f1,f2,f3,f4,f5,f6',
-                  'fields2': 'f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61',
-              }
-              r = requests.get(url, params=params, timeout=15, headers={'User-Agent': 'Mozilla/5.0'})
-              data = r.json()
-              klines = data.get('data', {}).get('klines', [])
-              if not klines:
-                  return None
-              result = []
-              for k in klines:
-                  parts = k.split(',')
-                  if len(parts) >= 6:
-                      result.append([parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]])
-              return result if result else None
-
-          # ============ 多源切换的 fetch_daily ============
-          def fetch_daily(stock_code, stock_name):
-              local_path = f'data/kline/{stock_code[:2]}/{stock_code}.json'
-              datalen = 1023 if IS_SUNDAY else 10
-
-              # ---- 多源尝试 ----
-              new_klines = None
-              sources = [
-                  ('新浪', fetch_from_sina),
-                  ('腾讯', fetch_from_tencent),
-                  ('东财', fetch_from_eastmoney),
-              ]
-              for source_name, fetch_fn in sources:
-                  try:
-                      result = fetch_fn(stock_code, datalen)
-                      if result and len(result) > 0:
-                          new_klines = result
-                          break
-                  except Exception:
-                      continue
-
-              if not new_klines:
-                  return False
-
-              # ---- 过滤 close <= 0 ----
-              try:
-                  new_klines = [k for k in new_klines if float(k[2]) > 0]
-              except Exception:
-                  return False
-              if not new_klines:
-                  return False
-
-              # ---- 合并逻辑 ----
-              if IS_SUNDAY:
-                  final_klines = new_klines
-              else:
-                  existing_klines = []
-                  if os.path.exists(local_path):
-                      try:
-                          with open(local_path, 'r', encoding='utf-8') as f:
-                              old = json.load(f)
-                              existing_klines = old.get('klines', [])
-                              old_name = old.get('name', '')
-                              if old_name:
-                                  stock_name = old_name
-                      except Exception:
-                          existing_klines = []
-                  existing_dates = {k[0] for k in existing_klines}
-                  for k in new_klines:
-                      if k[0] not in existing_dates:
-                          existing_klines.append(k)
-                  existing_klines.sort(key=lambda x: x[0])
-                  if len(existing_klines) > 2000:
-                      existing_klines = existing_klines[-2000:]
-                  final_klines = existing_klines
-
-              out = {'name': stock_name, 'klines': final_klines}
-              with open(local_path, 'w', encoding='utf-8') as f:
-                  json.dump(out, f, ensure_ascii=False)
-              return True
-
-          daily_ok, daily_fail = 0, 0
-          if not skip_daily:
-              with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-                  futures = {executor.submit(fetch_daily, code, name): (code, name) for code, name in all_stocks}
-                  for i, future in enumerate(as_completed(futures)):
-                      if future.result():
-                          daily_ok += 1
-                      else:
-                          daily_fail += 1
-                      if (i + 1) % 1000 == 0:
-                          print(f"  日线进度: {i+1}/{len(all_stocks)} (成功{daily_ok} 失败{daily_fail})")
-
-          print(f"  日线完成: 成功{daily_ok} 失败{daily_fail}")
-
-          # ============================================================
-          # 3. 并发拉取1分钟数据（腾讯单源）
-          # ============================================================
-          print("\n" + "=" * 60)
-          print(f"[3/4] 并发拉取1分钟数据（{len(ALL_1MIN)}只）...")
-          print("=" * 60)
-
-          os.makedirs('data/kline_1min', exist_ok=True)
-
-          def fetch_1min(stock_code):
-              for attempt in range(2):
-                  try:
-                      url = "https://ifzq.gtimg.cn/appstock/app/kline/mkline"
-                      params = {'param': f'{stock_code},m1,,640'}
-                      r = requests.get(url, params=params, timeout=30)
-                      data = r.json()
-                      klines = data.get('data', {}).get(stock_code, {}).get('m1', [])
-                      out = {
-                          'code': stock_code,
-                          'updated': datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC'),
-                          'count': len(klines),
-                          'klines': klines
-                      }
-                      with open(f'data/kline_1min/{stock_code}.json', 'w') as f:
-                          json.dump(out, f, ensure_ascii=False)
-                      return True
-                  except Exception:
-                      if attempt < 1:
-                          time.sleep(2)
-              return False
-
-          min_ok, min_fail = 0, 0
-          with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-              futures = {executor.submit(fetch_1min, code): code for code in ALL_1MIN}
-              for i, future in enumerate(as_completed(futures)):
-                  if future.result():
-                      min_ok += 1
-                  else:
-                      min_fail += 1
-                  if (i + 1) % 100 == 0:
-                      print(f"  1分钟进度: {i+1}/{len(ALL_1MIN)} (成功{min_ok} 失败{min_fail})")
-
-          print(f"  1分钟完成: 成功{min_ok} 失败{min_fail}")
-          PYEOF
-
-      - name: 执行账本记录 + 清理
+      - name: ④ 阈值体检（仅每月1日运行，避免报告天天产生 diff）
         run: |
-          cd scripts
-          python3 record_truth.py
-          cd ..
+          if [ "$(date -u +'%d')" = "01" ]; then
+            python scripts/recalibrate_thresholds.py --sweep --top 10 \
+              --json data/analysis/threshold_report.json
+          else
+            echo "今天不是每月1日，跳过阈值体检"
+          fi
 
-      - name: 提交 + 推送
+      - name: ⑤ 提交数据
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/kline/ data/kline_1min/ data/hushen300.json data/analysis/truth_ledger/ 2>/dev/null || true
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/ || true
           if git diff --cached --quiet; then
-            echo "无变化"
+            echo "无数据变更，跳过提交"
           else
-            git commit -m "data: 全市场行情+账本 $(date -u +%Y%m%d)"
-            git pull --rebase origin main
+            git commit -m "daily: $(date -u +'%Y-%m-%d') 数据管道"
             git push
           fi
