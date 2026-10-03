@@ -16,7 +16,7 @@ permissions:
 jobs:
   pipeline:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90    # 【本次修复】原30分钟不够用，全市场拉取需35-40分钟，改为90留足余量
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
