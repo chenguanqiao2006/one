@@ -1,34 +1,32 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-case_finder.py — 量学现代案例扫描器 v2（无未来函数修正版）
+case_finder.py — 量学现代案例扫描器 v3.1
 ====================================================
-v2 修订（2026-10-04）：用户铁律「绝对不能使用未来函数，零容忍」。
-v1 有五处违规（高量黄金柱/将军柱/黄金柱把基柱日当信号日、倍量伸缩把伸量日当
-信号日、精准线用全窗口统计后回标触碰日），已全部修正。
+v3.1 修订（2026-10-04，用户目录截图揭示真相）：
+  103只之谜 = v2 的 glob 非递归只扫了 data/kline 根目录的旧版遗留散文件，
+  全量 5000+ 只在 sh/、sz/ 子目录里。v3.1 处理：
+  ① 递归扫描（v3 已有）——覆盖 sh/sz/bj 子目录全量
+  ② 按文件名代码去重：同一代码根目录与子目录并存时优先子目录版本
+     （根目录散文件为旧版扁平结构遗留，多为权重股）
+  ③ code 规范化：直接取文件名（sh600000），不带子目录路径前缀
+  ④ 指数排除：sh000xxx/sz399xxx/bj899xxx 为指数（上证指数/深证成指/
+     北证50等），剔除出个股案例扫描，日志注明——大盘级案例留考场单列
+  ⑤ 元数据跳过：_ 开头文件（_stock_list.json 等）不作K线解析
 
-v2 唯一准则：
-    信号日 = 该形态全部判定条件可知晓的最早收盘日
-    绩效(+5/+10/+20日) 一律从信号日收盘起算
-    - 确认型形态（将军柱/黄金柱/高量黄金柱）：信号日 = 基柱后第3日（确认完成日）
-    - 倍量伸缩：信号日 = 缩倍量日（形态完成日），伸量日作附注
-    - 精准线：重写为「回踩精准线」——当日只统计之前60日的触碰（此前>=2次=线已成立），
-      当日低点触线即第N次回踩，信号日=当日（即《涨停密码》第7章的可操作形态）
-    - 所有条件引用的最高/最低/均值/计数，均只使用信号日及之前的数据
+v3 遗产：名称映射双源（_stock_list.json 的 tx/name 全市场名称 + hushen300）；
+        覆盖度警告（解析<500只时）；样本基数（股票日）统计
 
-目的：用本仓库 data/kline/ 的全量日线扫描四册笔记核心形态，
-     生成《量学现代案例集》data/analysis/casebook.md。
+v2 遗产（铁律，最高优先级）：未来函数零容忍
+  信号日 = 该形态全部判定条件可知晓的最早收盘日
+  - 确认型形态（将军柱/黄金柱/高量黄金柱）：信号日 = 基柱后第3日（确认完成日）
+  - 倍量伸缩：信号日 = 缩倍量日，伸日作附注
+  - 精准线：回踩版——当日只统计之前60日触碰（此前>=2次=线已成立），
+    当日低点触线即第N次回踩，信号日=当日（《涨停密码》第7章形态）
+  - 绩效(+5/+10/+20日)一律从信号日收盘起算
+  - 所有条件引用的最高/最低/均值/计数，均只使用信号日及之前的数据
 
-特点：
-  1. 全市场无偏扫描——先定参数后扫全市场，涨跌如实收录（规避幸存者偏差）。
-  2. 零第三方依赖——只用 Python 标准库，workflow 免安装。
-  3. 格式自适应——自动探测 kline JSON 的结构与键名。
-  4. is_real 真伪标注——案例信号日在账本覆盖范围（2025-11 起）内时，
-     自动关联真假量柱判定。
-
-用法：
-  python scripts/case_finder.py
-  产物：data/analysis/casebook.md
+用法：python scripts/case_finder.py → data/analysis/casebook.md
 """
 
 import json
@@ -41,10 +39,21 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 KLINE_DIR = os.path.join(BASE, "data", "kline")
 LEDGER_DIR = os.path.join(BASE, "data", "analysis", "truth_ledger")
 HS300_PATH = os.path.join(BASE, "data", "hushen300.json")
+STOCK_LIST_PATH = os.path.join(KLINE_DIR, "_stock_list.json")
 OUT_PATH = os.path.join(BASE, "data", "analysis", "casebook.md")
 
 TOP_N = 8        # 每形态收录案例数（最新优先）
 LOOKBACK = 500   # 扫描窗口：每只股票最近 500 根日线
+MIN_UNIVERSE = 500  # 覆盖度警告阈值
+
+# 指数代码段位（上海指数=000xxx，深圳指数=399xxx，北证指数=899xxx）
+INDEX_PREFIXES = ("sh000", "sz399", "bj899")
+
+
+def is_index_code(code):
+    c = str(code).lower()
+    return c.startswith(INDEX_PREFIXES)
+
 
 # ---------- 工具函数 ----------
 
@@ -77,7 +86,40 @@ def _looks_like_date(s):
     return len(s) >= 8 and s[0:1].isdigit() and ("-" in s or "/" in s or s.isdigit())
 
 
-# ---------- K 线解析（格式自适应，与真伪无关，v1 原样保留） ----------
+def collect_kline_files():
+    """v3.1：递归收集 + 去重 + 指数/元数据分类。
+    返回 (个股文件列表, 指数文件列表, 重复丢弃数, 元数据文件列表)"""
+    by_code = {}          # code -> (path, in_subdir)
+    index_files = []
+    meta_files = []
+    dup_dropped = 0
+    root_norm = os.path.normpath(KLINE_DIR)
+    for root, _dirs, files in os.walk(KLINE_DIR):
+        for fn in files:
+            if not fn.lower().endswith(".json"):
+                continue
+            p = os.path.join(root, fn)
+            if fn.startswith("_"):
+                meta_files.append(p)
+                continue
+            code = os.path.splitext(fn)[0]
+            if is_index_code(code):
+                index_files.append(p)
+                continue
+            in_subdir = os.path.normpath(root) != root_norm
+            if code in by_code:
+                old_path, old_sub = by_code[code]
+                if in_subdir and not old_sub:
+                    by_code[code] = (p, True)   # 子目录版本优先
+                    dup_dropped += 1
+                # 否则保留先到的（先到的一定是根目录或子目录之一）
+            else:
+                by_code[code] = (p, in_subdir)
+    kline_files = [v[0] for v in by_code.values()]
+    return sorted(kline_files), sorted(index_files), dup_dropped, sorted(meta_files)
+
+
+# ---------- K 线解析（格式自适应，与 v2/v3 一致） ----------
 
 DATE_KEYS = ["date", "datetime", "day", "time", "t", "日期"]
 OPEN_KEYS = ["open", "o", "kp", "开盘"]
@@ -219,6 +261,7 @@ def parse_parallel(code, raw):
 
 
 def load_kline_file(path):
+    # v3.1：code 直接取文件名（sh600000），不带子目录前缀
     code = os.path.splitext(os.path.basename(path))[0]
     try:
         with open(path, "r", encoding="utf-8") as f:
@@ -304,7 +347,30 @@ def load_ledger_index():
 
 
 def load_names():
+    """v3：名称映射双源。
+    源1（优先）：data/kline/_stock_list.json（tx/name，全市场）
+    源2（补充）：data/hushen300.json"""
     names = {}
+    try:
+        with open(STOCK_LIST_PATH, "r", encoding="utf-8") as f:
+            raw = json.load(f)
+        items = None
+        if isinstance(raw, dict):
+            for key in ("stocks", "list", "data", "items"):
+                if key in raw and isinstance(raw[key], list):
+                    items = raw[key]
+                    break
+        elif isinstance(raw, list):
+            items = raw
+        if items:
+            for it in items:
+                if isinstance(it, dict):
+                    cd = it.get("tx") or it.get("code") or it.get("symbol")
+                    nm = it.get("name") or it.get("名称")
+                    if cd and nm:
+                        names[norm_code(cd)] = str(nm)
+    except Exception:
+        pass
     try:
         with open(HS300_PATH, "r", encoding="utf-8") as f:
             raw = json.load(f)
@@ -313,24 +379,23 @@ def load_names():
     if isinstance(raw, dict):
         for k, val in raw.items():
             if isinstance(val, str):
-                names[norm_code(k)] = val
+                names.setdefault(norm_code(k), val)
             elif isinstance(val, dict):
                 nm = val.get("name") or val.get("名称")
                 if nm:
-                    names[norm_code(k)] = nm
+                    names.setdefault(norm_code(k), str(nm))
     elif isinstance(raw, list):
         for it in raw:
             if isinstance(it, dict):
                 cd = it.get("code") or it.get("股票代码") or it.get("ts_code")
                 nm = it.get("name") or it.get("名称") or it.get("股票名称")
                 if cd and nm:
-                    names[norm_code(cd)] = nm
+                    names.setdefault(norm_code(cd), str(nm))
     return names
 
 
 # ---------- 案例构造 ----------
 # 【无未来函数核心】i 参数 = 信号日（该日收盘时全部条件已知）
-# 绩效从信号日收盘起算
 
 def case(d, i, extra, priority=0):
     n = len(d["close"])
@@ -345,7 +410,7 @@ def case(d, i, extra, priority=0):
             "extra": extra, "sort": (priority, -i)}
 
 
-# ---------- 形态扫描（v2：全部通过无未来函数校验） ----------
+# ---------- 形态扫描（全部通过无未来函数校验，v2 逻辑原样保留） ----------
 
 def scan_stock(d, forms):
     n = len(d["close"])
@@ -359,7 +424,7 @@ def scan_stock(d, forms):
         yang = c[i] > o[i]
         yin = c[i] < o[i]
 
-        # 1) 倍量柱：条件只用当日及以前 → 信号日=当日 ✓
+        # 1) 倍量柱：信号日=当日 ✓
         if yang and ratio >= 1.75:
             low60 = min(l[max(0, i - 60):i + 1])
             is_low = c[i] <= low60 * 1.2
@@ -369,15 +434,15 @@ def scan_stock(d, forms):
                 "位置": "低位" if is_low else "非低位",
             }, priority=0 if is_low else 1))
 
-        # 3) 缩倍量：当日及以前 → 信号日=当日 ✓
+        # 3) 缩倍量：信号日=当日 ✓
         if ratio <= 0.5:
             forms["suobei"].append(case(d, i, {"缩量比": f"{ratio:.2f}x"}))
 
-        # 4) 并肩平量柱：当日及以前 → 信号日=当日 ✓
+        # 4) 并肩平量柱：信号日=当日 ✓
         if abs(ratio - 1) <= 0.03:
             forms["pingliang"].append(case(d, i, {"并肩误差": f"{abs(ratio - 1) * 100:.2f}%"}))
 
-        # 7) 长腿踩线：base 只用 i 之前的 60 日 → 信号日=当日 ✓
+        # 7) 长腿踩线：base 只用 i 之前 60 日 → 信号日=当日 ✓
         body = abs(c[i] - o[i])
         shadow = min(o[i], c[i]) - l[i]
         if body > 0 and shadow >= 2 * body and i >= 60:
@@ -385,7 +450,7 @@ def scan_stock(d, forms):
             if base > 0 and abs(l[i] - base) / base <= 0.005:
                 forms["changtui"].append(case(d, i, {"下影/实体": f"{shadow / body:.1f}倍"}))
 
-        # 8) 九阴真经·倍量阴：当日及以前 → 信号日=当日 ✓（反面案例）
+        # 8) 九阴真经·倍量阴：信号日=当日 ✓（反面案例）
         if yin and ratio >= 2:
             forms["jiuyin"].append(case(d, i, {"阴量比": f"{ratio:.2f}x"}))
 
@@ -396,24 +461,23 @@ def scan_stock(d, forms):
 
 
 def scan_gaoliang(d, forms, start):
-    """高量黄金柱：【无未来函数】基柱日=40日最高量阳柱（候选），
-    确认条件用基柱后三日（i+1..i+3）→ 信号日 = 基柱后第3日（确认完成日）"""
+    """高量黄金柱：信号日 = 基柱后第3日（确认完成日）"""
     v, o, c, l = d["vol"], d["open"], d["close"], d["low"]
     n = len(c)
     for i in range(max(start, 41), n - 3):
         if v[i] <= 0 or c[i] <= o[i]:
             continue
-        if v[i] < max(v[max(0, i - 40):i]):          # 40日最高量：只用过去 ✓
+        if v[i] < max(v[max(0, i - 40):i]):
             continue
         if sum(v[i + 1:i + 4]) < v[i] * 2.2 and min(l[i + 1:i + 4]) > o[i]:
-            forms["gaoliang"].append(case(d, i + 3, {   # 信号日=确认日
+            forms["gaoliang"].append(case(d, i + 3, {
                 "基柱日": d["dates"][i],
                 "后三日量/基柱": f"{sum(v[i + 1:i + 4]) / v[i]:.2f}",
             }))
 
 
 def scan_shencuo(d, forms, start):
-    """倍量伸缩：【无未来函数】形态在缩倍量日 j 才完成 → 信号日 = j，伸日作附注"""
+    """倍量伸缩：信号日 = 缩量日"""
     v, o, c = d["vol"], d["open"], d["close"]
     n = len(c)
     for i in range(start, n - 1):
@@ -421,7 +485,7 @@ def scan_shencuo(d, forms, start):
             continue
         for j in range(i + 1, min(i + 4, n)):
             if v[j] > 0 and v[j] <= v[j - 1] * 0.5:
-                forms["shencuo"].append(case(d, j, {        # 信号日=缩量日
+                forms["shencuo"].append(case(d, j, {
                     "伸日": d["dates"][i],
                     "伸倍比": f"{v[i] / v[i - 1]:.2f}x",
                     "缩量比": f"{v[j] / v[j - 1]:.2f}x",
@@ -430,39 +494,34 @@ def scan_shencuo(d, forms, start):
 
 
 def scan_jiangjun(d, forms, start):
-    """将军柱/黄金柱：【无未来函数】三日确认条件用 i+1..i+3
-    → 信号日 = 基柱后第3日（确认完成日），基柱日作附注"""
+    """将军柱/黄金柱：信号日 = 基柱后第3日（确认完成日）"""
     v, o, c, l = d["vol"], d["open"], d["close"], d["low"]
     n = len(c)
     for i in range(max(start, 1), n - 3):
         if not (c[i] > o[i] and v[i] > v[i - 1] > 0):
             continue
-        if c[i - 1] >= o[i - 1]:  # 前一日须为阴线（阳胜阴的前提）
+        if c[i - 1] >= o[i - 1]:
             continue
-        if max(o[i], c[i]) <= max(o[i - 1], c[i - 1]):  # 实顶未胜
+        if max(o[i], c[i]) <= max(o[i - 1], c[i - 1]):
             continue
         lo3 = min(l[i + 1:i + 4])
         mc3 = sum(c[i + 1:i + 4]) / 3
         mv3 = max(v[i + 1:i + 4])
         mean_v3 = sum(v[i + 1:i + 4]) / 3
-        # 将军柱：三日不破实底 且 三日量不过顶
         if (lo3 >= o[i] or mc3 >= o[i]) and (mv3 < v[i] or mean_v3 < v[i]):
-            forms["jiangjun"].append(case(d, i + 3, {       # 信号日=确认日
+            forms["jiangjun"].append(case(d, i + 3, {
                 "基柱日": d["dates"][i],
                 "基柱量比": f"{v[i] / v[i - 1]:.2f}x",
             }))
-            # 黄金柱：三日收盘不破基柱收盘 且 量群缩小
             if (min(c[i + 1:i + 4]) > c[i] or mc3 > c[i]) and sum(v[i + 1:i + 4]) < v[i] * 2.4:
-                forms["huangjin"].append(case(d, i + 3, {   # 信号日=确认日
+                forms["huangjin"].append(case(d, i + 3, {
                     "基柱日": d["dates"][i],
                     "基柱量比": f"{v[i] / v[i - 1]:.2f}x",
                 }))
 
 
 def scan_jingzhun(d, forms):
-    """精准线（回踩版）：【无未来函数】在信号日 i 只统计 i 之前 60 日内的触碰；
-    此前触碰 >=2 次（线已成立）且当日低点触该价位 = 第 N 次回踩，信号日 = 当日。
-    即《涨停密码》第7章「回踩精准线」的可操作形态。每价位只保留最近一次信号。"""
+    """精准线（回踩版）：信号日只统计之前60日触碰，此前>=2次+当日触线"""
     l = d["low"]
     n = len(l)
     lo_start = max(0, n - LOOKBACK)
@@ -474,13 +533,13 @@ def scan_jingzhun(d, forms):
         if k in seen_levels:
             continue
         prior = 0
-        for j in range(max(lo_start, i - 60), i):   # 只看 i 之前 ✓
+        for j in range(max(lo_start, i - 60), i):
             kj = int(l[j] * 100 + 0.5)
             if kj > 0 and abs(kj - k) <= 1:
                 prior += 1
         if prior >= 2:
             seen_levels.add(k)
-            forms["jingzhun"].append(case(d, i, {       # 信号日=回踩当日
+            forms["jingzhun"].append(case(d, i, {
                 "精准价位": f"{k / 100:.2f}",
                 "此前触碰": f"{prior}次",
                 "本次序号": f"第{prior + 1}次",
@@ -520,28 +579,35 @@ FORM_META = [
 ]
 
 
-def write_casebook(all_cases, stats, names, ledger_index, meta, parse_fail, total_files):
+def write_casebook(all_cases, stats, names, ledger_index, meta,
+                   parse_fail, total_files, parsed_count, stock_days):
     lines = []
-    lines.append("# 量学现代案例集（自动扫描生成）v2")
+    lines.append("# 量学现代案例集（自动扫描生成）v3.1")
     lines.append("")
     lines.append(f"> 生成时间：{meta['now']}")
-    lines.append(f"> 数据范围：{total_files} 只日线文件，成功解析 {total_files - parse_fail} 只（解析失败 {parse_fail} 只）")
+    lines.append(f"> 数据范围：个股日线 {total_files} 只（去重后），解析成功 {parsed_count} 只，解析失败 {parse_fail} 个")
+    lines.append(f"> 排除项：指数 {meta.get('index_skip', 0)} 个（sh000xxx/sz399xxx/bj899xxx，大盘级案例留考场单列）、"
+                 f"重复文件 {meta.get('dup_drop', 0)} 个（根目录旧遗留，以 sh/sz 子目录为准）、元数据 {meta.get('meta_skip', 0)} 个")
     lines.append(f"> 日线窗口：约 {meta['date_min']} ~ {meta['date_max']}（每只扫描最近 {LOOKBACK} 根）")
+    lines.append(f"> 样本基数：约 {stock_days} 股票日（发生率 ≈ 命中数 ÷ 样本基数）")
     lines.append(f"> 真伪标注：is_real 来自真假量柱账本（覆盖 2025-11 起；此前的案例显示 —）")
+    if parsed_count < MIN_UNIVERSE:
+        lines.append("")
+        lines.append(f"> ⚠ **覆盖度警告**：本次仅解析 {parsed_count} 只，远低于全市场预期（约 5500 只）——")
+        lines.append(f"> 以下命中数为**部分市场**结果，仅供口径验证。")
     lines.append("")
     lines.append("> **无未来函数声明（铁律，零容忍）**：")
     lines.append("> 1. 每个案例的**信号日 = 该形态全部判定条件可知晓的最早收盘日**。")
     lines.append("> 2. 确认型形态（将军柱/黄金柱/高量黄金柱）信号日=基柱后第3日确认完成日；")
     lines.append(">    倍量伸缩信号日=缩量日；精准线为回踩版（只统计信号日之前的触碰）。")
-    lines.append("> 3. +5/+10/+20 日绩效**全部从信号日收盘起算**，不含任何信号日之后才可知的信息；")
-    lines.append(">    判定所用的最高/最低/均值/计数均只引用信号日及之前的数据。")
-    lines.append("> 4. 绩效口径为信号日收盘→N日后收盘；如需次日开盘成交口径（更保守），v3 升级。")
+    lines.append("> 3. +5/+10/+20 日绩效**全部从信号日收盘起算**，不含任何信号日之后才可知的信息。")
+    lines.append("> 4. 绩效口径为信号日收盘→N日后收盘；如需次日开盘成交口径（更保守），后续升级。")
     lines.append("")
     lines.append("> **方法论声明**：")
     lines.append("> 1. 本案例集由**先定参数、后扫全市场**生成——与原书「事后挑选成功案例」不同，")
-    lines.append(">    本集**如实收录涨跌两种结果**，+20日为负的案例同样保留（幸存者偏差规避）。")
+    lines.append(">    本集**如实收录涨跌两种结果**（幸存者偏差规避）。")
     lines.append("> 2. 某形态命中数为 0 ≠ 形态无效，可能是口径过严——留待 11-01 体检校准。")
-    lines.append("> 3. 高/低量级暂未做市值分桶（无市值数据，mcap_bucket 落地后升级 v3）。")
+    lines.append("> 3. 高/低量级暂未做市值分桶（无市值数据，mcap_bucket 落地后升级）。")
     lines.append("")
     for key, title, src, old, desc, note in FORM_META:
         cases = all_cases.get(key, [])
@@ -552,7 +618,8 @@ def write_casebook(all_cases, stats, names, ledger_index, meta, parse_fail, tota
         lines.append(f"> **扫描口径**：{desc}（{src}）")
         if note:
             lines.append(f"> **附注**：{note}")
-        lines.append(f"> **全市场命中**：{total} 例，收录最新 {len(cases)} 例")
+        rate = f"（发生率≈{total / stock_days * 1000:.1f}‰）" if stock_days else ""
+        lines.append(f"> **全市场命中**：{total} 例{rate}，收录最新 {len(cases)} 例")
         lines.append("")
         if cases:
             lines.append("| 股票 | 信号日 | 关键参数 | 当日收盘 | +5日 | +10日 | +20日 | is_real |")
@@ -581,21 +648,35 @@ def write_casebook(all_cases, stats, names, ledger_index, meta, parse_fail, tota
 
 
 def main():
-    files = sorted(glob.glob(os.path.join(KLINE_DIR, "*.json")))
-    print(f"[case_finder v2] 发现日线文件 {len(files)} 只")
-    print(f"[case_finder v2] 无未来函数校验：所有信号日 = 条件可知晓的最早收盘日")
+    files, index_files, dup_dropped, meta_files = collect_kline_files()
+    print(f"[case_finder v3.1] data/kline 递归收集完成：")
+    print(f"[case_finder v3.1]   个股日线 {len(files)} 只（去重后）")
+    print(f"[case_finder v3.1]   排除：指数 {len(index_files)} 个 | "
+          f"根目录重复遗留 {dup_dropped} 个 | 元数据 {len(meta_files)} 个")
+    if index_files:
+        sample_ix = [os.path.basename(p) for p in index_files[:5]]
+        print(f"[case_finder v3.1]   指数样本：{sample_ix}")
+    if files:
+        sample = [os.path.relpath(p, KLINE_DIR) for p in files[:5]]
+        print(f"[case_finder v3.1]   个股样本（前5，含子目录路径）：{sample}")
+    if len(files) < MIN_UNIVERSE:
+        print(f"[case_finder v3.1] ⚠ 警告：个股日线仅 {len(files)} 只，远低于全市场预期（约5500只）")
+
+    print(f"[case_finder v3.1] 无未来函数校验：所有信号日 = 条件可知晓的最早收盘日")
     if not files:
-        print(f"[case_finder] 错误：{KLINE_DIR} 下没有 json 文件，退出")
+        print(f"[case_finder] 错误：没有有效个股日线文件，退出")
         return
 
     all_cases = defaultdict(list)
     parse_fail = 0
+    parsed_count = 0
+    stock_days = 0
     debug_shown = 0
     date_min, date_max = "9999-99-99", "0000-00-00"
 
     ledger_index = load_ledger_index()
     names = load_names()
-    print(f"[case_finder] 账本索引 {len(ledger_index)} 条；名称映射 {len(names)} 条")
+    print(f"[case_finder v3.1] 账本索引 {len(ledger_index)} 条；名称映射 {len(names)} 条")
 
     for idx, path in enumerate(files, 1):
         d = load_kline_file(path)
@@ -605,20 +686,22 @@ def main():
                 try:
                     with open(path, "r", encoding="utf-8") as f:
                         head = f.read(400)
-                    print(f"[诊断] 无法解析 {os.path.basename(path)}，文件开头：{head}")
+                    print(f"[诊断] 无法解析 {os.path.relpath(path, KLINE_DIR)}，文件开头：{head}")
                 except Exception:
                     pass
                 debug_shown += 1
             continue
+        parsed_count += 1
+        stock_days += len(d["dates"])
         if d["dates"]:
             date_min = min(date_min, d["dates"][0])
             date_max = max(date_max, d["dates"][-1])
         scan_stock(d, all_cases)
-        if idx % 500 == 0:
-            print(f"[case_finder] 进度 {idx}/{len(files)}")
+        if idx % 1000 == 0:
+            print(f"[case_finder v3.1] 进度 {idx}/{len(files)}")
 
     stats = {}
-    for key, _, _, _, _, _ in FORM_META:
+    for key, *_ in FORM_META:
         lst = all_cases.get(key, [])
         stats[key] = len(lst)
         lst.sort(key=lambda x: x["sort"])
@@ -628,12 +711,20 @@ def main():
         "now": __import__("datetime").datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "date_min": date_min if date_min != "9999-99-99" else "N/A",
         "date_max": date_max if date_max != "0000-00-00" else "N/A",
+        "index_skip": len(index_files),
+        "dup_drop": dup_dropped,
+        "meta_skip": len(meta_files),
     }
-    write_casebook(all_cases, stats, names, ledger_index, meta, parse_fail, len(files))
-    print(f"[case_finder v2] 完成 → {OUT_PATH}")
-    print(f"[case_finder v2] 各形态命中：{json.dumps(stats, ensure_ascii=False)}")
+    write_casebook(all_cases, stats, names, ledger_index, meta,
+                   parse_fail, len(files), parsed_count, stock_days)
+    print(f"[case_finder v3.1] 完成 → {OUT_PATH}")
+    print(f"[case_finder v3.1] 覆盖度：解析成功 {parsed_count}/{len(files)} 只，"
+          f"样本基数 {stock_days} 股票日")
+    print(f"[case_finder v3.1] 各形态命中：{json.dumps(stats, ensure_ascii=False)}")
+    if parsed_count < MIN_UNIVERSE:
+        print(f"[case_finder v3.1] ⚠ 警告：本次为部分市场扫描（{parsed_count} 只）")
     if parse_fail > len(files) * 0.5:
-        print(f"[case_finder] ⚠ 警告：解析失败 {parse_fail}/{len(files)}，疑似格式不匹配，请把上方[诊断]输出发给AI")
+        print(f"[case_finder] ⚠ 警告：解析失败 {parse_fail}/{len(files)}，请把[诊断]输出发给AI")
 
 
 if __name__ == "__main__":
