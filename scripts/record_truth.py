@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-record_truth.py — 真假量柱账本分析器 v2.1
+record_truth.py — 真假量柱账本分析器 v2.2
 ==========================================
 
 职责链：
@@ -11,11 +11,10 @@ record_truth.py — 真假量柱账本分析器 v2.1
       → 写入按月分片账本 data/analysis/truth_ledger/YYYY-MM.json
       → 验证落盘成功后删除原始 1 分钟数据（先删后提交，仓库不膨胀）
 
-v2.1 相对 v2 的变更：
-    [a] 快照 vprofile_24 降为 4 位小数（体积 -30%）
-    [b] 涨跌停豁免条目不再存快照（省去死重量）
-    [c] 账本落盘改紧凑 JSON（体积 -30%）
-    [d] 修复 --no-delete 参数不生效的 bug
+v2.2 相对 v2.1 的变更：
+    [新增] filter_session 兜底过滤 —— 每日 K 线只保留连续竞价时段
+           （09:30-11:30 / 13:00-15:00），并裁掉尾部连续零量行，
+           防止盘后"幽灵K线"稀释尾盘占比指标。
 
 用法：
     python scripts/record_truth.py               # 正常运行
@@ -180,6 +179,34 @@ def extract_date(t):
     return None
 
 
+# ---------------------------------------------------------------------------
+# [v2.2 新增] 幽灵K线兜底过滤
+# ---------------------------------------------------------------------------
+
+def filter_session(bars):
+    """只保留连续竞价时段（09:30-11:30 / 13:00-15:00），
+    并裁掉尾部连续零量行（最多 30 根，防止误伤真实缩量尾盘）。"""
+    def in_session(t):
+        m = re.search(r'(\d{1,2}):(\d{2})', str(t))
+        if not m:
+            return True                 # 无时间信息的行保守保留
+        v = int(m.group(1)) * 60 + int(m.group(2))
+        return (570 <= v <= 690) or (780 <= v <= 900)
+
+    def _vol(b):
+        try:
+            return float(b.get('volume') or 0)
+        except (TypeError, ValueError):
+            return 0.0
+
+    kept = [b for b in bars if in_session(b['time'])]
+    cut = 0
+    while kept and cut < 30 and _vol(kept[-1]) <= 0:
+        kept.pop()
+        cut += 1
+    return kept
+
+
 def load_and_group_days(path: Path):
     try:
         obj = json.loads(path.read_text(encoding='utf-8'))
@@ -202,6 +229,9 @@ def load_and_group_days(path: Path):
             days.setdefault(d, []).append(b)
     if not days:
         print(f'[WARN] {path.name} 时间字段无日期信息，跳过')
+    else:
+        for d in days:
+            days[d] = filter_session(days[d])   # [v2.2] 每天先过滤再分析
     return days
 
 
@@ -288,7 +318,7 @@ def flatness_score(profile):
 
 
 def build_feature_snapshot(volumes):
-    """240 根 1 分钟 → 24 个 10 分钟桶占比。[补丁a] 4 位小数足够重算校验。"""
+    """240 根 1 分钟 → 24 个 10 分钟桶占比（4 位小数，体积友好）。"""
     n = 24
     buckets = [0.0] * n
     for i, v in enumerate(volumes):
@@ -348,7 +378,7 @@ def analyze_day(bars, code, prev_close):
 
     limit_status = detect_limit_status(bars, prev_close, limit_pct_for(code))
     if limit_status:
-        # [补丁b] 豁免条目不参与任何统计，快照是死重量 → 不存
+        # 豁免条目不参与任何统计，快照是死重量 → 不存
         return {
             'is_real': None,
             'verdict': f'涨跌停豁免({limit_status})',
@@ -434,7 +464,7 @@ class LedgerCache:
         self.dirty.add(month)
 
     def flush(self):
-        # [补丁c] 紧凑 JSON：仓库体积 -30%（代价是网页上不再逐行可读）
+        # 紧凑 JSON：仓库体积友好（代价是网页上不再逐行可读）
         self.dir.mkdir(parents=True, exist_ok=True)
         for month in sorted(self.dirty):
             p = self.path_for(month)
@@ -543,7 +573,7 @@ def process_file(path: Path, ledger: LedgerCache, stats: dict, dry_run: bool) ->
 
 
 def main():
-    ap = argparse.ArgumentParser(description='真假量柱账本 v2.1')
+    ap = argparse.ArgumentParser(description='真假量柱账本 v2.2')
     ap.add_argument('--dry-run', action='store_true', help='只分析，不写账本、不删源文件')
     ap.add_argument('--no-delete', action='store_true', help='写账本，但保留源文件')
     args = ap.parse_args()
@@ -567,7 +597,7 @@ def main():
 
     for path in files:
         entries = process_file(path, ledger, stats, args.dry_run)
-        # [补丁d] --dry-run 与 --no-delete 都不进入删除分支
+        # --dry-run 与 --no-delete 都不进入删除分支
         if not entries or args.dry_run or args.no_delete:
             continue
         ledger.flush()
