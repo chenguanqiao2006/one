@@ -1,0 +1,9 @@
+# 1分钟原始数据：分析后即删，绝不进 git 历史
+data/kline_1min/
+
+# Python 运行垃圾
+__pycache__/
+*.pyc
+
+# 原子写盘的临时文件
+*.tmp
