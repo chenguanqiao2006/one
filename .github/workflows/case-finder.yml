@@ -1,0 +1,71 @@
+name: 量学案例扫描（手动触发）
+
+# 用途：扫描全市场日线，生成《量学现代案例集》data/analysis/casebook.md
+# 配套脚本：scripts/case_finder.py（纯标准库，无需安装任何依赖）
+# 特点：仅手动触发，不排程、不自动跑——与每日管道完全隔离，符合项目红线
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: case-finder
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          fetch-depth: 0
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 运行案例扫描器
+        run: |
+          set -o pipefail
+          python scripts/case_finder.py 2>&1 | tee scan_output.log
+
+      - name: 生成运行摘要（显示在 Actions 页面）
+        if: always()
+        run: |
+          {
+            echo "## 量学案例扫描摘要"
+            echo ""
+            echo ''
+            grep "各形态命中" scan_output.log || echo "（未找到命中统计行）"
+            grep -E "解析失败|警告|错误|诊断" scan_output.log || true
+            echo ''
+            echo ""
+            if [ -f data/analysis/casebook.md ]; then
+              echo "✅ casebook.md 已生成 → 提交后见仓库 data/analysis/casebook.md"
+              echo ""
+              echo "各形态收录案例数（最新 ${TOP_N:-8} 例/形态）："
+              grep -c "^| " data/analysis/casebook.md | xargs echo "案例表格总行数≈"
+            else
+              echo "⚠ casebook.md 未生成，请把上方完整日志发给 AI 排查"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 提交案例册到仓库
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/analysis/casebook.md
+          if git diff --cached --quiet; then
+            echo "案例册无变化，跳过提交"
+          else
+            git commit -m "案例扫描：生成量学现代案例集 casebook.md"
+            git pull --rebase --autostash origin main || true
+            git push
+          fi
