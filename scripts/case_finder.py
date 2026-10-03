@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-case_finder.py — 量学现代案例扫描器 v3.1
+case_finder.py — 量学现代案例扫描器 v3.2
 ====================================================
-v3.1 修订（2026-10-04，用户目录截图揭示真相）：
-  103只之谜 = v2 的 glob 非递归只扫了 data/kline 根目录的旧版遗留散文件，
-  全量 5000+ 只在 sh/、sz/ 子目录里。v3.1 处理：
-  ① 递归扫描（v3 已有）——覆盖 sh/sz/bj 子目录全量
-  ② 按文件名代码去重：同一代码根目录与子目录并存时优先子目录版本
-     （根目录散文件为旧版扁平结构遗留，多为权重股）
-  ③ code 规范化：直接取文件名（sh600000），不带子目录路径前缀
-  ④ 指数排除：sh000xxx/sz399xxx/bj899xxx 为指数（上证指数/深证成指/
-     北证50等），剔除出个股案例扫描，日志注明——大盘级案例留考场单列
-  ⑤ 元数据跳过：_ 开头文件（_stock_list.json 等）不作K线解析
+v3.2 修订（2026-10-04，首跑全量反馈）：
+  真相：5552/5555 "解析失败" 并非格式问题——文件格式 [日期,开,高,低,收,量]
+  的列表套列表被布局2正确识别；真正原因是数据处于「平日增量（最近10根）」
+  状态，全部不足 60 根历史，被扫描门槛拒之门外。
+  v3.2 修改：
+  ① 区分两类未扫描：格式失败（真问题，打[诊断]）vs 历史不足60根（数据状态，
+     不打[诊断]，单独计数并提示等待周日全量重建）
+  ② _finalize 不再做最少根数裁决（只剔除无效行），门槛判定上移到 main，
+     分类清晰
+  ③ 案例册头部增加数据状态行（格式失败/历史不足/实际扫描 三计数）
+  ④ 指数样本打印去重（根目录+子目录重复不再刷屏）
 
-v3 遗产：名称映射双源（_stock_list.json 的 tx/name 全市场名称 + hushen300）；
-        覆盖度警告（解析<500只时）；样本基数（股票日）统计
+v3.1 遗产：递归扫描 sh/sz/bj 子目录；按代码去重（子目录优先）；指数排除
+（sh000xxx/sz399xxx/bj899xxx）；元数据跳过；名称映射双源
+（_stock_list.json 优先 + hushen300.json 补充）
 
 v2 遗产（铁律，最高优先级）：未来函数零容忍
   信号日 = 该形态全部判定条件可知晓的最早收盘日
@@ -31,7 +33,6 @@ v2 遗产（铁律，最高优先级）：未来函数零容忍
 
 import json
 import os
-import glob
 import math
 from collections import defaultdict, Counter
 
@@ -44,6 +45,7 @@ OUT_PATH = os.path.join(BASE, "data", "analysis", "casebook.md")
 
 TOP_N = 8        # 每形态收录案例数（最新优先）
 LOOKBACK = 500   # 扫描窗口：每只股票最近 500 根日线
+MIN_BARS = 60    # 扫描门槛：至少60根历史（形态窗口需要；平日增量10根会被跳过）
 MIN_UNIVERSE = 500  # 覆盖度警告阈值
 
 # 指数代码段位（上海指数=000xxx，深圳指数=399xxx，北证指数=899xxx）
@@ -76,18 +78,13 @@ def norm_date(s):
     return str(s).replace("/", "-")[:10]
 
 
-def _is_date_key(s):
-    s = str(s)
-    return len(s) >= 8 and s[:2].isdigit() and "-" in s
-
-
 def _looks_like_date(s):
     s = str(s)
     return len(s) >= 8 and s[0:1].isdigit() and ("-" in s or "/" in s or s.isdigit())
 
 
 def collect_kline_files():
-    """v3.1：递归收集 + 去重 + 指数/元数据分类。
+    """递归收集 + 去重 + 指数/元数据分类。
     返回 (个股文件列表, 指数文件列表, 重复丢弃数, 元数据文件列表)"""
     by_code = {}          # code -> (path, in_subdir)
     index_files = []
@@ -112,14 +109,13 @@ def collect_kline_files():
                 if in_subdir and not old_sub:
                     by_code[code] = (p, True)   # 子目录版本优先
                     dup_dropped += 1
-                # 否则保留先到的（先到的一定是根目录或子目录之一）
             else:
                 by_code[code] = (p, in_subdir)
     kline_files = [v[0] for v in by_code.values()]
     return sorted(kline_files), sorted(index_files), dup_dropped, sorted(meta_files)
 
 
-# ---------- K 线解析（格式自适应，与 v2/v3 一致） ----------
+# ---------- K 线解析（格式自适应） ----------
 
 DATE_KEYS = ["date", "datetime", "day", "time", "t", "日期"]
 OPEN_KEYS = ["open", "o", "kp", "开盘"]
@@ -130,7 +126,9 @@ VOL_KEYS = ["vol", "volume", "v", "cjl", "成交量"]
 
 
 def _finalize(d):
-    """清洗：剔除价格缺失行；high/low 缺失用开收补；vol 缺失填 0"""
+    """v3.2：只做行清洗（剔除价格缺失行；high/low 缺失用开收补；vol 缺失填0），
+    不再裁决最少根数——门槛判定上移到 main，区分「格式失败」与「历史不足」。
+    返回带 bars 计数的 dict（至少1根有效行），或 None（0 根有效行=格式/内容坏）。"""
     clean = {"code": d["code"], "dates": [], "open": [], "high": [],
              "low": [], "close": [], "vol": []}
     n = len(d["close"])
@@ -148,7 +146,8 @@ def _finalize(d):
         clean["low"].append(l)
         clean["close"].append(c)
         clean["vol"].append(v)
-    return clean if len(clean["close"]) >= 60 else None
+    clean["bars"] = len(clean["close"])
+    return clean if clean["bars"] >= 1 else None
 
 
 def parse_from_dict_list(code, rows):
@@ -198,6 +197,7 @@ def parse_from_rows(code, rows):
     if not _looks_like_date(cells[0][0]):
         return None
     ncols = len(cells[0])
+    # 布局1: date,open,close,high,low,vol / 布局2: date,open,high,low,close,vol
     layouts = [(0, 1, 2, 3, 4, 5), (0, 1, 4, 2, 3, 5)]
     chosen = None
     for lay in layouts:
@@ -261,7 +261,6 @@ def parse_parallel(code, raw):
 
 
 def load_kline_file(path):
-    # v3.1：code 直接取文件名（sh600000），不带子目录前缀
     code = os.path.splitext(os.path.basename(path))[0]
     try:
         with open(path, "r", encoding="utf-8") as f:
@@ -311,6 +310,7 @@ def _extract_real(entry):
 
 def load_ledger_index():
     idx = {}
+    import glob
     for path in glob.glob(os.path.join(LEDGER_DIR, "*.json")):
         try:
             with open(path, "r", encoding="utf-8") as f:
@@ -320,6 +320,9 @@ def load_ledger_index():
         if not isinstance(data, dict) or not data:
             continue
         k0 = next(iter(data))
+        def _is_date_key(s):
+            s = str(s)
+            return len(s) >= 8 and s[:2].isdigit() and "-" in s
         if isinstance(data[k0], dict):
             if _is_date_key(k0):
                 for dt, sub in data.items():
@@ -347,8 +350,8 @@ def load_ledger_index():
 
 
 def load_names():
-    """v3：名称映射双源。
-    源1（优先）：data/kline/_stock_list.json（tx/name，全市场）
+    """名称映射双源：
+    源1（优先）：data/kline/_stock_list.json（tx/name 格式）
     源2（补充）：data/hushen300.json"""
     names = {}
     try:
@@ -580,21 +583,29 @@ FORM_META = [
 
 
 def write_casebook(all_cases, stats, names, ledger_index, meta,
-                   parse_fail, total_files, parsed_count, stock_days):
+                   parse_fail, short_bars, total_files, parsed_count, stock_days):
     lines = []
-    lines.append("# 量学现代案例集（自动扫描生成）v3.1")
+    lines.append("# 量学现代案例集（自动扫描生成）v3.2")
     lines.append("")
     lines.append(f"> 生成时间：{meta['now']}")
-    lines.append(f"> 数据范围：个股日线 {total_files} 只（去重后），解析成功 {parsed_count} 只，解析失败 {parse_fail} 个")
-    lines.append(f"> 排除项：指数 {meta.get('index_skip', 0)} 个（sh000xxx/sz399xxx/bj899xxx，大盘级案例留考场单列）、"
-                 f"重复文件 {meta.get('dup_drop', 0)} 个（根目录旧遗留，以 sh/sz 子目录为准）、元数据 {meta.get('meta_skip', 0)} 个")
+    lines.append(f"> 数据状态：个股日线 {total_files} 只（去重后）＝ 实际扫描 {parsed_count} 只"
+                 f" ＋ 历史不足{MIN_BARS}根跳过 {short_bars} 只 ＋ 格式失败 {parse_fail} 个")
+    if meta.get("index_skip"):
+        lines.append(f"> 排除项：指数 {meta['index_skip']} 个（sh000xxx/sz399xxx/bj899xxx，大盘级案例留考场单列）、"
+                     f"根目录重复遗留 {meta.get('dup_drop', 0)} 个、元数据 {meta.get('meta_skip', 0)} 个")
+    if short_bars > 100:
+        lines.append("")
+        lines.append(f"> ⚠ **数据状态提示**：{short_bars} 只股票历史不足 {MIN_BARS} 根——当前数据处于"
+                     f"「平日增量（最近10根）」状态，属预期现象。")
+        lines.append(f"> 请等待**周日全量重建**（每周日北京20:00，写入约1023根/只）完成后重跑本脚本，"
+                     f"即可获得全市场案例。")
+    lines.append(f"")
     lines.append(f"> 日线窗口：约 {meta['date_min']} ~ {meta['date_max']}（每只扫描最近 {LOOKBACK} 根）")
     lines.append(f"> 样本基数：约 {stock_days} 股票日（发生率 ≈ 命中数 ÷ 样本基数）")
     lines.append(f"> 真伪标注：is_real 来自真假量柱账本（覆盖 2025-11 起；此前的案例显示 —）")
-    if parsed_count < MIN_UNIVERSE:
+    if parsed_count < MIN_UNIVERSE and short_bars <= 100:
         lines.append("")
-        lines.append(f"> ⚠ **覆盖度警告**：本次仅解析 {parsed_count} 只，远低于全市场预期（约 5500 只）——")
-        lines.append(f"> 以下命中数为**部分市场**结果，仅供口径验证。")
+        lines.append(f"> ⚠ **覆盖度警告**：本次仅扫描 {parsed_count} 只，远低于全市场预期（约 5500 只）。")
     lines.append("")
     lines.append("> **无未来函数声明（铁律，零容忍）**：")
     lines.append("> 1. 每个案例的**信号日 = 该形态全部判定条件可知晓的最早收盘日**。")
@@ -633,7 +644,7 @@ def write_casebook(all_cases, stats, names, ledger_index, meta,
                 lines.append(f"| {label} | {cs['date']} | {params} | {cs['close']:.2f} | "
                              f"{p['+5日']} | {p['+10日']} | {p['+20日']} | {real} |")
         else:
-            lines.append("*（本形态全市场 0 命中——口径可能过严，或与数据格式有关，留待体检）*")
+            lines.append("*（本形态 0 命中——口径可能过严，或样本不足，留待体检）*")
         lines.append("")
     lines.append("## 尾注")
     lines.append("")
@@ -649,26 +660,31 @@ def write_casebook(all_cases, stats, names, ledger_index, meta,
 
 def main():
     files, index_files, dup_dropped, meta_files = collect_kline_files()
-    print(f"[case_finder v3.1] data/kline 递归收集完成：")
-    print(f"[case_finder v3.1]   个股日线 {len(files)} 只（去重后）")
-    print(f"[case_finder v3.1]   排除：指数 {len(index_files)} 个 | "
+    # 指数样本去重打印（根目录+子目录重复不刷屏）
+    seen_ix = []
+    for p in index_files:
+        c = os.path.splitext(os.path.basename(p))[0]
+        if c not in seen_ix:
+            seen_ix.append(c)
+    print(f"[case_finder v3.2] data/kline 递归收集完成：")
+    print(f"[case_finder v3.2]   个股日线 {len(files)} 只（去重后）")
+    print(f"[case_finder v3.2]   排除：指数 {len(seen_ix)} 个（{'、'.join(seen_ix[:6])}）| "
           f"根目录重复遗留 {dup_dropped} 个 | 元数据 {len(meta_files)} 个")
-    if index_files:
-        sample_ix = [os.path.basename(p) for p in index_files[:5]]
-        print(f"[case_finder v3.1]   指数样本：{sample_ix}")
     if files:
         sample = [os.path.relpath(p, KLINE_DIR) for p in files[:5]]
-        print(f"[case_finder v3.1]   个股样本（前5，含子目录路径）：{sample}")
+        print(f"[case_finder v3.2]   个股样本（前5）：{sample}")
     if len(files) < MIN_UNIVERSE:
-        print(f"[case_finder v3.1] ⚠ 警告：个股日线仅 {len(files)} 只，远低于全市场预期（约5500只）")
+        print(f"[case_finder v3.2] ⚠ 警告：个股日线仅 {len(files)} 只，远低于全市场预期（约5500只）")
 
-    print(f"[case_finder v3.1] 无未来函数校验：所有信号日 = 条件可知晓的最早收盘日")
+    print(f"[case_finder v3.2] 无未来函数校验：所有信号日 = 条件可知晓的最早收盘日")
+    print(f"[case_finder v3.2] 扫描门槛：每只至少 {MIN_BARS} 根历史（平日增量10根状态会被跳过并计数）")
     if not files:
         print(f"[case_finder] 错误：没有有效个股日线文件，退出")
         return
 
     all_cases = defaultdict(list)
-    parse_fail = 0
+    parse_fail = 0     # 真格式失败
+    short_bars = 0     # 历史不足（数据状态问题，非格式问题）
     parsed_count = 0
     stock_days = 0
     debug_shown = 0
@@ -676,7 +692,7 @@ def main():
 
     ledger_index = load_ledger_index()
     names = load_names()
-    print(f"[case_finder v3.1] 账本索引 {len(ledger_index)} 条；名称映射 {len(names)} 条")
+    print(f"[case_finder v3.2] 账本索引 {len(ledger_index)} 条；名称映射 {len(names)} 条")
 
     for idx, path in enumerate(files, 1):
         d = load_kline_file(path)
@@ -686,19 +702,23 @@ def main():
                 try:
                     with open(path, "r", encoding="utf-8") as f:
                         head = f.read(400)
-                    print(f"[诊断] 无法解析 {os.path.relpath(path, KLINE_DIR)}，文件开头：{head}")
+                    print(f"[诊断·格式失败] {os.path.relpath(path, KLINE_DIR)}，文件开头：{head}")
                 except Exception:
                     pass
                 debug_shown += 1
             continue
+        if d["bars"] < MIN_BARS:
+            short_bars += 1   # 不打[诊断]——不是格式问题，是数据状态
+            continue
         parsed_count += 1
-        stock_days += len(d["dates"])
+        stock_days += d["bars"]
         if d["dates"]:
             date_min = min(date_min, d["dates"][0])
             date_max = max(date_max, d["dates"][-1])
         scan_stock(d, all_cases)
         if idx % 1000 == 0:
-            print(f"[case_finder v3.1] 进度 {idx}/{len(files)}")
+            print(f"[case_finder v3.2] 进度 {idx}/{len(files)}"
+                  f"（扫描 {parsed_count} | 历史不足 {short_bars} | 格式失败 {parse_fail}）")
 
     stats = {}
     for key, *_ in FORM_META:
@@ -711,20 +731,22 @@ def main():
         "now": __import__("datetime").datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "date_min": date_min if date_min != "9999-99-99" else "N/A",
         "date_max": date_max if date_max != "0000-00-00" else "N/A",
-        "index_skip": len(index_files),
+        "index_skip": len(seen_ix),
         "dup_drop": dup_dropped,
         "meta_skip": len(meta_files),
     }
     write_casebook(all_cases, stats, names, ledger_index, meta,
-                   parse_fail, len(files), parsed_count, stock_days)
-    print(f"[case_finder v3.1] 完成 → {OUT_PATH}")
-    print(f"[case_finder v3.1] 覆盖度：解析成功 {parsed_count}/{len(files)} 只，"
-          f"样本基数 {stock_days} 股票日")
-    print(f"[case_finder v3.1] 各形态命中：{json.dumps(stats, ensure_ascii=False)}")
-    if parsed_count < MIN_UNIVERSE:
-        print(f"[case_finder v3.1] ⚠ 警告：本次为部分市场扫描（{parsed_count} 只）")
+                   parse_fail, short_bars, len(files), parsed_count, stock_days)
+    print(f"[case_finder v3.2] 完成 → {OUT_PATH}")
+    print(f"[case_finder v3.2] 数据状态：实际扫描 {parsed_count} | "
+          f"历史不足{MIN_BARS}根跳过 {short_bars} | 格式失败 {parse_fail}（共 {len(files)} 只）")
+    print(f"[case_finder v3.2] 样本基数 {stock_days} 股票日")
+    print(f"[case_finder v3.2] 各形态命中：{json.dumps(stats, ensure_ascii=False)}")
+    if short_bars > 100:
+        print(f"[case_finder v3.2] ⚠ {short_bars} 只历史不足{MIN_BARS}根 → 数据处于平日增量状态")
+        print(f"[case_finder v3.2] ⚒ 等待周日全量重建（北京20:00）完成后重跑本脚本即可")
     if parse_fail > len(files) * 0.5:
-        print(f"[case_finder] ⚠ 警告：解析失败 {parse_fail}/{len(files)}，请把[诊断]输出发给AI")
+        print(f"[case_finder v3.2] ⚠ 警告：真格式失败 {parse_fail}/{len(files)}，请把[诊断·格式失败]输出发给AI")
 
 
 if __name__ == "__main__":
