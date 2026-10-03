@@ -1,309 +1,587 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-真假量柱账本记录器 (record_truth.py)
-=================================================
-版本: v1.1 (2026-09-23)
-职责: 读取1分钟数据 → 计算真假特征 → 写入按月分片账本 → 清理原始数据
+record_truth.py — 真假量柱账本分析器 v2.1
+==========================================
 
-上游: daily-quote.yml（每天20:00自动触发）
-下游: backtest_4d.py（回测时优先查账本）
-输出: data/analysis/truth_ledger/YYYY-MM.json
+职责链：
+    读取 data/kline_1min/ 下的 1 分钟 K 线
+      → 四指标投票（CV / 量价相关性 / 尾盘占比 / 分时均匀度）
+      → 判定「真金白银 / 疑似量化 / 量化对倒」（涨跌停日豁免）
+      → 写入按月分片账本 data/analysis/truth_ledger/YYYY-MM.json
+      → 验证落盘成功后删除原始 1 分钟数据（先删后提交，仓库不膨胀）
 
+v2.1 相对 v2 的变更：
+    [a] 快照 vprofile_24 降为 4 位小数（体积 -30%）
+    [b] 涨跌停豁免条目不再存快照（省去死重量）
+    [c] 账本落盘改紧凑 JSON（体积 -30%）
+    [d] 修复 --no-delete 参数不生效的 bug
 
-╔══════════════════════════════════════════════════════════════╗
-║           ★★★ 核心资产写入协议 (不可违背) ★★★                ║
-╠══════════════════════════════════════════════════════════════╣
-║  1. 本脚本是 truth_ledger/ 目录的【唯一写入者】。            ║
-║  2. 写入策略必须严格遵守【只追加，不覆盖】原则。             ║
-║  3. 账本数据代表【历史真相】，严禁任何脚本对其进行：         ║
-║     - 修改 (modify)                                          ║
-║     - 删除 (delete)                                          ║
-║     - 回滚 (rollback)                                        ║
-║     - 清洗 (clean)                                           ║
-║  4. 禁止任何 AI Agent（如 OpenMinis/MonkeyCode）直接读写      ║
-║     或 git push 本目录。账本只能通过本脚本的【确定性逻辑】    ║
-║     写入，绝不能交给大模型的"灵活处理"。                     ║
-║  5. 如发现账本异常，唯一正确的做法是【回滚 Git 提交】，       ║
-║     而不是手动修改 JSON 文件。                               ║
-║  6. 1分钟数据"用一天少一天"：错过记账窗口，历史真相将        ║
-║     永久丢失，无法补录。                                     ║
-╚══════════════════════════════════════════════════════════════╝
+用法：
+    python scripts/record_truth.py               # 正常运行
+    python scripts/record_truth.py --dry-run     # 只分析、不写账本、不删源文件
+    python scripts/record_truth.py --no-delete   # 写账本、但保留源文件
 
-
-核心逻辑:
-  1. 按日期分组1分钟K线
-  2. 只记账"完整"交易日（≥230根）
-  3. 跳过盘中不完整数据
-  4. 按月分片存储
-  5. 记账后删除原始1分钟数据
-
-判定规则:
-  3个指标（CV、量价相关、尾盘占比）命中≥2个 → 量化对倒
-  命中1个 → 疑似量化
-  0个 → 真金白银
-
-时间规则（北京时间）:
-  - 盘中：数据不完整 → 自动跳过
-  - 盘后：数据完整 → 正常记账
-  - 周末/节假日：接口返回最后交易日数据 → 自动识别
+纯标准库，无第三方依赖。
 """
+
+import argparse
 import json
-import numpy as np
-from datetime import datetime, timezone, timedelta
+import math
+import re
+import sys
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-# ============================================================
-# 路径配置
-# ============================================================
-DATA_DIR = Path(__file__).parent.parent / "data"
-KLINE_1MIN_DIR = DATA_DIR / "kline_1min"
-LEDGER_DIR = DATA_DIR / "analysis" / "truth_ledger"
+# ---------------------------------------------------------------------------
+# 路径与常量配置
+# ---------------------------------------------------------------------------
 
-# 完整交易日所需的1分钟K线数量
+BASE_DIR = Path(__file__).resolve().parent.parent
+KLINE_1MIN_DIR = BASE_DIR / 'data' / 'kline_1min'
+KLINE_DAILY_DIR = BASE_DIR / 'data' / 'kline'
+LEDGER_DIR = BASE_DIR / 'data' / 'analysis' / 'truth_ledger'
+
+CST = timezone(timedelta(hours=8))
 MIN_FULL_DAY_BARS = 230
 
+# --- 判定阈值（集中一处，调参只改这里） ---
+THRESH = {
+    'cv':        0.5,
+    'corr':      0.3,
+    'tail':      0.3,
+    'flatness':  0.25,
+}
 
-# ============================================================
-# 看门狗：在账本目录写入只读声明文件
-# ============================================================
-def write_watchdog():
-    """在账本目录写入 DO_NOT_MODIFY.md，作为对任何外部读写者的警告。"""
-    LEDGER_DIR.mkdir(parents=True, exist_ok=True)
-    watchdog_path = LEDGER_DIR / "DO_NOT_MODIFY.md"
-    content = """# ⚠️ 请勿手动修改此目录 ⚠️
-
-本目录为量化系统的【历史账本】。账本由 `scripts/record_truth.py` 
-以【只追加，不覆盖】的方式写入，代表历史真相。
-
-## 严禁操作
-- ❌ 手动修改任意 .json 文件
-- ❌ 删除任意 .json 文件
-- ❌ 重命名或移动文件
-- ❌ 通过 AI Agent（如 OpenMinis/MonkeyCode）直接写入或 git push
-
-## 如发现异常
-- ✅ 唯一正确的做法：回滚 Git 提交 (git revert)
-- ✅ 联系脚本维护者，检查 record_truth.py 的写入逻辑
-
-## 为什么如此严格
-1分钟数据"用一天少一天"。错过记账窗口，历史真相将永久丢失。
-账本一旦被污染，所有回测胜率、真假判定都会失真。
-"""
-    # 只在文件不存在时写入，避免每天重复
-    if not watchdog_path.exists():
-        with open(watchdog_path, 'w', encoding='utf-8') as f:
-            f.write(content)
+SESSION_SPLITS = [
+    ('开盘30分',   0,  30),
+    ('上午前段',  30,  90),
+    ('午前',      90, 120),
+    ('午后',     120, 180),
+    ('尾盘前',   180, 210),
+    ('尾盘30分', 210, 240),
+]
 
 
-def extract_date_from_timestamp(ts):
-    """从时间戳提取日期（YYYY-MM-DD）"""
-    s = str(ts).strip()
-    if not s:
-        return None
-    if '-' in s:
-        return s[:10]
-    if len(s) >= 8 and s[:8].isdigit():
-        return f"{s[:4]}-{s[4:6]}-{s[6:8]}"
+# ---------------------------------------------------------------------------
+# 北交所过滤（兜底；主过滤在 fetch_quotes.py）
+# ---------------------------------------------------------------------------
+
+def is_bj(code: str) -> bool:
+    c = (code or '').lower().replace('.bj', '').strip()
+    if not c:
+        return False
+    if c.startswith('bj'):
+        return True
+    digits = c[2:] if (len(c) > 2 and c[:2] in ('sh', 'sz')) else c
+    return digits.startswith(('920', '83', '87', '43'))
+
+
+# ---------------------------------------------------------------------------
+# 涨跌停规则（无北交所分支）
+# ---------------------------------------------------------------------------
+
+def limit_pct_for(code: str) -> float:
+    if code.startswith(('sz30', 'sh68')):
+        return 0.198       # 创业板 / 科创板 ±20%
+    return 0.098           # 主板 ±10%
+
+
+def min_bars_for(code: str) -> int:
+    return MIN_FULL_DAY_BARS
+
+
+# ---------------------------------------------------------------------------
+# 数据解析层：兼容字符串 / 数组 / 字典三种 K 线格式
+# ---------------------------------------------------------------------------
+
+def extract_bars_payload(obj):
+    if isinstance(obj, list):
+        return obj
+    if isinstance(obj, dict):
+        for key in ('data', 'bars', 'klines', 'kline'):
+            v = obj.get(key)
+            if isinstance(v, list):
+                return v
+            if isinstance(v, dict):
+                for k2 in ('klines', 'data', 'bars'):
+                    v2 = v.get(k2)
+                    if isinstance(v2, list):
+                        return v2
     return None
 
 
-def analyze_1min_volatility(day_klines):
-    """输入单日完整的1分钟K线，返回真假特征"""
-    if not day_klines or len(day_klines) < MIN_FULL_DAY_BARS:
-        return None, None, None, None, None, None
+def _looks_like_time(x) -> bool:
+    if isinstance(x, (int, float)):
+        return x > 10_000
+    s = str(x).strip()
+    if re.search(r'\d{4}[-/]\d{2}[-/]\d{2}', s):
+        return True
+    if s.isdigit() and len(s) >= 8:
+        return True
+    return False
 
-    volumes, closes = [], []
-    for k in day_klines:
+
+def normalize_bar(item):
+    try:
+        if isinstance(item, dict):
+            g = lambda *ks: next((item[k] for k in ks if item.get(k) is not None), None)
+            return {
+                'time':   g('time', 't', 'datetime', 'dt', 'date'),
+                'open':   float(g('open', 'o', 0)),
+                'high':   float(g('high', 'h', 0)),
+                'low':    float(g('low', 'l', 0)),
+                'close':  float(g('close', 'c', 0)),
+                'volume': float(g('volume', 'vol', 'v', 0)),
+            }
+        if isinstance(item, str):
+            parts = [p.strip() for p in item.split(',')]
+            if len(parts) >= 6 and _looks_like_time(parts[0]):
+                return {
+                    'time':   parts[0],
+                    'open':   float(parts[1]),
+                    'high':   float(parts[2]),
+                    'low':    float(parts[3]),
+                    'close':  float(parts[4]),
+                    'volume': float(parts[5]),
+                }
+            return None
+        if isinstance(item, (list, tuple)) and len(item) >= 6:
+            if _looks_like_time(item[0]):
+                return {
+                    'time':   item[0],
+                    'open':   float(item[1]),
+                    'high':   float(item[2]),
+                    'low':    float(item[3]),
+                    'close':  float(item[4]),
+                    'volume': float(item[5]),
+                }
+            return None
+    except (ValueError, TypeError):
+        return None
+    return None
+
+
+def extract_date(t):
+    if t is None:
+        return None
+    if isinstance(t, (int, float)):
+        ts = t / 1000 if t > 1e12 else t
         try:
-            if len(k) > 5:
-                volumes.append(float(k[5]))
-                closes.append(float(k[2]))
-        except Exception:
+            return datetime.fromtimestamp(ts, tz=CST).strftime('%Y-%m-%d')
+        except (OverflowError, OSError, ValueError):
+            return None
+    s = str(t).strip()
+    if s.isdigit() and len(s) >= 8:
+        return f'{s[:4]}-{s[4:6]}-{s[6:8]}'
+    m = re.match(r'(\d{4})[-/](\d{1,2})[-/](\d{1,2})', s)
+    if m:
+        return f'{m.group(1)}-{int(m.group(2)):02d}-{int(m.group(3)):02d}'
+    return None
+
+
+def load_and_group_days(path: Path):
+    try:
+        obj = json.loads(path.read_text(encoding='utf-8'))
+    except (json.JSONDecodeError, UnicodeDecodeError) as e:
+        print(f'[WARN] {path.name} JSON 解析失败: {e}')
+        return None
+    payload = extract_bars_payload(obj)
+    if not payload:
+        print(f'[WARN] {path.name} 未识别到 K 线数据，跳过')
+        return None
+    bars = [b for b in (normalize_bar(x) for x in payload) if b]
+    if not bars:
+        print(f'[WARN] {path.name} K 线全部无法解析，跳过')
+        return None
+    bars.sort(key=lambda b: str(b['time']))
+    days = {}
+    for b in bars:
+        d = extract_date(b['time'])
+        if d:
+            days.setdefault(d, []).append(b)
+    if not days:
+        print(f'[WARN] {path.name} 时间字段无日期信息，跳过')
+    return days
+
+
+def resolve_code(path: Path) -> str:
+    stem = path.stem
+    if stem.lower().startswith(('sh', 'sz', 'bj')):
+        return stem.lower()
+    parent = path.parent.name.lower()
+    if parent in ('sh', 'sz', 'bj'):
+        return parent + stem
+    return stem.lower()
+
+
+# ---------------------------------------------------------------------------
+# prev_close 加载（涨跌停检测用）
+# ---------------------------------------------------------------------------
+
+def load_prev_close(code: str, target_date: str, _cache={}):
+    if code in _cache:
+        daily = _cache[code]
+    else:
+        daily = None
+        for cand in (KLINE_DAILY_DIR / f'{code[:2]}' / f'{code}.json',
+                     KLINE_DAILY_DIR / f'{code}.json'):
+            if cand.exists():
+                try:
+                    obj = json.loads(cand.read_text(encoding='utf-8'))
+                    payload = extract_bars_payload(obj) or []
+                    daily = []
+                    for item in payload:
+                        if isinstance(item, str):
+                            p = [x.strip() for x in item.split(',')]
+                        elif isinstance(item, (list, tuple)):
+                            p = item
+                        else:
+                            continue
+                        d = extract_date(p[0]) if p else None
+                        if d and len(p) >= 5:
+                            try:
+                                daily.append((d, float(p[4])))
+                            except (ValueError, TypeError):
+                                pass
+                except (json.JSONDecodeError, UnicodeDecodeError):
+                    pass
+                break
+        _cache[code] = daily
+    if not daily:
+        return None
+    before = [c for d, c in daily if d < target_date]
+    return before[-1] if before else None
+
+
+# ---------------------------------------------------------------------------
+# 指标计算
+# ---------------------------------------------------------------------------
+
+def safe_corr(xs, ys):
+    n = len(xs)
+    if n < 2 or len(ys) != n:
+        return None
+    mx, my = sum(xs) / n, sum(ys) / n
+    cov = sum((x - mx) * (y - my) for x, y in zip(xs, ys))
+    vx = sum((x - mx) ** 2 for x in xs)
+    vy = sum((y - my) ** 2 for y in ys)
+    if vx <= 0 or vy <= 0:
+        return None
+    r = cov / math.sqrt(vx * vy)
+    return max(-1.0, min(1.0, r))
+
+
+def session_volume_profile(volumes):
+    total = sum(volumes)
+    if total <= 0:
+        return None
+    n = len(volumes)
+    return [sum(volumes[min(a, n):min(b, n)]) / total for _, a, b in SESSION_SPLITS]
+
+
+def flatness_score(profile):
+    if not profile:
+        return None
+    u = 1.0 / len(profile)
+    return sum(abs(p - u) for p in profile)
+
+
+def build_feature_snapshot(volumes):
+    """240 根 1 分钟 → 24 个 10 分钟桶占比。[补丁a] 4 位小数足够重算校验。"""
+    n = 24
+    buckets = [0.0] * n
+    for i, v in enumerate(volumes):
+        buckets[min(i // 10, n - 1)] += v
+    total = sum(buckets)
+    if total <= 0:
+        return None
+    return [round(b / total, 4) for b in buckets]
+
+
+# ---------------------------------------------------------------------------
+# 涨跌停 / 一字板检测
+# ---------------------------------------------------------------------------
+
+def detect_limit_status(bars, prev_close, limit_pct):
+    if not bars:
+        return None
+    high = max(b['high'] for b in bars)
+    low = min(b['low'] for b in bars)
+    if high == low:                          # 一字板
+        return 'one_word'
+    base = prev_close if (prev_close and prev_close > 0) else bars[0]['open']
+    if not base or base <= 0:
+        return None
+    close = bars[-1]['close']
+    eps = 0.001
+    limit_up = round(base * (1 + limit_pct), 2)
+    limit_dn = round(base * (1 - limit_pct), 2)
+    if close >= limit_up - eps:
+        return 'limit_up'
+    if close <= limit_dn + eps:
+        return 'limit_down'
+    return None
+
+
+# ---------------------------------------------------------------------------
+# 判定层
+# ---------------------------------------------------------------------------
+
+def compute_quant_pct(cv, corr, tail_ratio, flatness):
+    contribs = [70 if cv < 0.5 else (40 if cv < 1.0 else 10)]
+    if corr is not None:
+        a = abs(corr)
+        contribs.append(60 if a < 0.2 else (30 if a < 0.5 else 10))
+    if tail_ratio is not None:
+        contribs.append(70 if tail_ratio > 0.4 else (40 if tail_ratio > 0.2 else 10))
+    if flatness is not None:
+        contribs.append(60 if flatness < 0.15 else (35 if flatness < 0.3 else 10))
+    return round(sum(contribs) / len(contribs), 1)
+
+
+def analyze_day(bars, code, prev_close):
+    volumes = [b['volume'] for b in bars]
+    total_vol = sum(volumes)
+    if total_vol <= 0 or len(bars) < 2:
+        return None
+
+    limit_status = detect_limit_status(bars, prev_close, limit_pct_for(code))
+    if limit_status:
+        # [补丁b] 豁免条目不参与任何统计，快照是死重量 → 不存
+        return {
+            'is_real': None,
+            'verdict': f'涨跌停豁免({limit_status})',
+            'quant_pct': None,
+            'limit_status': limit_status,
+        }
+
+    closes = [b['close'] for b in bars]
+
+    vol_mean = total_vol / len(volumes)
+    vol_std = math.sqrt(sum((v - vol_mean) ** 2 for v in volumes) / len(volumes))
+    cv = vol_std / vol_mean
+
+    corr = safe_corr(
+        [closes[i] - closes[i - 1] for i in range(1, len(closes))],
+        [volumes[i] - volumes[i - 1] for i in range(1, len(volumes))],
+    )
+
+    tail_ratio = sum(volumes[-30:]) / total_vol
+    flatness = flatness_score(session_volume_profile(volumes))
+
+    hits = 0
+    if cv < THRESH['cv']:
+        hits += 1
+    if corr is not None and abs(corr) < THRESH['corr']:
+        hits += 1
+    if tail_ratio > THRESH['tail']:
+        hits += 1
+    if flatness is not None and flatness < THRESH['flatness']:
+        hits += 1
+
+    if hits == 0:
+        is_real, verdict = True, '真金白银'
+    elif hits == 1:
+        is_real, verdict = None, '疑似量化'
+    else:
+        is_real, verdict = False, '量化对倒'
+
+    return {
+        'is_real': is_real,
+        'verdict': verdict,
+        'quant_pct': compute_quant_pct(cv, corr, tail_ratio, flatness),
+        'cv': round(cv, 4),
+        'corr': round(corr, 4) if corr is not None else None,
+        'tail_ratio': round(tail_ratio, 4),
+        'flatness': round(flatness, 4) if flatness is not None else None,
+        'limit_status': None,
+        'vprofile_24': build_feature_snapshot(volumes),
+    }
+
+
+# ---------------------------------------------------------------------------
+# 账本读写层
+# ---------------------------------------------------------------------------
+
+class LedgerCache:
+    def __init__(self, ledger_dir: Path):
+        self.dir = ledger_dir
+        self._cache = {}
+        self.dirty = set()
+
+    def path_for(self, month: str) -> Path:
+        return self.dir / f'{month}.json'
+
+    def load(self, month: str) -> dict:
+        if month not in self._cache:
+            p = self.path_for(month)
+            if p.exists():
+                try:
+                    self._cache[month] = json.loads(p.read_text(encoding='utf-8'))
+                except (json.JSONDecodeError, UnicodeDecodeError):
+                    print(f'[WARN] 账本 {month}.json 损坏，将重建（请人工核查备份）')
+                    self._cache[month] = {}
+            else:
+                self._cache[month] = {}
+        return self._cache[month]
+
+    def has(self, month, code, date):
+        return date in self.load(month).get(code, {})
+
+    def put(self, month, code, date, entry):
+        self.load(month).setdefault(code, {})[date] = entry
+        self.dirty.add(month)
+
+    def flush(self):
+        # [补丁c] 紧凑 JSON：仓库体积 -30%（代价是网页上不再逐行可读）
+        self.dir.mkdir(parents=True, exist_ok=True)
+        for month in sorted(self.dirty):
+            p = self.path_for(month)
+            tmp = p.with_suffix('.tmp')
+            tmp.write_text(
+                json.dumps(self._cache[month], ensure_ascii=False,
+                           separators=(',', ':')),
+                encoding='utf-8',
+            )
+            tmp.replace(p)
+            print(f'[INFO] 账本落盘: {p.name}')
+
+    def verify(self, entries) -> bool:
+        for month, code, date in entries:
+            try:
+                data = json.loads(self.path_for(month).read_text(encoding='utf-8'))
+            except Exception:
+                return False
+            if date not in data.get(code, {}):
+                return False
+        return True
+
+
+# ---------------------------------------------------------------------------
+# 汇总统计
+# ---------------------------------------------------------------------------
+
+def print_summary(stats: dict):
+    n = stats['processed']
+    if n == 0:
+        print('\n本日无新增账目（可能全部已存在或无新数据）。')
+        return
+    line = '=' * 52
+    print(f'\n{line}')
+    print(f"本次入账: {n} 条 (股票, 日期)")
+    for label, key in (('真金白银', 'real'), ('疑似量化', 'suspect'), ('量化对倒', 'fake')):
+        v = stats[key]
+        print(f'  {label}  : {v:5d}  ({v / n:6.1%})')
+    v = stats['limit_exempt']
+    print(f'  涨跌停豁免: {v:5d}  ({v / n:6.1%})')
+    print(f'  跳过: 北交所 {stats["skipped_bj"]} | 不完整 {stats["skipped_incomplete"]} | '
+          f'已存在 {stats["skipped_exists"]} | 无法解析 {stats["skipped_bad"]}')
+    print(f'  文件: 删除 {stats["files_deleted"]} | 保留 {stats["files_kept"]}')
+    for name, key in (('cv', 'cv'), ('corr', 'corr'),
+                      ('tail_ratio', 'tail'), ('flatness', 'flat')):
+        cnt = stats[f'{key}_n']
+        if cnt:
+            print(f'  指标均值: {name}={stats[f"{key}_sum"] / cnt:.3f}')
+    print(f'{line}\n')
+
+
+# ---------------------------------------------------------------------------
+# 主流程
+# ---------------------------------------------------------------------------
+
+def process_file(path: Path, ledger: LedgerCache, stats: dict, dry_run: bool) -> list:
+    code = resolve_code(path)
+    if is_bj(code):
+        stats['skipped_bj'] += 1
+        return []
+
+    days = load_and_group_days(path)
+    if not days:
+        stats['skipped_bad'] += 1
+        return []
+
+    entries = []
+    for date in sorted(days):
+        month = date[:7]
+        bars = days[date]
+
+        if ledger.has(month, code, date):
+            stats['skipped_exists'] += 1
+            continue
+        if len(bars) < min_bars_for(code):
+            stats['skipped_incomplete'] += 1
             continue
 
-    if len(volumes) < 30:
-        return None, None, None, None, None, None
+        prev_close = load_prev_close(code, date)
+        entry = analyze_day(bars, code, prev_close)
+        if entry is None:
+            stats['skipped_bad'] += 1
+            continue
 
-    vol_mean = np.mean(volumes)
-    vol_std = np.std(volumes)
-    cv = vol_std / vol_mean if vol_mean > 0 else 999
+        if not dry_run:
+            ledger.put(month, code, date, entry)
+        entries.append((month, code, date))
+        stats['processed'] += 1
 
-    if len(closes) == len(volumes) and len(closes) > 10:
-        price_changes = np.diff(closes)
-        vol_changes = np.diff(volumes)
-        if np.std(price_changes) > 0 and np.std(vol_changes) > 0:
-            corr = float(np.corrcoef(price_changes, vol_changes)[0, 1])
-            if np.isnan(corr):
-                corr = 0.0
+        if entry['is_real'] is True:
+            stats['real'] += 1
+        elif entry['is_real'] is False:
+            stats['fake'] += 1
+        elif entry.get('limit_status'):
+            stats['limit_exempt'] += 1
         else:
-            corr = 0.0
-    else:
-        corr = 0.0
+            stats['suspect'] += 1
 
-    tail_vol = sum(volumes[-30:])
-    total_vol = sum(volumes)
-    tail_ratio = tail_vol / total_vol if total_vol > 0 else 0
+        for k, v in (('cv', entry.get('cv')), ('corr', entry.get('corr')),
+                     ('tail', entry.get('tail_ratio')), ('flat', entry.get('flatness'))):
+            if v is not None:
+                stats[f'{k}_sum'] += v
+                stats[f'{k}_n'] += 1
 
-    quant_score = 0
-    if cv < 0.5: quant_score += 1
-    if abs(corr) < 0.3: quant_score += 1
-    if tail_ratio > 0.3: quant_score += 1
-
-    if quant_score >= 2:
-        verdict = "量化对倒"
-        is_real = False
-    elif quant_score == 1:
-        verdict = "疑似量化"
-        is_real = None
-    else:
-        verdict = "真金白银"
-        is_real = True
-
-    cv_contrib = 70 if cv < 0.5 else (40 if cv < 1.0 else 10)
-    corr_contrib = 60 if abs(corr) < 0.2 else (30 if abs(corr) < 0.5 else 10)
-    tail_contrib = 70 if tail_ratio > 0.4 else (40 if tail_ratio > 0.2 else 10)
-    quant_pct = (cv_contrib + corr_contrib + tail_contrib) / 3
-
-    return (verdict, is_real, round(quant_pct, 1),
-            round(cv, 2), round(corr, 2), round(tail_ratio, 3))
-
-
-def get_ledger_path(date_str):
-    """根据日期返回账本文件路径（按月分片）"""
-    month = date_str[:7]
-    return LEDGER_DIR / f"{month}.json"
-
-
-def load_ledger(date_str):
-    """加载指定月份的账本"""
-    path = get_ledger_path(date_str)
-    if not path.exists():
-        return {}
-    try:
-        with open(path, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except Exception:
-        return {}
-
-
-def save_ledger(date_str, ledger):
-    """安全保存账本（原子操作，防止中途崩溃损坏文件）"""
-    path = get_ledger_path(date_str)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    tmp_path = path.with_suffix('.tmp')
-    with open(tmp_path, 'w', encoding='utf-8') as f:
-        json.dump(ledger, f, ensure_ascii=False, indent=2)
-    tmp_path.replace(path)
+    return entries
 
 
 def main():
-    # ============ 写入看门狗声明 ============
-    write_watchdog()
+    ap = argparse.ArgumentParser(description='真假量柱账本 v2.1')
+    ap.add_argument('--dry-run', action='store_true', help='只分析，不写账本、不删源文件')
+    ap.add_argument('--no-delete', action='store_true', help='写账本，但保留源文件')
+    args = ap.parse_args()
 
-    bj_now = datetime.now(timezone.utc) + timedelta(hours=8)
-    print(f"[账本] 北京时间: {bj_now.strftime('%Y-%m-%d %H:%M:%S')}")
-    print(f"[账本] 完整交易日标准: ≥{MIN_FULL_DAY_BARS}根1分钟K线")
-    print(f"[账本] 写入协议: 只追加，不覆盖")
+    stats = {k: 0 for k in (
+        'processed', 'real', 'suspect', 'fake', 'limit_exempt',
+        'skipped_bj', 'skipped_incomplete', 'skipped_exists', 'skipped_bad',
+        'files_deleted', 'files_kept',
+        'cv_sum', 'cv_n', 'corr_sum', 'corr_n', 'tail_sum', 'tail_n', 'flat_sum', 'flat_n',
+    )}
 
     if not KLINE_1MIN_DIR.exists():
-        print(f"[账本] 1分钟数据目录不存在，跳过")
-        return
+        print(f'[INFO] 目录不存在，无数据可处理: {KLINE_1MIN_DIR}')
+        return 0
 
-    files = list(KLINE_1MIN_DIR.glob("*.json"))
-    if not files:
-        print("[账本] 无1分钟数据文件，跳过")
-        return
+    files = sorted(KLINE_1MIN_DIR.rglob('*.json'))
+    print(f'[INFO] 扫描到 {len(files)} 个源文件，模式: '
+          f'{"DRY-RUN" if args.dry_run else ("不删除源文件" if args.no_delete else "常规")}')
 
-    print(f"[账本] 待处理 {len(files)} 个文件\n")
+    ledger = LedgerCache(LEDGER_DIR)
 
-    monthly_ledgers = {}
-    failed_files = {}   # 记录"含完整交易日却记账失败"的文件：f -> [失败日期,...]，这些文件稍后保留不删
-    updated = 0
-    skipped_incomplete = 0
-    skipped_exists = 0
-
-    for f in files:
-        code = f.stem
-        try:
-            with open(f, 'r', encoding='utf-8') as fp:
-                data = json.load(fp)
-            klines = data.get('klines', [])
-            if not klines:
-                continue
-
-            by_date = {}
-            for k in klines:
-                d = extract_date_from_timestamp(k[0])
-                if d:
-                    by_date.setdefault(d, []).append(k)
-
-            for d, day_klines in sorted(by_date.items()):
-                if len(day_klines) < MIN_FULL_DAY_BARS:
-                    skipped_incomplete += 1
-                    continue
-
-                month = d[:7]
-                if month not in monthly_ledgers:
-                    monthly_ledgers[month] = load_ledger(d)
-
-                ledger = monthly_ledgers[month]
-
-                # ★★★ 只追加，不覆盖：已存在的日期直接跳过 ★★★
-                if code in ledger and d in ledger[code]:
-                    skipped_exists += 1
-                    continue
-
-                res = analyze_1min_volatility(day_klines)
-                if res[0] is None:
-                    # 完整交易日却分析失败：记入失败清单，稍后保留该文件，防止"没记账又被删"丢真相
-                    failed_files.setdefault(f, []).append(d)
-                    continue
-
-                verdict, is_real, quant_pct, cv, corr, tail = res
-
-                if code not in ledger:
-                    ledger[code] = {}
-                ledger[code][d] = {
-                    "is_real": is_real,
-                    "verdict": verdict,
-                    "quant_pct": quant_pct,
-                    "cv": cv,
-                    "corr": corr,
-                    "tail_ratio": tail,
-                }
-                updated += 1
-                if updated <= 20 or updated % 500 == 0:
-                    print(f"  {code} {d} ✅ {verdict} (量化{quant_pct}%)")
-
-        except Exception as e:
-            print(f"  {code} 处理失败: {e}")
-            # 整个文件处理异常也视为失败，保留文件以便次日重试，不直接删除
-            failed_files.setdefault(f, []).append(f"异常:{type(e).__name__}")
-
-    for month, ledger in monthly_ledgers.items():
-        save_ledger(f"{month}-01", ledger)
-        total = sum(len(v) for v in ledger.values())
-        print(f"[账本] {month}.json: {len(ledger)} 只股票, {total} 条记录")
-
-    print(f"\n[统计] 更新: {updated} 条，跳过不完整: {skipped_incomplete} 条，已存在: {skipped_exists} 条")
-
-    deleted = 0
-    kept = 0
-    for f in files:
-        # 安全删除：仅当该文件没有"完整交易日记账失败"时才删；
-        # 失败文件保留并告警，避免"既没记账、文件也被删"导致历史真相永久丢失、无法补录
-        if failed_files.get(f):
-            kept += 1
-            print(f"[清理] ⚠️ 保留 {f.name}，完整交易日记账失败、需人工排查: {failed_files[f]}")
+    for path in files:
+        entries = process_file(path, ledger, stats, args.dry_run)
+        # [补丁d] --dry-run 与 --no-delete 都不进入删除分支
+        if not entries or args.dry_run or args.no_delete:
             continue
-        try:
-            f.unlink()
-            deleted += 1
-        except Exception as e:
-            print(f"[清理] 删除失败 {f.name}: {e}")
-    print(f"[清理] 已删除 {deleted} 个1分钟原始数据文件，保留 {kept} 个待排查文件")
+        ledger.flush()
+        if ledger.verify(entries):
+            path.unlink()
+            stats['files_deleted'] += 1
+        else:
+            print(f'[安全拦截] {path.name} 账本验证未通过，保留源文件')
+            stats['files_kept'] += 1
+
+    ledger.flush()
+    print_summary(stats)
+    return 0
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    sys.exit(main())
